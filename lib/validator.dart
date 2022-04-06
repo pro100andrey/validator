@@ -149,8 +149,8 @@ class LengthRangeValidator extends TextValidator {
   bool isValid(String? value) => value!.length >= min && value.length <= max;
 }
 
-class RangeValidator extends TextValidator {
-  RangeValidator({
+class NumRangeValidator extends TextValidator {
+  NumRangeValidator({
     required this.min,
     required this.max,
     required String error,
@@ -204,6 +204,18 @@ class PatternValidator extends TextValidator {
       );
 }
 
+/// A special match validator to check if the input equals another
+/// provided value;
+class MatchValidator {
+  MatchValidator({
+    required this.error,
+  });
+
+  final String error;
+
+  String? validateMatch(String v1, String v2) => v1 == v2 ? null : error;
+}
+
 class GroupValidator {
   GroupValidator(this.validators);
 
@@ -217,16 +229,4 @@ class GroupValidator {
     }
     return null;
   }
-}
-
-/// A special match validator to check if the input equals another
-/// provided value;
-class MatchValidator {
-  MatchValidator({
-    required this.error,
-  });
-
-  final String error;
-
-  String? validateMatch(String v1, String v2) => v1 == v2 ? null : error;
 }

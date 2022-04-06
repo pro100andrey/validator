@@ -42,3 +42,19 @@ void main() {
 }
 
 ```
+
+## Available Validators
+
+| Validator | Description |
+| - | - |
+| RequiredValidator | ... |
+| MaxLengthValidator | ... |
+| MinLengthValidator | ... |
+| MinOneUppercaseValidator | ... |
+| MinOneLowercaseValidator | ... |
+| HasANumberValidator | ... |
+| LengthRangeValidator | ... |
+| NumRangeValidator | ... |
+| EmailValidator | ... |
+| MatchValidator | ... |
+| GroupValidator | ... |
