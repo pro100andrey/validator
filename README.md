@@ -25,8 +25,8 @@ final emailValidator = GroupValidator([
 final passwordValidator = GroupValidator([
     RequiredValidator(error: 'Required field'),
     MinLengthValidator(8, error: 'Min length 8'),
-    MinOneUppercaseValidator(error: 'Must contain at least one uppercase'),
-    MinOneLowercaseValidator(error: 'Must contain at least one lowercase'),
+    HasUppercaseValidator(error: 'Must contain at least one uppercase'),
+    HasLowercaseValidator(error: 'Must contain at least one lowercase'),
   ]);
 
 void main() {
@@ -50,8 +50,8 @@ void main() {
 | RequiredValidator | Ensures the value is not empty, nor white space only. |
 | MaxLengthValidator | Ensures the value length contains no more than a set [max] of characters. |
 | MinLengthValidator | Ensures the value length contains no fewer than a set [min] of characters. |
-| MinOneUppercaseValidator | Ensures the value contains a minimum of one uppercase character. |
-| MinOneLowercaseValidator | Ensures the value contains a minimum of one lowercase character. |
+| HasUppercaseValidator | Ensures the value contains a minimum of one uppercase character. |
+| HasLowercaseValidator | Ensures the value contains a minimum of one lowercase character. |
 | HasANumberValidator |  Ensures the value contains a minimum of one numeric character. |
 | LengthRangeValidator | Ensures the value length is contained in the range [min, max]. |
 | NumRangeValidator |  Ensures the num value is contained in the range [min, max]. |

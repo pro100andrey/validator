@@ -82,8 +82,8 @@ class MinLengthValidator extends TextValidator {
 }
 
 // Ensures the value contains a minimum of one uppercase character.
-class MinOneUppercaseValidator extends TextValidator {
-  MinOneUppercaseValidator({
+class HasUppercaseValidator extends TextValidator {
+  HasUppercaseValidator({
     required String error,
   }) : super(error);
 
@@ -101,8 +101,8 @@ class MinOneUppercaseValidator extends TextValidator {
 }
 
 // Ensures the value contains a minimum of one lowercase character.
-class MinOneLowercaseValidator extends TextValidator {
-  MinOneLowercaseValidator({
+class HasLowercaseValidator extends TextValidator {
+  HasLowercaseValidator({
     required String error,
   }) : super(error);
 

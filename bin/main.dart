@@ -16,8 +16,8 @@ void main() {
   final passwordValidator = GroupValidator([
     RequiredValidator(error: 'Required field'),
     MinLengthValidator(8, error: 'Min length 8'),
-    MinOneUppercaseValidator(error: 'Must contain at least one uppercase'),
-    MinOneLowercaseValidator(error: 'Must contain at least one lowercase'),
+    HasUppercaseValidator(error: 'Must contain at least one uppercase'),
+    HasLowercaseValidator(error: 'Must contain at least one lowercase'),
   ]);
 
   print('null password validation ${passwordValidator(null)}');
