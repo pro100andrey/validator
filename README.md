@@ -2,6 +2,14 @@
 
 The validator package comes with several common validations and removes the boiler plate code from your project.
 
+## Features
+
+- Contains several common validations
+- Supports grouping of validators to write concise code
+- Zero dependency
+- Well tested
+- Easy to use and removes boiler plate code from your project
+
 ## Installation
 
 ``` yaml
@@ -13,6 +21,8 @@ dependencies:
 ```
 
 ## Example
+
+> **_NOTE:_** if validate value contains is a null value, the result is null, not an error.
 
 ``` dart
 import 'package:validator/validator.dart';
