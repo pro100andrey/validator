@@ -56,5 +56,7 @@ void main() {
 | LengthRangeValidator | ... |
 | NumRangeValidator | ... |
 | EmailValidator | ... |
+| PhoneValidator | ... |
+| UrlValidator | ... |
 | MatchValidator | ... |
 | GroupValidator | ... |
