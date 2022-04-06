@@ -47,16 +47,16 @@ void main() {
 
 | Validator | Description |
 | - | - |
-| RequiredValidator | ... |
-| MaxLengthValidator | ... |
-| MinLengthValidator | ... |
-| MinOneUppercaseValidator | ... |
-| MinOneLowercaseValidator | ... |
-| HasANumberValidator | ... |
-| LengthRangeValidator | ... |
-| NumRangeValidator | ... |
-| EmailValidator | ... |
-| PhoneValidator | ... |
-| UrlValidator | ... |
-| MatchValidator | ... |
-| GroupValidator | ... |
+| RequiredValidator | Defines if the input string is required. |
+| MaxLengthValidator | Defines the maximum length of the input string. |
+| MinLengthValidator | Defines the minimum length of the input string. |
+| MinOneUppercaseValidator | Defines the minimum one of uppercase characters in the input string. |
+| MinOneLowercaseValidator | Defines the minimum one of lowercase characters in the input string. |
+| HasANumberValidator |  Defines the minimum one of number characters in the input string. |
+| LengthRangeValidator | Defines the minimum and maximum length of the input string. |
+| NumRangeValidator |  Defines the minimum and maximum numeric value of the input string. |
+| EmailValidator | Defines the email address of the input string. |
+| PhoneValidator | It recognizes the phone numbers starting with + or 0, no length limitations and handles #, x, ext, extension extension conventions. |
+| UrlValidator | Defines the URL pattern of the input string. |
+| MatchValidator | Defines a custom regular expression string. |
+| GroupValidator | Group together and validate the basic validators. |

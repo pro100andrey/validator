@@ -39,6 +39,7 @@ abstract class TextValidator extends Validator<String?> {
       RegExp(pattern, caseSensitive: caseSensitive).hasMatch(input);
 }
 
+// Defines if the input string is required.
 class RequiredValidator extends TextValidator {
   RequiredValidator({
     required String error,
@@ -51,6 +52,7 @@ class RequiredValidator extends TextValidator {
   bool isValid(String? value) => value != null && value.isNotEmpty;
 }
 
+// Defines the maximum length of the input string.
 class MaxLengthValidator extends TextValidator {
   MaxLengthValidator(
     this.max, {
@@ -63,6 +65,7 @@ class MaxLengthValidator extends TextValidator {
   bool isValid(String? value) => value!.length <= max;
 }
 
+// Defines the minimum length of the input string.
 class MinLengthValidator extends TextValidator {
   MinLengthValidator(
     this.min, {
@@ -78,6 +81,7 @@ class MinLengthValidator extends TextValidator {
   bool isValid(String? value) => value!.length >= min;
 }
 
+// Defines the minimum one of uppercase characters in the input string.
 class MinOneUppercaseValidator extends TextValidator {
   MinOneUppercaseValidator({
     required String error,
@@ -96,6 +100,7 @@ class MinOneUppercaseValidator extends TextValidator {
       );
 }
 
+// Defines the minimum one of lowercase characters in the input string.
 class MinOneLowercaseValidator extends TextValidator {
   MinOneLowercaseValidator({
     required String error,
@@ -114,6 +119,7 @@ class MinOneLowercaseValidator extends TextValidator {
       );
 }
 
+// Defines the minimum one of number characters in the input string.
 class HasANumberValidator extends TextValidator {
   HasANumberValidator({
     required String error,
@@ -132,6 +138,7 @@ class HasANumberValidator extends TextValidator {
       );
 }
 
+// Defines the minimum and maximum length of the input string.
 class LengthRangeValidator extends TextValidator {
   LengthRangeValidator({
     required this.min,
@@ -149,6 +156,7 @@ class LengthRangeValidator extends TextValidator {
   bool isValid(String? value) => value!.length >= min && value.length <= max;
 }
 
+// Defines the minimum and maximum numeric value of the input string.
 class NumRangeValidator extends TextValidator {
   NumRangeValidator({
     required this.min,
@@ -170,6 +178,7 @@ class NumRangeValidator extends TextValidator {
   }
 }
 
+// Defines the email address of the input string.
 class EmailValidator extends TextValidator {
   EmailValidator({
     required String error,
@@ -187,6 +196,8 @@ class EmailValidator extends TextValidator {
       );
 }
 
+// It recognizes the phone numbers starting with + or 0, no length limitations
+// and handles #, x, ext, extension extension conventions.
 class PhoneValidator extends TextValidator {
   PhoneValidator({
     required String error,
@@ -204,6 +215,7 @@ class PhoneValidator extends TextValidator {
       );
 }
 
+// Defines the URL pattern of the input string.
 class UrlValidator extends TextValidator {
   UrlValidator({
     required String error,
@@ -221,6 +233,7 @@ class UrlValidator extends TextValidator {
       );
 }
 
+// Defines a custom regular expression string.
 class PatternValidator extends TextValidator {
   PatternValidator(
     this.pattern, {
@@ -250,7 +263,7 @@ class MatchValidator {
   String? validateMatch(String v1, String v2) => v1 == v2 ? null : error;
 }
 
-/// [GroupValidator] Group together and validate the basic validators.
+/// Group together and validate the basic validators.
 class GroupValidator {
   GroupValidator(this.validators);
 
