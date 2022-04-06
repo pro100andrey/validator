@@ -2,6 +2,16 @@
 
 The validator package comes with several common validations and removes the boiler plate code from your project.
 
+## Installation
+
+``` yaml
+dependencies:
+  flutter:
+    sdk: flutter
+  validator:
+    git: https://github.com/pro100andrey/validator.git
+```
+
 ## Example
 
 ``` dart
