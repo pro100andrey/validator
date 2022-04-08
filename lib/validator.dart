@@ -264,8 +264,8 @@ class MatchValidator {
 }
 
 /// Group together and validate the basic validators.
-class GroupValidator {
-  GroupValidator(this.validators);
+class MultiValidator {
+  MultiValidator(this.validators);
 
   final List<Validator> validators;
 

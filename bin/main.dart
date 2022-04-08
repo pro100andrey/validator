@@ -3,7 +3,7 @@
 import 'package:validator/validator.dart';
 
 void main() {
-  final emailValidator = GroupValidator([
+  final emailValidator = MultiValidator([
     RequiredValidator(error: 'Required field'),
     EmailValidator(error: 'Invalid email'),
   ]);
@@ -13,7 +13,7 @@ void main() {
   print('invalid email validation ${emailValidator('mail@com')}');
   print('valid email validation ${emailValidator('mail@mail.com')}');
 
-  final passwordValidator = GroupValidator([
+  final passwordValidator = MultiValidator([
     RequiredValidator(error: 'Required field'),
     MinLengthValidator(8, error: 'Min length 8'),
     HasUppercaseValidator(error: 'Must contain at least one uppercase'),

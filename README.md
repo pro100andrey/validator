@@ -27,12 +27,12 @@ dependencies:
 ``` dart
 import 'package:validator/validator.dart';
 
-final emailValidator = GroupValidator([
+final emailValidator = MultiValidator([
     RequiredValidator(error: 'Required field'),
     EmailValidator(error: 'Invalid email'),
   ]);
 
-final passwordValidator = GroupValidator([
+final passwordValidator = MultiValidator([
     RequiredValidator(error: 'Required field'),
     MinLengthValidator(8, error: 'Min length 8'),
     HasUppercaseValidator(error: 'Must contain at least one uppercase'),
@@ -69,4 +69,4 @@ void main() {
 | PhoneValidator | Ensures the value is a validly formatted phone number with + or 0, no length limitations, and handles #, x, ext, extension conventions. |
 | UrlValidator | Ensures the value is a validly formatted URL. |
 | MatchValidator | Ensures a custom regular expression string. |
-| GroupValidator | Group together and validate the basic validators. |
+| MultiValidator | Group together and validate the basic validators. |
