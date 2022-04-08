@@ -57,7 +57,7 @@ void main() {
 
 | Validator | Description |
 | - | - |
-| RequiredValidator | Ensures the value is not empty, nor white space only. |
+| RequiredValidator | Ensures the value is not empty, not white space only. |
 | MaxLengthValidator | Ensures the value length contains no more than a set [max] of characters. |
 | MinLengthValidator | Ensures the value length contains no fewer than a set [min] of characters. |
 | HasUppercaseValidator | Ensures the value contains a minimum of one uppercase character. |

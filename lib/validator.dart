@@ -39,7 +39,7 @@ abstract class TextValidator extends Validator<String?> {
       RegExp(pattern, caseSensitive: caseSensitive).hasMatch(input);
 }
 
-// Ensures the value is not empty, nor white space only.
+// Ensures the value is not empty, not white space only.
 class RequiredValidator extends TextValidator {
   RequiredValidator({
     required String error,
