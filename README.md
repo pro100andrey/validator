@@ -17,7 +17,9 @@ dependencies:
   flutter:
     sdk: flutter
   validator:
-    git: https://github.com/pro100andrey/validator.git
+    git:
+      url: https://github.com/pro100andrey/validator.git
+      ref: "ee824f53a02fccbd0a696eb0364f532eb1bd3ef4"
 ```
 
 ## Example
