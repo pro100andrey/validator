@@ -260,7 +260,7 @@ class MatchValidator {
 
   final String error;
 
-  String? validateMatch(String v1, String v2) => v1 == v2 ? null : error;
+  String? call(String v1, String v2) => v1 == v2 ? null : error;
 }
 
 /// Group together and validate the basic validators.

@@ -26,4 +26,8 @@ void main() {
   print('invalid password validation ${passwordValidator('12345678')}');
   print('invalid password validation ${passwordValidator('12345678A')}');
   print('valid password validation ${passwordValidator('a12345678A')}');
+
+  final matchValidator = MatchValidator(error: 'Do not match');
+
+  print('match validation ${matchValidator('a', 'b')}');
 }

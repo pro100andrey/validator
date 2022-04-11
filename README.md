@@ -41,6 +41,10 @@ final passwordValidator = MultiValidator([
     HasLowercaseValidator(error: 'Must contain at least one lowercase'),
   ]);
 
+final matchValidator = MatchValidator(error: 'Do not match');
+
+  
+
 void main() {
     // returns 'Required Field'
     print(emailValidator(''));
@@ -51,6 +55,9 @@ void main() {
     print(passwordValidator('123'));
     // returns 'Must contain at least one uppercase'
     print(passwordValidator('12345678'));
+
+    // return 'Do not match'
+    print(matchValidator('a', 'b'));
 }
 
 ```
