@@ -77,5 +77,6 @@ void main() {
 | EmailValidator | Ensures the value is a validly formatted email address. |
 | PhoneValidator | Ensures the value is a validly formatted phone number with + or 0, no length limitations, and handles #, x, ext, extension conventions. |
 | UrlValidator | Ensures the value is a validly formatted URL. |
-| MatchValidator | Ensures a custom regular expression string. |
+| PatternValidator | Ensures a custom regular expression string. |
+| MatchValidator | A special match validator to check if the v1 equals v2 value. |
 | MultiValidator | Group together and validate the basic validators. |
