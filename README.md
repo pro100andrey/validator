@@ -19,7 +19,7 @@ dependencies:
   validator:
     git:
       url: https://github.com/pro100andrey/validator.git
-      ref: "ee824f53a02fccbd0a696eb0364f532eb1bd3ef4"
+      ref: "03c17977487b087004155e8ab71a604a1eecb9f6"
 ```
 
 ## Example
