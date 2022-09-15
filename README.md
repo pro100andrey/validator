@@ -73,7 +73,7 @@ void main() {
 | LengthRangeValidator | Ensures the value length is contained in the range [min, max]. |
 | NumRangeValidator |  Ensures the num value is contained in the range [min, max]. |
 | EmailValidator | Ensures the value is a validly formatted email address. |
-| PhoneValidator | Ensures the value is a validly formatted phone number with + or 0, no length limitations, and handles #, x, ext, extension conventions. |
+| PhoneValidator | Ensures the value is a validly formatted phone number. |
 | UrlValidator | Ensures the value is a validly formatted URL. |
 | PatternValidator | Ensures a custom regular expression string. |
 | MatchValidator | A special match validator to check if the v1 equals v2 value. |
