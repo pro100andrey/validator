@@ -39,7 +39,7 @@ abstract class TextValidator extends Validator<String?> {
       RegExp(pattern, caseSensitive: caseSensitive).hasMatch(input);
 }
 
-// Ensures the value is not empty, not white space only.
+/// Ensures the value is not empty, not white space only.
 class RequiredValidator extends TextValidator {
   const RequiredValidator({
     required super.error,
@@ -52,7 +52,7 @@ class RequiredValidator extends TextValidator {
   bool isValid(String? value) => value != null && value.trim().isNotEmpty;
 }
 
-// Ensures the value length contains no more than a set number of characters.
+/// Ensures the value length contains no more than a set number of characters.
 class MaxLengthValidator extends TextValidator {
   const MaxLengthValidator({
     required this.max,
@@ -65,7 +65,7 @@ class MaxLengthValidator extends TextValidator {
   bool isValid(String? value) => value!.length <= max;
 }
 
-// Ensures the value length contains no fewer than a set number of characters.
+/// Ensures the value length contains no fewer than a set number of characters.
 class MinLengthValidator extends TextValidator {
   const MinLengthValidator({
     required this.min,
@@ -81,7 +81,7 @@ class MinLengthValidator extends TextValidator {
   bool isValid(String? value) => value!.length >= min;
 }
 
-// Ensures the value contains a minimum of one uppercase character.
+/// Ensures the value contains a minimum of one uppercase character.
 class HasUppercaseValidator extends TextValidator {
   const HasUppercaseValidator({
     required super.error,
@@ -100,7 +100,7 @@ class HasUppercaseValidator extends TextValidator {
       );
 }
 
-// Ensures the value contains a minimum of one lowercase character.
+/// Ensures the value contains a minimum of one lowercase character.
 class HasLowercaseValidator extends TextValidator {
   const HasLowercaseValidator({
     required super.error,
@@ -119,7 +119,7 @@ class HasLowercaseValidator extends TextValidator {
       );
 }
 
-// Ensures the value contains a minimum of one numeric character.
+/// Ensures the value contains a minimum of one numeric character.
 class HasANumberValidator extends TextValidator {
   const HasANumberValidator({
     required super.error,
@@ -138,7 +138,7 @@ class HasANumberValidator extends TextValidator {
       );
 }
 
-// Ensures the value length is contained in the range [min, max].
+/// Ensures the value length is contained in the range [min, max].
 class LengthRangeValidator extends TextValidator {
   const LengthRangeValidator({
     required this.min,
@@ -156,7 +156,7 @@ class LengthRangeValidator extends TextValidator {
   bool isValid(String? value) => value!.length >= min && value.length <= max;
 }
 
-// Ensures the num value is contained in the range [min, max].
+/// Ensures the num value is contained in the range [min, max].
 class NumRangeValidator extends TextValidator {
   const NumRangeValidator({
     required this.min,
@@ -178,7 +178,7 @@ class NumRangeValidator extends TextValidator {
   }
 }
 
-// Ensures the value is a validly formatted email address.
+/// Ensures the value is a validly formatted email address.
 class EmailValidator extends TextValidator {
   const EmailValidator({
     required super.error,
@@ -196,8 +196,7 @@ class EmailValidator extends TextValidator {
       );
 }
 
-// Ensures the value is a validly formatted phone number with + or 0, no length
-// limitations, and handles #, x, ext, extension conventions.
+/// Ensures the value is a validly formatted phone number.
 class PhoneValidator extends TextValidator {
   const PhoneValidator({
     required super.error,
@@ -215,7 +214,7 @@ class PhoneValidator extends TextValidator {
       );
 }
 
-// Ensures the value is a validly formatted URL.
+/// Ensures the value is a validly formatted URL.
 class UrlValidator extends TextValidator {
   const UrlValidator({
     required super.error,
@@ -233,7 +232,7 @@ class UrlValidator extends TextValidator {
       );
 }
 
-// Ensures a custom regular expression string.
+/// Ensures a custom regular expression string.
 class PatternValidator extends TextValidator {
   PatternValidator({
     required this.pattern,

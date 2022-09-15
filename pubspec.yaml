@@ -1,6 +1,6 @@
 name: validator
 description: The validator package comes with several common validations and removes the boiler plate code from your project.
-version: 1.0.0+2
+version: 1.0.0+3
 homepage: https://github.com/pro100andrey/validator
 
 environment:
