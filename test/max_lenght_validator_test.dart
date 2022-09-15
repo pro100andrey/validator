@@ -4,8 +4,8 @@ import 'package:validator/validator.dart';
 void main() {
   group('MaxLengthValidator:', () {
     const error = 'error';
-    const maxLength = 10;
-    final validator = MaxLengthValidator(maxLength, error: error);
+    const max = 10;
+    const validator = MaxLengthValidator(max: max, error: error);
     test('null value', () {
       expect(validator(null), null);
     });

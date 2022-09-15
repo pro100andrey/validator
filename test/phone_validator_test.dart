@@ -5,7 +5,7 @@ void main() {
   group('PhoneValidator:', () {
     const error = 'error';
 
-    final validator = PhoneValidator(
+    const validator = PhoneValidator(
       error: error,
     );
 
@@ -24,8 +24,6 @@ void main() {
       '+1 213 621 0002',
       '+380 (50) 688-88-88',
       '+380506888888',
-      '800 5551212 ext3333',
-      '+1800 555 1212 extension65432'
     ];
 
     group('Valid Phones', () {
@@ -37,7 +35,7 @@ void main() {
     });
 
     final invalidPhones = [
-      'plainphonenumber',
+      'plainPhoneNumber',
       '+380gd506888888',
     ];
     group('invalid emails', () {

@@ -4,7 +4,7 @@ import 'package:validator/validator.dart';
 void main() {
   group('HasLowercaseValidator:', () {
     const error = 'error';
-    final validator = HasLowercaseValidator(error: error);
+    const validator = HasLowercaseValidator(error: error);
     test('null value', () {
       expect(validator(null), null);
     });

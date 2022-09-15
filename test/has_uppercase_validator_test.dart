@@ -4,7 +4,7 @@ import 'package:validator/validator.dart';
 void main() {
   group('HasUppercaseValidator:', () {
     const error = 'error';
-    final validator = HasUppercaseValidator(error: error);
+    const validator = HasUppercaseValidator(error: error);
     test('null value', () {
       expect(validator(null), null);
     });

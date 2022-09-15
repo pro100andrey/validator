@@ -4,8 +4,8 @@ import 'package:validator/validator.dart';
 void main() {
   group('MinLengthValidator:', () {
     const error = 'error';
-    const minLength = 4;
-    final validator = MinLengthValidator(minLength, error: error);
+    const min = 4;
+    const validator = MinLengthValidator(min: min, error: error);
     test('null value', () {
       expect(validator(null), null);
     });

@@ -3,22 +3,26 @@
 import 'package:validator/validator.dart';
 
 void main() {
-  final emailValidator = MultiValidator([
-    RequiredValidator(error: 'Required field'),
-    EmailValidator(error: 'Invalid email'),
-  ]);
+  const emailValidator = MultiValidator(
+    validators: [
+      RequiredValidator(error: 'Required field'),
+      EmailValidator(error: 'Invalid email'),
+    ],
+  );
 
   print('null email validation ${emailValidator(null)}');
   print('empty email validation ${emailValidator('')}');
   print('invalid email validation ${emailValidator('mail@com')}');
   print('valid email validation ${emailValidator('mail@mail.com')}');
 
-  final passwordValidator = MultiValidator([
-    RequiredValidator(error: 'Required field'),
-    MinLengthValidator(8, error: 'Min length 8'),
-    HasUppercaseValidator(error: 'Must contain at least one uppercase'),
-    HasLowercaseValidator(error: 'Must contain at least one lowercase'),
-  ]);
+  const passwordValidator = MultiValidator(
+    validators: [
+      RequiredValidator(error: 'Required field'),
+      MinLengthValidator(min: 8, error: 'Min length 8'),
+      HasUppercaseValidator(error: 'Must contain at least one uppercase'),
+      HasLowercaseValidator(error: 'Must contain at least one lowercase'),
+    ],
+  );
 
   print('null password validation ${passwordValidator(null)}');
   print('empty password validation ${passwordValidator('')}');

@@ -6,7 +6,7 @@ void main() {
     const error = 'error';
     const minimum = 2;
     const maximum = 10;
-    final validator = NumRangeValidator(
+    const validator = NumRangeValidator(
       min: minimum,
       max: maximum,
       error: error,

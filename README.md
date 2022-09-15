@@ -19,7 +19,6 @@ dependencies:
   validator:
     git:
       url: https://github.com/pro100andrey/validator.git
-      ref: "03c17977487b087004155e8ab71a604a1eecb9f6"
 ```
 
 ## Example
@@ -29,21 +28,20 @@ dependencies:
 ``` dart
 import 'package:validator/validator.dart';
 
-final emailValidator = MultiValidator([
+const emailValidator = MultiValidator([
     RequiredValidator(error: 'Required field'),
     EmailValidator(error: 'Invalid email'),
   ]);
 
-final passwordValidator = MultiValidator([
+const passwordValidator = MultiValidator([
     RequiredValidator(error: 'Required field'),
-    MinLengthValidator(8, error: 'Min length 8'),
+    MinLengthValidator(min: 8, error: 'Min length 8'),
     HasUppercaseValidator(error: 'Must contain at least one uppercase'),
     HasLowercaseValidator(error: 'Must contain at least one lowercase'),
   ]);
 
-final matchValidator = MatchValidator(error: 'Do not match');
+const matchValidator = MatchValidator(error: 'Do not match');
 
-  
 
 void main() {
     // returns 'Required Field'

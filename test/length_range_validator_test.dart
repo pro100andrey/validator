@@ -6,7 +6,7 @@ void main() {
     const error = 'error';
     const minimum = 2;
     const maximum = 10;
-    final validator = LengthRangeValidator(
+    const validator = LengthRangeValidator(
       min: minimum,
       max: maximum,
       error: error,
@@ -18,7 +18,7 @@ void main() {
     test('empty value (error)', () {
       expect(validator(''), error);
     });
-    
+
     test('min:$minimum max:$maximum current length - 1 (error)', () {
       expect(validator('1'), error);
     });

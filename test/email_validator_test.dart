@@ -5,7 +5,7 @@ void main() {
   group('EmailValidator:', () {
     const error = 'error';
 
-    final validator = EmailValidator(
+    const validator = EmailValidator(
       error: error,
     );
 
@@ -41,7 +41,7 @@ void main() {
     });
 
     final invalidEmail = [
-      'plainaddress',
+      'plainAddress',
       r'#@%^%#$@#$@#.com',
       '@example.com',
       'Joe Smith <email@example.com>',

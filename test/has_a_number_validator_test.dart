@@ -4,7 +4,7 @@ import 'package:validator/validator.dart';
 void main() {
   group('HasANumberValidator:', () {
     const error = 'error';
-    final validator = HasANumberValidator(error: error);
+    const validator = HasANumberValidator(error: error);
     test('null value', () {
       expect(validator(null), null);
     });

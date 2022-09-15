@@ -1,7 +1,7 @@
 library validator;
 
 abstract class Validator<T> {
-  Validator(this.error);
+  const Validator({required this.error});
 
   /// The error to display when the validation fails
   final String error;
@@ -15,7 +15,7 @@ abstract class Validator<T> {
 }
 
 abstract class TextValidator extends Validator<String?> {
-  TextValidator(String error) : super(error);
+  const TextValidator({required super.error});
 
   // Returns false if you want the validator to return error
   // message when the value is empty.
@@ -41,9 +41,9 @@ abstract class TextValidator extends Validator<String?> {
 
 // Ensures the value is not empty, not white space only.
 class RequiredValidator extends TextValidator {
-  RequiredValidator({
-    required String error,
-  }) : super(error);
+  const RequiredValidator({
+    required super.error,
+  });
 
   @override
   bool get ignoreEmptyValues => false;
@@ -54,10 +54,10 @@ class RequiredValidator extends TextValidator {
 
 // Ensures the value length contains no more than a set number of characters.
 class MaxLengthValidator extends TextValidator {
-  MaxLengthValidator(
-    this.max, {
-    required String error,
-  }) : super(error);
+  const MaxLengthValidator({
+    required this.max,
+    required super.error,
+  });
 
   final int max;
 
@@ -67,10 +67,10 @@ class MaxLengthValidator extends TextValidator {
 
 // Ensures the value length contains no fewer than a set number of characters.
 class MinLengthValidator extends TextValidator {
-  MinLengthValidator(
-    this.min, {
-    required String error,
-  }) : super(error);
+  const MinLengthValidator({
+    required this.min,
+    required super.error,
+  });
 
   final int min;
 
@@ -83,9 +83,9 @@ class MinLengthValidator extends TextValidator {
 
 // Ensures the value contains a minimum of one uppercase character.
 class HasUppercaseValidator extends TextValidator {
-  HasUppercaseValidator({
-    required String error,
-  }) : super(error);
+  const HasUppercaseValidator({
+    required super.error,
+  });
 
   /// Regex pattern to validate uppercase characters.
   static const _pattern = '[A-Z]';
@@ -102,9 +102,9 @@ class HasUppercaseValidator extends TextValidator {
 
 // Ensures the value contains a minimum of one lowercase character.
 class HasLowercaseValidator extends TextValidator {
-  HasLowercaseValidator({
-    required String error,
-  }) : super(error);
+  const HasLowercaseValidator({
+    required super.error,
+  });
 
   /// Regex pattern to validate lowercase characters
   static const _pattern = '[a-z]';
@@ -121,9 +121,9 @@ class HasLowercaseValidator extends TextValidator {
 
 // Ensures the value contains a minimum of one numeric character.
 class HasANumberValidator extends TextValidator {
-  HasANumberValidator({
-    required String error,
-  }) : super(error);
+  const HasANumberValidator({
+    required super.error,
+  });
 
   /// Regex pattern to validate lowercase characters.
   static const _pattern = '[0-9]';
@@ -140,11 +140,11 @@ class HasANumberValidator extends TextValidator {
 
 // Ensures the value length is contained in the range [min, max].
 class LengthRangeValidator extends TextValidator {
-  LengthRangeValidator({
+  const LengthRangeValidator({
     required this.min,
     required this.max,
-    required String error,
-  }) : super(error);
+    required super.error,
+  });
 
   final int min;
   final int max;
@@ -158,11 +158,11 @@ class LengthRangeValidator extends TextValidator {
 
 // Ensures the num value is contained in the range [min, max].
 class NumRangeValidator extends TextValidator {
-  NumRangeValidator({
+  const NumRangeValidator({
     required this.min,
     required this.max,
-    required String error,
-  }) : super(error);
+    required super.error,
+  });
 
   final num min;
   final num max;
@@ -180,9 +180,9 @@ class NumRangeValidator extends TextValidator {
 
 // Ensures the value is a validly formatted email address.
 class EmailValidator extends TextValidator {
-  EmailValidator({
-    required String error,
-  }) : super(error);
+  const EmailValidator({
+    required super.error,
+  });
 
   /// Regex pattern to validate email string.
   static const _emailPattern =
@@ -199,13 +199,13 @@ class EmailValidator extends TextValidator {
 // Ensures the value is a validly formatted phone number with + or 0, no length
 // limitations, and handles #, x, ext, extension conventions.
 class PhoneValidator extends TextValidator {
-  PhoneValidator({
-    required String error,
-  }) : super(error);
+  const PhoneValidator({
+    required super.error,
+  });
 
   /// Regex pattern to validate phone string.
   static const _regex =
-      r'([0-9\s\-]{7,})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$';
+      r'^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$';
 
   @override
   bool isValid(String? value) => hasMatch(
@@ -217,9 +217,9 @@ class PhoneValidator extends TextValidator {
 
 // Ensures the value is a validly formatted URL.
 class UrlValidator extends TextValidator {
-  UrlValidator({
-    required String error,
-  }) : super(error);
+  const UrlValidator({
+    required super.error,
+  });
 
   /// Regex pattern to validate url string.
   static const _regex =
@@ -235,11 +235,11 @@ class UrlValidator extends TextValidator {
 
 // Ensures a custom regular expression string.
 class PatternValidator extends TextValidator {
-  PatternValidator(
-    this.pattern, {
-    required String error,
+  PatternValidator({
+    required this.pattern,
+    required super.error,
     this.caseSensitive = true,
-  }) : super(error);
+  });
 
   final Pattern pattern;
   final bool caseSensitive;
@@ -265,7 +265,7 @@ class MatchValidator {
 
 /// Group together and validate the basic validators.
 class MultiValidator {
-  MultiValidator(this.validators);
+  const MultiValidator({required this.validators});
 
   final List<Validator> validators;
 
