@@ -23,3 +23,9 @@
 # Dart/Pub related
 .dart_tool/
 .packages
+
+/pubspec.lock
+**/doc/api/
+.dart_tool/
+.packages
+build/

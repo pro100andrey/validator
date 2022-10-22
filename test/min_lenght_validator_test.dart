@@ -1,5 +1,5 @@
+import 'package:pro_validator/pro_validator.dart';
 import 'package:test/test.dart';
-import 'package:validator/validator.dart';
 
 void main() {
   group('MinLengthValidator:', () {

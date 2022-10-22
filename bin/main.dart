@@ -1,6 +1,6 @@
 // ignore_for_file: avoid_print
 
-import 'package:validator/validator.dart';
+import 'package:pro_validator/pro_validator.dart';
 
 void main() {
   const emailValidator = MultiValidator(

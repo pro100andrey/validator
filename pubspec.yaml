@@ -1,10 +1,23 @@
-name: validator
+name: pro_validator
 description: The validator package comes with several common validations and removes the boiler plate code from your project.
-version: 1.0.0+3
+
+version: 1.0.0
+
+repository: https://github.com/pro100andrey/validator
+issue_tracker: https://github.com/pro100andrey/validator/issues
 homepage: https://github.com/pro100andrey/validator
+documentation: https://github.com/pro100andrey/validator/blob/main/README.md
+
+platforms:
+  android:
+  ios:
+  linux:
+  macos:
+  web:
+  windows:
 
 environment:
-  sdk: '>=2.18.1 <3.0.0'
+  sdk: '>=2.18.0 <3.0.0'
 
 dev_dependencies:
   test: ^1.21.6

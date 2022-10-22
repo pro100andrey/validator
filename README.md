@@ -1,4 +1,4 @@
-# Validator
+# pro_validator
 
 The validator package comes with several common validations and removes the boiler plate code from your project.
 
@@ -10,15 +10,11 @@ The validator package comes with several common validations and removes the boil
 - Well tested
 - Easy to use and removes boiler plate code from your project
 
-## Installation
+# How to use
+## Install
 
-``` yaml
-dependencies:
-  flutter:
-    sdk: flutter
-  validator:
-    git:
-      url: https://github.com/pro100andrey/validator.git
+```bash
+flutter pub add input_validation
 ```
 
 ## Example
@@ -26,36 +22,40 @@ dependencies:
 > **_NOTE:_** if validate value contains is a null value, the result is null, not an error.
 
 ``` dart
-import 'package:validator/validator.dart';
-
-const emailValidator = MultiValidator([
-    RequiredValidator(error: 'Required field'),
-    EmailValidator(error: 'Invalid email'),
-  ]);
-
-const passwordValidator = MultiValidator([
-    RequiredValidator(error: 'Required field'),
-    MinLengthValidator(min: 8, error: 'Min length 8'),
-    HasUppercaseValidator(error: 'Must contain at least one uppercase'),
-    HasLowercaseValidator(error: 'Must contain at least one lowercase'),
-  ]);
-
-const matchValidator = MatchValidator(error: 'Do not match');
-
+import 'package:input_validation/input_validation.dart';
 
 void main() {
-    // returns 'Required Field'
-    print(emailValidator(''));
-    // returns 'Invalid email'
-    print(emailValidator('mail@com'));
+  const emailValidator = MultiValidator(
+    validators: [
+      RequiredValidator(error: 'Required field'),
+      EmailValidator(error: 'Invalid email'),
+    ],
+  );
 
-    // returns 'Min length 8'
-    print(passwordValidator('123'));
-    // returns 'Must contain at least one uppercase'
-    print(passwordValidator('12345678'));
+  print('null email validation ${emailValidator(null)}');
+  print('empty email validation ${emailValidator('')}');
+  print('invalid email validation ${emailValidator('mail@com')}');
+  print('valid email validation ${emailValidator('mail@mail.com')}');
 
-    // return 'Do not match'
-    print(matchValidator('a', 'b'));
+  const passwordValidator = MultiValidator(
+    validators: [
+      RequiredValidator(error: 'Required field'),
+      MinLengthValidator(min: 8, error: 'Min length 8'),
+      HasUppercaseValidator(error: 'Must contain at least one uppercase'),
+      HasLowercaseValidator(error: 'Must contain at least one lowercase'),
+    ],
+  );
+
+  print('null password validation ${passwordValidator(null)}');
+  print('empty password validation ${passwordValidator('')}');
+  print('min length password validation ${passwordValidator('1232')}');
+  print('invalid password validation ${passwordValidator('12345678')}');
+  print('invalid password validation ${passwordValidator('12345678A')}');
+  print('valid password validation ${passwordValidator('a12345678A')}');
+
+  final matchValidator = MatchValidator(error: 'Do not match');
+
+  print('match validation ${matchValidator('a', 'b')}');
 }
 
 ```
