@@ -14,7 +14,7 @@ The validator package comes with several common validations and removes the boil
 ## Install
 
 ```bash
-flutter pub add input_validation
+flutter pub add pro_validator
 ```
 
 ## Example
@@ -22,7 +22,7 @@ flutter pub add input_validation
 > **_NOTE:_** if validate value contains is a null value, the result is null, not an error.
 
 ``` dart
-import 'package:input_validation/input_validation.dart';
+import 'package:pro_validator/pro_validator.dart';
 
 void main() {
   const emailValidator = MultiValidator(
