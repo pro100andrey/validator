@@ -15,11 +15,14 @@ abstract class Validator<T> {
 }
 
 abstract class TextValidator extends Validator<String?> {
-  const TextValidator({required super.error});
+  const TextValidator({
+    required super.error,
+    this.ignoreEmptyValues = true,
+  });
 
   // Returns false if you want the validator to return error
   // message when the value is empty.
-  bool get ignoreEmptyValues => true;
+  final bool ignoreEmptyValues;
 
   @override
   String? call(String? value) {
@@ -43,10 +46,8 @@ abstract class TextValidator extends Validator<String?> {
 class RequiredValidator extends TextValidator {
   const RequiredValidator({
     required super.error,
+    super.ignoreEmptyValues = false,
   });
-
-  @override
-  bool get ignoreEmptyValues => false;
 
   @override
   bool isValid(String? value) => value != null && value.trim().isNotEmpty;
@@ -57,6 +58,7 @@ class MaxLengthValidator extends TextValidator {
   const MaxLengthValidator({
     required this.max,
     required super.error,
+    super.ignoreEmptyValues = false,
   });
 
   final int max;
@@ -70,12 +72,10 @@ class MinLengthValidator extends TextValidator {
   const MinLengthValidator({
     required this.min,
     required super.error,
+    super.ignoreEmptyValues = false,
   });
 
   final int min;
-
-  @override
-  bool get ignoreEmptyValues => false;
 
   @override
   bool isValid(String? value) => value!.length >= min;
@@ -85,13 +85,11 @@ class MinLengthValidator extends TextValidator {
 class HasUppercaseValidator extends TextValidator {
   const HasUppercaseValidator({
     required super.error,
+    super.ignoreEmptyValues = false,
   });
 
   /// Regex pattern to validate uppercase characters.
   static const _pattern = '[A-Z]';
-
-  @override
-  bool get ignoreEmptyValues => false;
 
   @override
   bool isValid(String? value) => hasMatch(
@@ -104,13 +102,11 @@ class HasUppercaseValidator extends TextValidator {
 class HasLowercaseValidator extends TextValidator {
   const HasLowercaseValidator({
     required super.error,
+    super.ignoreEmptyValues = false,
   });
 
   /// Regex pattern to validate lowercase characters
   static const _pattern = '[a-z]';
-
-  @override
-  bool get ignoreEmptyValues => false;
 
   @override
   bool isValid(String? value) => hasMatch(
@@ -123,13 +119,11 @@ class HasLowercaseValidator extends TextValidator {
 class HasANumberValidator extends TextValidator {
   const HasANumberValidator({
     required super.error,
+    super.ignoreEmptyValues = false,
   });
 
   /// Regex pattern to validate lowercase characters.
   static const _pattern = '[0-9]';
-
-  @override
-  bool get ignoreEmptyValues => false;
 
   @override
   bool isValid(String? value) => hasMatch(
@@ -144,13 +138,11 @@ class LengthRangeValidator extends TextValidator {
     required this.min,
     required this.max,
     required super.error,
+    super.ignoreEmptyValues = false,
   });
 
   final int min;
   final int max;
-
-  @override
-  bool get ignoreEmptyValues => false;
 
   @override
   bool isValid(String? value) => value!.length >= min && value.length <= max;
@@ -162,6 +154,7 @@ class NumRangeValidator extends TextValidator {
     required this.min,
     required this.max,
     required super.error,
+    super.ignoreEmptyValues = true,
   });
 
   final num min;
@@ -182,6 +175,7 @@ class NumRangeValidator extends TextValidator {
 class EmailValidator extends TextValidator {
   const EmailValidator({
     required super.error,
+    super.ignoreEmptyValues = true,
   });
 
   /// Regex pattern to validate email string.
@@ -200,6 +194,7 @@ class EmailValidator extends TextValidator {
 class PhoneValidator extends TextValidator {
   const PhoneValidator({
     required super.error,
+    super.ignoreEmptyValues = true,
   });
 
   /// Regex pattern to validate phone string.
@@ -218,6 +213,7 @@ class PhoneValidator extends TextValidator {
 class UrlValidator extends TextValidator {
   const UrlValidator({
     required super.error,
+    super.ignoreEmptyValues = false,
   });
 
   /// Regex pattern to validate url string.
@@ -238,6 +234,7 @@ class PatternValidator extends TextValidator {
     required this.pattern,
     required super.error,
     this.caseSensitive = true,
+    super.ignoreEmptyValues = false,
   });
 
   final Pattern pattern;
