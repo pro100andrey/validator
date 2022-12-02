@@ -10,7 +10,7 @@ void main() {
     });
 
     test('empty value (error)', () {
-      expect(validator(''), error);
+      expect(validator(''), null);
     });
 
     test('without uppercase (error)', () {

@@ -16,7 +16,7 @@ void main() {
     });
 
     test('empty value (error)', () {
-      expect(validator(''), error);
+      expect(validator(''), null);
     });
 
     test('min:$minimum max:$maximum current length - 1 (error)', () {
