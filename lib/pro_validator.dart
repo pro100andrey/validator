@@ -26,9 +26,11 @@ abstract class TextValidator extends Validator<String?> {
 
   @override
   String? call(String? value) {
-    final toCheck = value ?? '';
+    if (value == null) {
+      return null;
+    }
 
-    return (toCheck.isEmpty && ignoreEmptyValues) ? null : super(toCheck);
+    return (value.isEmpty && ignoreEmptyValues) ? null : super(value);
   }
 
   /// Method to check if an input matches a given pattern
