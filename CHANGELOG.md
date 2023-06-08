@@ -1,6 +1,7 @@
+## 2.0.1
+* Update dependencies.
 ## 2.0.0
 * Bump sdk version to ^3.0.0.
-
 ## 1.1.1
 * Fix - skip checks if value is null.
 ## 1.1.0

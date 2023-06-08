@@ -1,3 +1,4 @@
+/// pro_validator is a dart package that provides a set of validators
 library pro_validator;
 
 abstract class Validator<T> {
