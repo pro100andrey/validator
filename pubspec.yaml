@@ -1,7 +1,7 @@
 name: pro_validator
 description: The validator package comes with several common validations and removes the boiler plate code from your project.
 
-version: 1.1.1
+version: 2.0.0
 
 repository: https://github.com/pro100andrey/validator
 issue_tracker: https://github.com/pro100andrey/validator/issues
@@ -17,7 +17,8 @@ platforms:
   windows:
 
 environment:
-  sdk: '>=2.18.0 <3.0.0'
+  sdk: ^3.0.0
 
 dev_dependencies:
+  pro_lints: ^1.0.0+1
   test: ^1.22.0
