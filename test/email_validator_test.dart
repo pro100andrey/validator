@@ -2,7 +2,22 @@ import 'package:pro_validator/pro_validator.dart';
 import 'package:test/test.dart';
 
 void main() {
-  group('EmailValidator:', () {
+  group('EmailValidator: ignoreEmptyValues = true', () {
+    const error = 'error';
+
+    const validator = EmailValidator(
+      error: error,
+    );
+    test('null value', () {
+      expect(validator(null), null);
+    });
+
+    test('empty value', () {
+      expect(validator(''), null);
+    });
+  });
+
+  group('EmailValidator: ignoreEmptyValues = false', () {
     const error = 'error';
 
     const validator = EmailValidator(
@@ -14,8 +29,16 @@ void main() {
     });
 
     test('empty value', () {
-      expect(validator(''), null);
+      expect(validator(''), error);
     });
+  });
+
+  group('EmailValidator - valid email', () {
+    const error = 'error';
+
+    const validator = EmailValidator(
+      error: error,
+    );
 
     final validEmails = [
       'email@example.com',
@@ -32,13 +55,19 @@ void main() {
       'firstname-lastname@example.com'
     ];
 
-    group('Valid emails', () {
-      for (final email in validEmails) {
-        test(email, () {
-          expect(validator(email), null, reason: email);
-        });
-      }
-    });
+    for (final email in validEmails) {
+      test(email, () {
+        expect(validator(email), null, reason: email);
+      });
+    }
+  });
+
+  group('EmailValidator - invalid email', () {
+    const error = 'error';
+
+    const validator = EmailValidator(
+      error: error,
+    );
 
     final invalidEmail = [
       'plainAddress',
@@ -59,16 +88,15 @@ void main() {
       'email@123.123.123.123',
       'email@[123.123.123.123]',
     ];
-    group('invalid emails', () {
-      for (final email in invalidEmail) {
-        test(email, () {
-          expect(
-            validator(email),
-            error,
-            reason: email,
-          );
-        });
-      }
-    });
+
+    for (final email in invalidEmail) {
+      test(email, () {
+        expect(
+          validator(email),
+          error,
+          reason: email,
+        );
+      });
+    }
   });
 }

@@ -15,23 +15,20 @@ abstract class Validator<T> {
   String? call(T value) => isValid(value) ? null : error;
 }
 
-abstract class TextValidator extends Validator<String?> {
+abstract class TextValidator extends Validator<String> {
   const TextValidator({
     required super.error,
-    this.ignoreEmptyValues = true,
+    this.ignoreEmptyValues = false,
   });
 
-  // Returns false if you want the validator to return error
-  // message when the value is empty.
+  /// If true, empty values will be ignored
   final bool ignoreEmptyValues;
 
   @override
   String? call(String? value) {
-    if (value == null) {
-      return null;
-    }
+    final toTest = value ?? '';
 
-    return (value.isEmpty && ignoreEmptyValues) ? null : super(value);
+    return (toTest.isEmpty && ignoreEmptyValues) ? null : super(toTest);
   }
 
   /// Method to check if an input matches a given pattern
@@ -51,7 +48,7 @@ class RequiredValidator extends TextValidator {
   });
 
   @override
-  bool isValid(String? value) => value != null && value.trim().isNotEmpty;
+  bool isValid(String value) => value.trim().isNotEmpty;
 }
 
 /// Ensures the value length contains no more than a set number of characters.
@@ -65,7 +62,7 @@ class MaxLengthValidator extends TextValidator {
   final int max;
 
   @override
-  bool isValid(String? value) => value!.length <= max;
+  bool isValid(String value) => value.length <= max;
 }
 
 /// Ensures the value length contains no fewer than a set number of characters.
@@ -79,7 +76,7 @@ class MinLengthValidator extends TextValidator {
   final int min;
 
   @override
-  bool isValid(String? value) => value!.length >= min;
+  bool isValid(String value) => value.length >= min;
 }
 
 /// Ensures the value contains a minimum of one uppercase character.
@@ -93,9 +90,9 @@ class HasUppercaseValidator extends TextValidator {
   static const _pattern = '[A-Z]';
 
   @override
-  bool isValid(String? value) => hasMatch(
+  bool isValid(String value) => hasMatch(
         _pattern,
-        value!,
+        value,
       );
 }
 
@@ -110,9 +107,9 @@ class HasLowercaseValidator extends TextValidator {
   static const _pattern = '[a-z]';
 
   @override
-  bool isValid(String? value) => hasMatch(
+  bool isValid(String value) => hasMatch(
         _pattern,
-        value!,
+        value,
       );
 }
 
@@ -127,9 +124,9 @@ class HasANumberValidator extends TextValidator {
   static const _pattern = '[0-9]';
 
   @override
-  bool isValid(String? value) => hasMatch(
+  bool isValid(String value) => hasMatch(
         _pattern,
-        value!,
+        value,
       );
 }
 
@@ -146,7 +143,7 @@ class LengthRangeValidator extends TextValidator {
   final int max;
 
   @override
-  bool isValid(String? value) => value!.length >= min && value.length <= max;
+  bool isValid(String value) => value.length >= min && value.length <= max;
 }
 
 /// Ensures the num value is contained in the range [min, max].
@@ -162,8 +159,8 @@ class NumRangeValidator extends TextValidator {
   final num max;
 
   @override
-  bool isValid(String? value) {
-    final numericValue = num.tryParse(value!);
+  bool isValid(String value) {
+    final numericValue = num.tryParse(value);
     if (numericValue == null) {
       return false;
     }
@@ -184,9 +181,9 @@ class EmailValidator extends TextValidator {
       r"^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$";
 
   @override
-  bool isValid(String? value) => hasMatch(
+  bool isValid(String value) => hasMatch(
         _emailPattern,
-        value!,
+        value,
         caseSensitive: false,
       );
 }
@@ -203,11 +200,57 @@ class PhoneValidator extends TextValidator {
       r'^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$';
 
   @override
-  bool isValid(String? value) => hasMatch(
+  bool isValid(String value) => hasMatch(
         _regex,
-        value!,
+        value,
         caseSensitive: false,
       );
+}
+
+/// Ensures the value is a validly formatted credit card number.
+class CreditCardValidator extends TextValidator {
+  const CreditCardValidator({
+    required super.error,
+    super.ignoreEmptyValues,
+  });
+
+  /// Regex pattern to validate credit card string.
+  ///
+  /// - `Visa` - numbers start with a 4. New cards have 16 digits. Old cards
+  /// have 13.
+  /// - `MasterCard` numbers either start with the numbers 51 through 55 or with
+  /// the numbers 2221 through 2720. All have 16 digits.
+  /// `American Express` Credit Card Number (CCN) is a 15-digit number starting
+  /// with 34 or 37 and might have dashes (hyphens) or spaces as separators.
+  /// For example, NNNN-NNNNNN-NNNNN or NNNN NNNNNN NNNNN.
+  /// `Diners Club` - is a 14-digit number beginning with 300–305, 36, 38, or 39
+  /// and might have dashes (hyphens) or spaces as separators.
+  /// For example, NNNN-NNNNNN-NNNN or NNNN NNNNNN NNNN.
+  /// `Discover`- is a 16-digit number beginning with 6011, 644–649 or 65 and
+  /// might have dashes (hyphens) or spaces as separators.
+  /// For example, NNNN-NNNN-NNNN-NNNN or NNNN NNNN NNNN NNNN.
+  /// `JCB` - JCB CCN is a 16-digit number beginning with 3528 or 3589 and might
+  /// have dashes (hyphens) or spaces as separators.
+  /// For example, NNNN-NNNN-NNNN-NNNN or NNNN NNNN NNNNNNNN.
+  static const _regex = '^('
+      '?:4[0-9]{12}(?:[0-9]{3})?' // Visa
+      '|(?:5[1-5][0-9]{2}' // MasterCard
+      '|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}'
+      '|3[47][0-9]{13}' // American Express
+      '|3(?:0[0-5]|[68][0-9])[0-9]{11}' // Diners Club
+      '|6(?:011|5[0-9]{2})[0-9]{12}' // Discover
+      '|(?:2131|1800|35[0-9]{3})[0-9]{11}' // JCB
+      r')$';
+
+  @override
+  bool isValid(String value) {
+    final sanitized = value.replaceAll(RegExp('[^0-9]+'), '');
+    return hasMatch(
+      _regex,
+      sanitized,
+      caseSensitive: false,
+    );
+  }
 }
 
 /// Ensures the value is a validly formatted URL.
@@ -222,9 +265,9 @@ class UrlValidator extends TextValidator {
       r'(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})';
 
   @override
-  bool isValid(String? value) => hasMatch(
+  bool isValid(String value) => hasMatch(
         _regex,
-        value!,
+        value,
         caseSensitive: false,
       );
 }
@@ -242,9 +285,9 @@ class PatternValidator extends TextValidator {
   final bool caseSensitive;
 
   @override
-  bool isValid(String? value) => hasMatch(
+  bool isValid(String value) => hasMatch(
         pattern.toString(),
-        value!,
+        value,
         caseSensitive: caseSensitive,
       );
 }
@@ -257,7 +300,7 @@ class MatchValidator {
 
   final String error;
 
-  String? call(String? v1, String? v2) => v1 == v2 ? null : error;
+  String? call(Object? v1, Object? v2) => identical(v1, v2) ? null : error;
 }
 
 /// Group together and validate the basic validators.

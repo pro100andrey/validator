@@ -5,26 +5,30 @@ import 'package:pro_validator/pro_validator.dart';
 void main() {
   const emailValidator = MultiValidator(
     validators: [
-      RequiredValidator(error: 'Required field'),
+      RequiredValidator(
+        error: 'Required field',
+      ),
       EmailValidator(error: 'Invalid email'),
     ],
   );
 
-  print('null email validation ${emailValidator(null)}');
-  print('empty email validation ${emailValidator('')}');
-  print('invalid email validation ${emailValidator('mail@com')}');
-  print('valid email validation ${emailValidator('mail@mail.com')}');
+  print('valid email: ${emailValidator(null)}');
+  print('valid email ${emailValidator('mail@mail.com')}');
+  print('invalid email: ${emailValidator('')}');
+  print('invalid email: ${emailValidator('mail@com')}');
 
   const passwordValidator = MultiValidator(
     validators: [
-      RequiredValidator(error: 'Required field'),
+      RequiredValidator(
+        error: 'Required field',
+      ),
       MinLengthValidator(min: 8, error: 'Min length 8'),
       HasUppercaseValidator(error: 'Must contain at least one uppercase'),
       HasLowercaseValidator(error: 'Must contain at least one lowercase'),
     ],
   );
 
-  print('null password validation ${passwordValidator(null)}');
+  print('valid password ${passwordValidator(null)}');
   print('empty password validation ${passwordValidator('')}');
   print('min length password validation ${passwordValidator('1232')}');
   print('invalid password validation ${passwordValidator('12345678')}');

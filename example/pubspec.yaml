@@ -1,0 +1,23 @@
+name: example
+description: A pro_validator example app.
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.0.3 <4.0.0"
+
+dependencies:
+  cupertino_icons: ^1.0.5
+  flutter:
+    sdk: flutter
+  pro_validator:
+    path: ../
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  pro_lints: ^2.0.1
+
+flutter:
+  uses-material-design: true
