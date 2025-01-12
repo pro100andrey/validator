@@ -35,16 +35,16 @@ enum Patterns {
   /// Matches any non-ASCII character.
   ///
   /// Examples:
-  /// - `"Привет"` (valid)
+  /// - `"Привіт"` (valid)
   /// - `"Hello"` (invalid)
-  unicode(r'[^\x00-\x7F]'),
+  anyNonAscii(r'[^\x00-\x7F]'),
 
   /// Matches an ASCII-only string.
   ///
   /// Examples:
   /// - `"Hello"` (valid)
   /// - `"Привет"` (invalid)
-  ascii(r'^[\x00-\x7F]+$'),
+  onlyAscii(r'^[\x00-\x7F]+$'),
 
   /// Matches an integer number (positive, negative, or zero).
   ///
@@ -60,7 +60,7 @@ enum Patterns {
   /// - `"123.45"` (valid)
   /// - `"1.23e10"` (valid)
   /// - `"abc"` (invalid)
-  decimal(r'^(?:-?(?:[0-9]+))?(?:\.[0-9]*)?(?:[eE][\+\-]?(?:[0-9]+))?$'),
+  decimal(r'^-?(?:[0-9]+)(?:\.[0-9]*)?(?:[eE][\+\-]?[0-9]+)?$'),
 
   /// Matches numeric characters only (positive or negative integers).
   ///
@@ -422,8 +422,8 @@ final _table = <Patterns, RegExp>{
   Patterns.alpha: RegExp(Patterns.alpha.regex),
   Patterns.alphaNumeric: RegExp(Patterns.alphaNumeric.regex),
   Patterns.surrogatePairs: RegExp(Patterns.surrogatePairs.regex),
-  Patterns.unicode: RegExp(Patterns.unicode.regex),
-  Patterns.ascii: RegExp(Patterns.ascii.regex),
+  Patterns.anyNonAscii: RegExp(Patterns.anyNonAscii.regex),
+  Patterns.onlyAscii: RegExp(Patterns.onlyAscii.regex),
   Patterns.integer: RegExp(Patterns.integer.regex),
   Patterns.decimal: RegExp(Patterns.decimal.regex),
   Patterns.numeric: RegExp(Patterns.numeric.regex),

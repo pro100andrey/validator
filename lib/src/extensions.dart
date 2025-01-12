@@ -15,10 +15,10 @@ bool isAlphaNumeric(String s) => Patterns.alphaNumeric.pattern.hasMatch(s);
 bool isSurrogatePairs(String s) => Patterns.surrogatePairs.pattern.hasMatch(s);
 
 /// Checks if the string contains any non-ASCII Unicode characters.
-bool isUnicode(String s) => Patterns.unicode.pattern.hasMatch(s);
+bool isAnyNonAscii(String s) => Patterns.anyNonAscii.pattern.hasMatch(s);
 
 /// Checks if the string contains only ASCII characters.
-bool isAscii(String s) => Patterns.ascii.pattern.hasMatch(s);
+bool isOnlyAscii(String s) => Patterns.onlyAscii.pattern.hasMatch(s);
 
 /// Checks if the string is a valid integer (positive, negative, or zero).
 bool isInteger(String s) => Patterns.integer.pattern.hasMatch(s);
