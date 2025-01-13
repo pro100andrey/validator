@@ -50,7 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
             min: 8,
             max: 24,
             error: 'Required from 8 to 24 symbols',
-          )
+          ),
         ],
       );
 

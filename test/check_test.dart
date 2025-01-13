@@ -1,203 +1,670 @@
+// ignore_for_file: lines_longer_than_80_chars
+
 import 'package:pro_validator/src/check.dart';
 import 'package:test/test.dart';
 
 void main() {
   group('Check', () {
     test('isWhitespace', () {
-      expect(isWhitespace(''), isTrue);
-      expect(isWhitespace(' '), isTrue);
-      expect(isWhitespace('\t'), isTrue);
-      expect(isWhitespace('\n'), isTrue);
-      expect(isWhitespace('\r'), isTrue);
-      expect(isWhitespace(' \t\n\r'), isTrue);
+      final valid = [
+        '',
+        ' ',
+        '\t',
+        '\n',
+        '\r',
+        ' \t\n\r',
+      ];
 
-      expect(isWhitespace('a'), isFalse);
-      expect(isWhitespace(' a'), isFalse);
-      expect(isWhitespace('a '), isFalse);
+      for (final whitespace in valid) {
+        expect(isWhitespace(whitespace), isTrue, reason: whitespace);
+      }
+
+      final invalid = [
+        'a',
+        ' a',
+        'a ',
+      ];
+
+      for (final whitespace in invalid) {
+        expect(isWhitespace(whitespace), isFalse, reason: whitespace);
+      }
     });
 
     test('isAlphabetic', () {
-      expect(isAlphabetic('a'), isTrue);
-      expect(isAlphabetic('A'), isTrue);
-      expect(isAlphabetic('z'), isTrue);
-      expect(isAlphabetic('Z'), isTrue);
-      expect(isAlphabetic('aA'), isTrue);
+      final valid = [
+        'a',
+        'A',
+        'z',
+        'Z',
+        'aA',
+      ];
 
-      expect(isAlphabetic(''), isFalse);
-      expect(isAlphabetic('a '), isFalse);
-      expect(isAlphabetic(' a'), isFalse);
-      expect(isAlphabetic('1'), isFalse);
-      expect(isAlphabetic('!'), isFalse);
+      for (final alphabetic in valid) {
+        expect(isAlphabetic(alphabetic), isTrue, reason: alphabetic);
+      }
+
+      final invalid = [
+        '',
+        'a ',
+        ' a',
+        '1',
+        '!',
+      ];
+
+      for (final alphabetic in invalid) {
+        expect(isAlphabetic(alphabetic), isFalse, reason: alphabetic);
+      }
     });
 
     test('isAlphaNumeric', () {
-      expect(isAlphaNumeric('a1'), isTrue);
-      expect(isAlphaNumeric('123'), isTrue);
-      expect(isAlphaNumeric('abc'), isTrue);
+      final valid = [
+        'a',
+        'A',
+        'z',
+        'Z',
+        '0',
+        '9',
+        'aA',
+        'a1',
+        '1a',
+        '123',
+        'abc',
+      ];
 
-      expect(isAlphaNumeric(''), isFalse);
-      expect(isAlphaNumeric('abc!'), isFalse);
-      expect(isAlphaNumeric(' '), isFalse);
+      for (final alphaNumeric in valid) {
+        expect(isAlphaNumeric(alphaNumeric), isTrue, reason: alphaNumeric);
+      }
+
+      final invalid = [
+        '',
+        'a ',
+        ' a',
+        '!',
+        ' ',
+      ];
+
+      for (final alphaNumeric in invalid) {
+        expect(isAlphaNumeric(alphaNumeric), isFalse, reason: alphaNumeric);
+      }
     });
 
     test('isSurrogatePairs', () {
-      expect(isSurrogatePairs('😀'), isTrue);
-      expect(isSurrogatePairs('a😀'), isTrue);
-      expect(isSurrogatePairs('😊😉😍'), isTrue);
-      expect(isSurrogatePairs('\uD83D\uDC00'), isTrue);
+      final valid = [
+        '😀',
+        'a😀',
+        '😊😉😍',
+        '\uD83D\uDC00',
+      ];
 
-      expect(isSurrogatePairs('a'), isFalse);
-      expect(isSurrogatePairs('abc'), isFalse);
-      expect(isSurrogatePairs('123'), isFalse);
-      expect(isSurrogatePairs('!@#'), isFalse);
-      expect(isSurrogatePairs(''), isFalse);
-      expect(isSurrogatePairs('\n'), isFalse);
-      expect(isSurrogatePairs('\uD83D'), isFalse);
-      expect(isSurrogatePairs('\uDC00'), isFalse);
+      for (final surrogatePairs in valid) {
+        expect(
+          isSurrogatePairs(surrogatePairs),
+          isTrue,
+          reason: surrogatePairs,
+        );
+      }
+
+      final invalid = [
+        'a',
+        'abc',
+        '123',
+        '!@#',
+        '',
+        '\n',
+        '\uD83D',
+        '\uDC00',
+      ];
+
+      for (final surrogatePairs in invalid) {
+        expect(
+          isSurrogatePairs(surrogatePairs),
+          isFalse,
+          reason: surrogatePairs,
+        );
+      }
     });
 
     test('anyNonAscii', () {
-      expect(isAnyNonAscii('😀'), isTrue);
-      expect(isAnyNonAscii('a😀'), isTrue);
-      expect(isAnyNonAscii('😊😉😍'), isTrue);
-      expect(isAnyNonAscii('😀a'), isTrue);
-      expect(isAnyNonAscii('a😀b'), isTrue);
-      expect(isAnyNonAscii('😀😊😉😍'), isTrue);
-      expect(isAnyNonAscii('a😀😊😉😍b'), isTrue);
+      final valid = [
+        '😀',
+        'a😀',
+        '😊😉😍',
+        '😀a',
+        'a😀b',
+        '😀😊😉😍',
+        'a😀😊😉😍b',
+      ];
 
-      expect(isAnyNonAscii('a'), isFalse);
-      expect(isAnyNonAscii('abc'), isFalse);
-      expect(isAnyNonAscii('123'), isFalse);
-      expect(isAnyNonAscii('!@#'), isFalse);
-      expect(isAnyNonAscii(''), isFalse);
-      expect(isAnyNonAscii('\n'), isFalse);
+      for (final nonAscii in valid) {
+        expect(isAnyNonAscii(nonAscii), isTrue, reason: nonAscii);
+      }
+
+      final invalid = [
+        'a',
+        'abc',
+        '123',
+        '!@#',
+        '',
+        '\n',
+      ];
+
+      for (final nonAscii in invalid) {
+        expect(isAnyNonAscii(nonAscii), isFalse, reason: nonAscii);
+      }
     });
 
     test('isOnlyAscii', () {
-      expect(isOnlyAscii('a'), isTrue);
-      expect(isOnlyAscii('abc'), isTrue);
-      expect(isOnlyAscii('123'), isTrue);
-      expect(isOnlyAscii('!@#'), isTrue);
-      expect(isOnlyAscii(' '), isTrue);
-      expect(isOnlyAscii('\n'), isTrue);
+      final valid = [
+        'a',
+        'abc',
+        '123',
+        '!@#',
+        ' ',
+        '\n',
+      ];
 
-      expect(isOnlyAscii(''), isFalse);
-      expect(isOnlyAscii('😀'), isFalse);
-      expect(isOnlyAscii('a😀'), isFalse);
-      expect(isOnlyAscii('😊😉😍'), isFalse);
-      expect(isOnlyAscii('😀a'), isFalse);
-      expect(isOnlyAscii('a😀b'), isFalse);
-      expect(isOnlyAscii('😀😊😉😍'), isFalse);
-      expect(isOnlyAscii('a😀😊😉😍b'), isFalse);
+      for (final ascii in valid) {
+        expect(isOnlyAscii(ascii), isTrue, reason: ascii);
+      }
+
+      final invalid = [
+        '😀',
+        'a😀',
+        '😊😉😍',
+        '😀a',
+        'a😀b',
+        '😀😊😉😍',
+        'a😀😊😉😍b',
+      ];
+
+      for (final ascii in invalid) {
+        expect(isOnlyAscii(ascii), isFalse, reason: ascii);
+      }
     });
 
     test('isInteger', () {
-      expect(isInteger('0'), isTrue);
-      expect(isInteger('1'), isTrue);
-      expect(isInteger('123'), isTrue);
-      expect(isInteger('-1'), isTrue);
-      expect(isInteger('-123'), isTrue);
+      final valid = [
+        '0',
+        '1',
+        '123',
+        '-1',
+        '-123',
+      ];
 
-      expect(isInteger(''), isFalse);
-      expect(isInteger('a'), isFalse);
-      expect(isInteger('1.0'), isFalse);
-      expect(isInteger('1.1'), isFalse);
-      expect(isInteger('1.1e10'), isFalse);
+      for (final integer in valid) {
+        expect(isInteger(integer), isTrue, reason: integer);
+      }
+
+      final invalid = [
+        '',
+        'a',
+        '1.0',
+        '1.1',
+        '1.1e10',
+      ];
+
+      for (final integer in invalid) {
+        expect(isInteger(integer), isFalse, reason: integer);
+      }
     });
 
     test('isDecimal', () {
-      expect(isDecimal('0'), isTrue);
-      expect(isDecimal('1'), isTrue);
-      expect(isDecimal('123'), isTrue);
-      expect(isDecimal('-1'), isTrue);
-      expect(isDecimal('-123'), isTrue);
-      expect(isDecimal('1.0'), isTrue);
-      expect(isDecimal('1.1'), isTrue);
-      expect(isDecimal('1.1e10'), isTrue);
+      final valid = [
+        '0',
+        '1',
+        '123',
+        '-1',
+        '-123',
+        '1.0',
+        '1.1',
+        '1.1e10',
+      ];
 
-      expect(isDecimal(''), isFalse);
-      expect(isDecimal('a'), isFalse);
-      expect(isDecimal('1.1e'), isFalse);
-      expect(isDecimal('1.1e+'), isFalse);
+      for (final decimal in valid) {
+        expect(isDecimal(decimal), isTrue, reason: decimal);
+      }
+
+      final invalid = [
+        '',
+        'a',
+        '1.1e',
+        '1.1e+',
+      ];
+
+      for (final decimal in invalid) {
+        expect(isDecimal(decimal), isFalse, reason: decimal);
+      }
     });
 
     test('isNumeric', () {
-      expect(isNumeric('0'), isTrue);
-      expect(isNumeric('000'), isTrue);
-      expect(isNumeric('1'), isTrue);
-      expect(isNumeric('123'), isTrue);
-      expect(isNumeric('-1'), isTrue);
-      expect(isNumeric('-123'), isTrue);
+      final valid = [
+        '0',
+        '000',
+        '1',
+        '123',
+        '-1',
+        '-123',
+      ];
 
-      expect(isNumeric('1.1e10'), isFalse);
-      expect(isNumeric('1.0'), isFalse);
-      expect(isNumeric(''), isFalse);
-      expect(isNumeric('a'), isFalse);
-      expect(isNumeric('1.1e'), isFalse);
-      expect(isNumeric('1.1e+'), isFalse);
+      for (final numeric in valid) {
+        expect(isNumeric(numeric), isTrue, reason: numeric);
+      }
+
+      final invalid = [
+        '1.1e10',
+        '1.0',
+        '',
+        'a',
+        '1.1e',
+        '1.1e+',
+      ];
+
+      for (final numeric in invalid) {
+        expect(isNumeric(numeric), isFalse, reason: numeric);
+      }
     });
 
     test('isHexadecimal', () {
-      expect(isHexadecimal('0'), isTrue);
-      expect(isHexadecimal('1'), isTrue);
-      expect(isHexadecimal('123'), isTrue);
-      expect(isHexadecimal('a'), isTrue);
-      expect(isHexadecimal('A'), isTrue);
-      expect(isHexadecimal('f'), isTrue);
-      expect(isHexadecimal('F'), isTrue);
-      expect(isHexadecimal('abcdef'), isTrue);
-      expect(isHexadecimal('ABCDEF'), isTrue);
+      final valid = [
+        '0',
+        '1',
+        '123',
+        'a',
+        'A',
+        'f',
+        'F',
+        'abcdef',
+        'ABCDEF',
+      ];
 
-      expect(isHexadecimal('g'), isFalse);
-      expect(isHexadecimal('G'), isFalse);
-      expect(isHexadecimal('123g'), isFalse);
-      expect(isHexadecimal('123G'), isFalse);
-      expect(isHexadecimal(''), isFalse);
-      expect(isHexadecimal('1.0'), isFalse);
-      expect(isHexadecimal('1.1e10'), isFalse);
+      for (final hexadecimal in valid) {
+        expect(isHexadecimal(hexadecimal), isTrue, reason: hexadecimal);
+      }
+
+      final invalid = [
+        'g',
+        'G',
+        '123g',
+        '123G',
+        '',
+        '1.0',
+        '1.1e10',
+      ];
+
+      for (final hexadecimal in invalid) {
+        expect(isHexadecimal(hexadecimal), isFalse, reason: hexadecimal);
+      }
     });
 
     test('isHexColor', () {
-      expect(isHexColor('#FFF'), isTrue);
-      expect(isHexColor('FFF'), isTrue);
-      expect(isHexColor('#FFFFFF'), isTrue);
-      expect(isHexColor('FFFFFF'), isTrue);
+      final valid = [
+        '#FFF',
+        'FFF',
+        '#FFFFFF',
+        'FFFFFF',
+      ];
 
-      expect(isHexColor('#GGG'), isFalse);
-      expect(isHexColor('#FFFFF'), isFalse);
-      expect(isHexColor(''), isFalse);
-      expect(isHexColor('1234567'), isFalse);
+      for (final hexColor in valid) {
+        expect(isHexColor(hexColor), isTrue, reason: hexColor);
+      }
+
+      final invalid = [
+        '#GGG',
+        '#FFFFF',
+        '',
+        '1234567',
+      ];
+
+      for (final hexColor in invalid) {
+        expect(isHexColor(hexColor), isFalse, reason: hexColor);
+      }
     });
 
     test('isBase64', () {
-      expect(isBase64('aA=='), isTrue);
-      expect(isBase64('ThisIsBase64Because/ItIsMod4'), isTrue);
-      expect(isBase64('ThisIsAlso/Base64+EvenWithPadding+=='), isTrue);
-      expect(isBase64('YouGetTheIdea/=='), isTrue);
+      final valid = [
+        'aA==',
+        'ThisIsBase64Because/ItIsMod4',
+        'ThisIsAlso/Base64+EvenWithPadding+==',
+        'YouGetTheIdea/==',
+      ];
 
-      expect(isBase64(''), isFalse);
-      expect(isBase64('aA'), isFalse);
-      expect(isBase64('aA='), isFalse);
-      expect(isBase64('YW55IGNhcm5hbCBwbGVhc3VyZQ'), isFalse);
-      expect(isBase64('YW55IGNhcm5hbCBwbGVhc3VyZ='), isFalse);
-      expect(isBase64('YW55IGNhcm5hbCBwbGVhc3VyZQ==='), isFalse);
-      expect(isBase64('aA==aA==aA=='), isFalse);
-      expect(isBase64('123!@#'), isFalse);
-      expect(isBase64('  YW55IGNhcm5hbCBwbGVhc3VyZQ=='), isFalse);
+      for (final base64 in valid) {
+        expect(isBase64(base64), isTrue, reason: base64);
+      }
+
+      final invalid = [
+        '',
+        'aA',
+        'aA=',
+        'YW55IGNhcm5hbCBwbGVhc3VyZQ',
+        'YW55IGNhcm5hbCBwbGVhc3VyZ=',
+        'YW55IGNhcm5hbCBwbGVhc3VyZQ===',
+        'aA==aA==aA==',
+        '123!@#',
+        '  YW55IGNhcm5hbCBwbGVhc3VyZQ==',
+      ];
+
+      for (final base64 in invalid) {
+        expect(isBase64(base64), isFalse, reason: base64);
+      }
     });
 
     test('isUuidV3', () {
-      expect(isUuidV3('6fa459ea-ee8a-3ca4-894e-db77e160355e'), isTrue);
-      expect(isUuidV3('f47ac10b-58cc-3372-a567-0e02b2c3d479'), isTrue);
-      expect(isUuidV3('6FA459EA-EE8A-3CA4-894E-DB77E160355E'), isTrue);
-      expect(isUuidV3('F47AC10B-58CC-3372-A567-0E02B2C3D479'), isTrue);
+      final valid = [
+        '6fa459ea-ee8a-3ca4-894e-db77e160355e',
+        'f47ac10b-58cc-3372-a567-0e02b2c3d479',
+        '6FA459EA-EE8A-3CA4-894E-DB77E160355E',
+        'F47AC10B-58CC-3372-A567-0E02B2C3D479',
+      ];
 
-      expect(isUuidV3(''), isFalse);
-      expect(isUuidV3('6fa459ea-ee8a-3ca4-894e-db77e160355'), isFalse);
-      expect(isUuidV3('6fa459ea-ee8a-3ca4-894e-db77e160355e1'), isFalse);
-      expect(isUuidV3('6fa459ea-ee8a-3ca4-894e-db77e160355g'), isFalse);
-      expect(isUuidV3('6fa459ea-ee8a-3ca4-894e-db77e160355e '), isFalse);
-      expect(isUuidV3('6fa459ea-ee8a-3ca4-894e-db77e160355e-extra'), isFalse);
+      for (final uuid in valid) {
+        expect(isUuidV3(uuid), isTrue, reason: uuid);
+      }
+
+      final invalid = [
+        '',
+        '6fa459ea-ee8a-3ca4-894e-db77e160355',
+        '6fa459ea-ee8a-3ca4-894e-db77e160355e1',
+        '6fa459ea-ee8a-3ca4-894e-db77e160355g',
+        '6fa459ea-ee8a-3ca4-894e-db77e160355e ',
+        '6fa459ea-ee8a-3ca4-894e-db77e160355e-extra',
+      ];
+
+      for (final uuid in invalid) {
+        expect(isUuidV3(uuid), isFalse, reason: uuid);
+      }
+    });
+
+    test('isUuidV4', () {
+      final valid = [
+        '550e8400-e29b-41d4-a716-446655440000',
+        '36e7e210-8cf7-41d3-b3fc-38c3e2d88b3e',
+        '123e4567-e89b-41d4-a716-426655440000',
+        'f47ac10b-58cc-41d4-a567-0e02b2c3d479',
+        '550E8400-E29B-41D4-A716-446655440000',
+      ];
+
+      for (final uuid in valid) {
+        expect(isUuidV4(uuid), isTrue, reason: uuid);
+      }
+
+      final invalid = [
+        '',
+        '123e4567-e89b-12d3-a456-426614174000',
+        '550e8400-e29b-41d4-a716-44665544000',
+        '550e8400-e29b-41d4-a716-4466554400000',
+        '550e8400-e29b-41d4-a716-44665544000g',
+        '550e8400e29b41d4a716446655440000',
+        '550e8400-e29b-41d4-a716-446655440000-extra',
+        '550E8400-E29B-51D4-A716-446655440000',
+      ];
+
+      for (final uuid in invalid) {
+        expect(isUuidV4(uuid), isFalse, reason: uuid);
+      }
+    });
+
+    test('isUuidV5', () {
+      final valid = [
+        'f47ac10b-58cc-5372-a567-0e02b2c3d479',
+        'F47AC10B-58CC-5372-A567-0E02B2C3D479',
+        '123e4567-e89b-52d3-a456-426614174000',
+        '550e8400-e29b-51d4-a716-446655440000',
+        '36e7e210-8cf7-51d3-b3fc-38c3e2d88b3e',
+      ];
+
+      for (final uuid in valid) {
+        expect(isUuidV5(uuid), isTrue, reason: uuid);
+      }
+
+      final invalid = [
+        '',
+        '123e4567-e89b-12d3-a456-426614174000',
+        '550e8400-e29b-41d4-a716-446655440000',
+        '550e8400-e29b-51d4-a716-44665544000',
+        '550e8400-e29b-51d4-a716-4466554400000',
+        '550e8400-e29b-51d4-a716-44665544000g',
+        '550e8400e29b51d4a716446655440000',
+        '550e8400-e29b-51d4-a716-446655440000-extra',
+        '550E8400-E29B-41D4-A716-446655440000',
+      ];
+
+      for (final uuid in invalid) {
+        expect(isUuidV5(uuid), isFalse, reason: uuid);
+      }
+    });
+
+    test('isUuid', () {
+      final valid = [
+        '550e8400-e29b-41d4-a716-446655440000',
+        '550E8400-E29B-41D4-A716-446655440000',
+        '123e4567-e89b-12d3-a456-426614174000',
+        'f47ac10b-58cc-5372-a567-0e02b2c3d479',
+        '36e7e210-8cf7-51d3-b3fc-38c3e2d88b3e',
+      ];
+
+      for (final uuid in valid) {
+        expect(isUuid(uuid), isTrue, reason: uuid);
+      }
+
+      final invalid = [
+        '',
+        '550e8400-e29b-41d4-a716-44665544000',
+        '550e8400-e29b-41d4-a716-4466554400000',
+        '550e8400-e29b-41d4-a716-44665544000g',
+        '550e8400e29b41d4a716446655440000',
+        '550e8400-e29b-41d4-a716-446655440000-extra',
+      ];
+
+      for (final uuid in invalid) {
+        expect(isUuid(uuid), isFalse, reason: uuid);
+      }
+    });
+
+    test('isHexUuid', () {
+      final valid = [
+        '550e8400e29b41d4a716446655440000',
+        '550E8400E29B41D4A716446655440000',
+        '123e4567e89b12d3a456426614174000',
+        'f47ac10b58cc5372a5670e02b2c3d479',
+        '36e7e2108cf751d3b3fc38c3e2d88b3e',
+      ];
+
+      for (final hexUuid in valid) {
+        expect(isHexUuid(hexUuid), isTrue, reason: hexUuid);
+      }
+
+      final invalid = [
+        '',
+        '550e8400e29b41d4a71644665544000',
+        '550e8400e29b41d4a7164466554400000',
+        '550e8400e29b41d4a71644665544000g',
+        '550e8400-e29b-41d4-a716-446655440000',
+        '550e8400e29b41d4a716446655440000-extra',
+      ];
+
+      for (final hexUuid in invalid) {
+        expect(isHexUuid(hexUuid), isFalse, reason: hexUuid);
+      }
+    });
+
+    test('isIpv4', () {
+      final valid = [
+        '192.168.1.1',
+        '255.255.255.255',
+        '0.0.0.0',
+        '127.0.0.1',
+        '10.0.0.1',
+      ];
+
+      for (final ipv4 in valid) {
+        expect(isIpv4(ipv4), isTrue, reason: ipv4);
+      }
+
+      final invalid = [
+        '',
+        '256.256.256.256',
+        '192.168.1',
+        '192.168.1.256',
+        '192.168.1.1.1',
+        '192.168.1.-1',
+        '192.168.1.abc',
+        '192.168.1.01',
+        '192.168.1.1 ',
+        ' 192.168.1.1',
+      ];
+
+      for (final ipv4 in invalid) {
+        expect(isIpv4(ipv4), isFalse, reason: ipv4);
+      }
+    });
+
+    test('isIpv4WithMask', () {
+      final valid = [
+        '192.168.1.0/24',
+        '10.0.0.1/8',
+        '172.16.0.0/16',
+        '255.255.255.255/32',
+        '0.0.0.0/0',
+      ];
+
+      for (final ipv4WithMask in valid) {
+        expect(isIpv4WithMask(ipv4WithMask), isTrue, reason: ipv4WithMask);
+      }
+
+      final invalid = [
+        '',
+        '192.168.1.0',
+        '192.168.1.0/33',
+        '256.256.256.256/24',
+        '192.168.1.0/-1',
+        '192.168.1.0/abc',
+        '192.168.1.0/24 ',
+        ' 192.168.1.0/24',
+        '192.168.1.0/024',
+        '192.168.1.0/3a',
+      ];
+
+      for (final ipv4WithMask in invalid) {
+        expect(isIpv4WithMask(ipv4WithMask), isFalse, reason: ipv4WithMask);
+      }
+    });
+
+    test('isIpv6', () {
+      final valid = [
+        '::1',
+        '2001:0db8:85a3:0000:0000:8a2e:0370:7334',
+        '2001:db8:85a3::8a2e:370:7334',
+        '::ffff:192.168.1.1',
+        'fe80::1%lo0',
+        '2001:0db8:0000:0000:0000:ff00:0042:8329',
+        '2001:db8::ff00:42:8329',
+      ];
+
+      for (final ipv6 in valid) {
+        expect(isIpv6(ipv6), isTrue, reason: ipv6);
+      }
+
+      final invalid = [
+        '',
+        '1200::AB00:1234::2552:7777:1313',
+        '1200::AB00:1234:GHIJ:2552:7777:1313',
+        '::ffff:300.168.1.1',
+        '2001:db8:85a3:0:0:8a2e:370:7334:1234',
+        '2001:db8:85a3',
+        '2001:db8:85a3:0000:0000:8a2e:0370:7334:extra',
+        '2001:db8:85a3::8a2e:370:7334 extra',
+      ];
+
+      for (final ipv6 in invalid) {
+        expect(isIpv6(ipv6), isFalse, reason: ipv6);
+      }
+    });
+
+    test('isMacAddress', () {
+      final valid = [
+        '00:1A:2B:3C:4D:5E',
+        '00-1A-2B-3C-4D-5E',
+        '00:1a:2b:3c:4d:5e',
+        '00-1a-2b-3c-4d-5e',
+      ];
+
+      for (final macAddress in valid) {
+        expect(isMacAddress(macAddress), isTrue, reason: macAddress);
+      }
+
+      final invalid = [
+        '',
+        '001A2B3C4D5E',
+        '00:1A:2B:3C:4D',
+        '00:1A:2B:3C:4D:5E:6F',
+        '00:1A:2B:3C:4D:G1',
+        '00:1A:2B:3C:4D:5E ',
+        ' 00:1A:2B:3C:4D:5E',
+      ];
+
+      for (final macAddress in invalid) {
+        expect(isMacAddress(macAddress), isFalse, reason: macAddress);
+      }
+    });
+
+    test('isJwt', () {
+      final valid = [
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5cA',
+      ];
+
+      for (final jwt in valid) {
+        expect(isJwt(jwt), isTrue, reason: jwt);
+      }
+
+      final invalid = [
+        '',
+        'header.payload',
+        'header.payload.signature.',
+        'header.payload.signature.extra',
+        'header.payload.signature!',
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.',
+      ];
+
+      for (final jwt in invalid) {
+        expect(isJwt(jwt), isFalse, reason: jwt);
+      }
+    });
+
+    test('isUrl', () {
+      final valid = [
+        'https://example.com',
+        'http://example.com',
+        'https://www.example.com',
+        'http://www.example.com',
+        'www.example.com',
+        'https://example.com/path/to/resource',
+        'https://example.com?query=string',
+        'https://example.com#fragment',
+        'https://subdomain.example.com',
+      ];
+
+      for (final url in valid) {
+        expect(isUrl(url), isTrue, reason: url);
+      }
+
+      final invalid = [
+        '',
+        'example',
+        'example.',
+        'example.c',
+        '://example.com',
+        'https//example.com',
+        'http:/example.com',
+        'www.example',
+        'https://example',
+        'https://.example.com',
+      ];
+
+      for (final url in invalid) {
+        expect(isUrl(url), isFalse, reason: url);
+      }
     });
   });
 }
