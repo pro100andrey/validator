@@ -87,59 +87,13 @@ enum Patterns {
   /// - `"123456"` (invalid)
   hexColor(r'^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$'),
 
-  /// Matches an RGB color string.
-  ///
-  /// Examples:
-  /// - `"rgb(255, 0, 0)"` (valid)
-  /// - `"rgb(0,0,0)"` (valid)
-  /// - `"rgb(300, 0, 0)"` (invalid)
-  rgbColor(r'^rgb\((\s*\d{1,3}\s*,){2}\s*\d{1,3}\s*\)$'),
-
-  /// Matches an RGBA color string.
-  ///
-  /// Examples:
-  /// - `"rgba(255, 0, 0, 0.5)"` (valid)
-  /// - `"rgba(0, 0, 0, 1)"` (valid)
-  /// - `"rgba(255,255,255,2)"` (invalid)
-  rgbaColor(
-    r'^rgba\((\s*\d{1,3}\s*,){3}\s*(0|0?\.\d+|1(\.0+)?)\s*\)$',
-  ),
-
-  /// Matches an HSL color string.
-  ///
-  /// Examples:
-  /// - `"hsl(360, 100%, 50%)"` (valid)
-  /// - `"hsl(0, 0%, 0%)"` (valid)
-  /// - `"hsl(361, 50%, 50%)"` (invalid)
-  hslColor(r'^hsl\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*\)$'),
-
-  /// Matches an HSLA color string.
-  ///
-  /// Examples:
-  /// - `"hsla(360, 100%, 50%, 0.5)"` (valid)
-  /// - `"hsla(0, 0%, 0%, 1)"` (valid)
-  /// - `"hsla(360, 100%, 50%, 2)"` (invalid)
-  hslaColor(
-    r'^hsla\(\s*(\d{1,3})\s*,\s*(\d{1,3})%\s*,\s*(\d{1,3})%\s*,\s*(0|0?\.\d+|1(\.0+)?)\s*\)$',
-  ),
-
-  /// Matches a valid HTML color name.
-  ///
-  /// Examples:
-  /// - `"red"` (valid)
-  /// - `"blueviolet"` (valid)
-  /// - `"notacolor"` (invalid)
-  htmlColorName(
-    r'^(?:aliceblue|antiquewhite|aqua|aquamarine|azure|beige|bisque|black|blanchedalmond|blue|blueviolet|brown|burlywood|cadetblue|chartreuse|chocolate|coral|cornflowerblue|cornsilk|crimson|cyan|darkblue|darkcyan|darkgoldenrod|darkgray|darkgreen|darkkhaki|darkmagenta|darkolivegreen|darkorange|darkorchid|darkred|darksalmon|darkseagreen|darkslateblue|darkslategray|darkturquoise|darkviolet|deeppink|deepskyblue|dimgray|dodgerblue|firebrick|floralwhite|forestgreen|fuchsia|gainsboro|ghostwhite|gold|goldenrod|gray|green|greenyellow|honeydew|hotpink|indianred|indigo|ivory|khaki|lavender|lavenderblush|lawngreen|lemonchiffon|lightblue|lightcoral|lightcyan|lightgoldenrodyellow|lightgray|lightgreen|lightpink|lightsalmon|lightseagreen|lightskyblue|lightslategray|lightsteelblue|lightyellow|lime|limegreen|linen|magenta|maroon|mediumaquamarine|mediumblue|mediumorchid|mediumpurple|mediumseagreen|mediumslateblue|mediumspringgreen|mediumturquoise|mediumvioletred|midnightblue|mintcream|mistyrose|moccasin|navajowhite|navy|oldlace|olive|olivedrab|orange|orangered|orchid|palegoldenrod|palegreen|paleturquoise|palevioletred|papayawhip|peachpuff|peru|pink|plum|powderblue|purple|rebeccapurple|red|rosybrown|royalblue|saddlebrown|salmon|sandybrown|seagreen|seashell|sienna|silver|skyblue|slateblue|slategray|snow|springgreen|steelblue|tan|teal|thistle|tomato|turquoise|violet|wheat|white|whitesmoke|yellow|yellowgreen)$',
-  ),
-
   /// Matches a Base64 encoded string.
   ///
   /// Examples:
   /// - `"U29tZSB0ZXh0"` (valid)
   /// - `"123"` (invalid)
   base64(
-    r'^(?:[A-Za-z0-9+\/]{4})*(?:[A-Za-z0-9+\/]{2}==|[A-Za-z0-9+\/]{3}=|[A-Za-z0-9+\/]{4})$',
+    r'^(?:[A-Za-z0-9+\/]{4})*(?:[A-Za-z0-9+\/]{4}|[A-Za-z0-9+\/]{3}=|[A-Za-z0-9+\/]{2}={2})$',
   ),
 
   /// Matches a universally unique identifier (UUID) version 3 string.
@@ -147,7 +101,7 @@ enum Patterns {
   /// Examples:
   /// - `"123E4567-E89B-3D56-A456-426614174000"` (valid)
   uuidV3(
-    r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$',
+    r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-3[0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$',
   ),
 
   /// Matches a universally unique identifier (UUID) version 4 string.
@@ -427,29 +381,25 @@ final _table = <Patterns, RegExp>{
   Patterns.integer: RegExp(Patterns.integer.regex),
   Patterns.decimal: RegExp(Patterns.decimal.regex),
   Patterns.numeric: RegExp(Patterns.numeric.regex),
-  Patterns.hexadecimal: RegExp(Patterns.hexadecimal.regex),
-  Patterns.hexColor: RegExp(Patterns.hexColor.regex),
-  Patterns.rgbColor: RegExp(Patterns.rgbColor.regex),
-  Patterns.rgbaColor: RegExp(Patterns.rgbaColor.regex),
-  Patterns.hslColor: RegExp(Patterns.hslColor.regex),
-  Patterns.hslaColor: RegExp(Patterns.hslaColor.regex),
-  Patterns.htmlColorName: RegExp(Patterns.htmlColorName.regex),
+  Patterns.hexadecimal: RegExp(Patterns.hexadecimal.regex, caseSensitive: false),
+  Patterns.hexColor: RegExp(Patterns.hexColor.regex, caseSensitive: false),
   Patterns.base64: RegExp(Patterns.base64.regex),
-  Patterns.uuidV3: RegExp(Patterns.uuidV3.regex),
-  Patterns.uuidV4: RegExp(Patterns.uuidV4.regex),
-  Patterns.uuidV5: RegExp(Patterns.uuidV5.regex),
-  Patterns.uuid: RegExp(Patterns.uuid.regex),
-  Patterns.hexUuid: RegExp(Patterns.hexUuid.regex),
+  Patterns.uuidV3: RegExp(Patterns.uuidV3.regex, caseSensitive: false),
+  Patterns.uuidV4: RegExp(Patterns.uuidV4.regex, caseSensitive: false),
+  Patterns.uuidV5: RegExp(Patterns.uuidV5.regex, caseSensitive: false),
+  Patterns.uuid: RegExp(Patterns.uuid.regex, caseSensitive: false),
+  Patterns.hexUuid: RegExp(Patterns.hexUuid.regex, caseSensitive: false),
   Patterns.ipv4: RegExp(Patterns.ipv4.regex),
   Patterns.ipv4WithMask: RegExp(Patterns.ipv4WithMask.regex),
   Patterns.ipv6: RegExp(Patterns.ipv6.regex),
-  Patterns.macAddress: RegExp(Patterns.macAddress.regex),
+  Patterns.macAddress: RegExp(Patterns.macAddress.regex, caseSensitive: false),
   Patterns.jwt: RegExp(Patterns.jwt.regex),
   Patterns.url: RegExp(Patterns.url.regex),
-  Patterns.email: RegExp(Patterns.email.regex),
+  Patterns.email: RegExp(Patterns.email.regex, caseSensitive: false),
   Patterns.postalCode: RegExp(Patterns.postalCode.regex),
   Patterns.phoneNumber: RegExp(Patterns.phoneNumber.regex),
-  Patterns.internationalPhoneNumber: RegExp(Patterns.internationalPhoneNumber.regex),
+  Patterns.internationalPhoneNumber:
+      RegExp(Patterns.internationalPhoneNumber.regex),
   Patterns.creditCard: RegExp(Patterns.creditCard.regex),
   Patterns.iban: RegExp(Patterns.iban.regex),
   Patterns.bic: RegExp(Patterns.bic.regex),

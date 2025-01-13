@@ -168,5 +168,36 @@ void main() {
       expect(isHexColor(''), isFalse);
       expect(isHexColor('1234567'), isFalse);
     });
+
+    test('isBase64', () {
+      expect(isBase64('aA=='), isTrue);
+      expect(isBase64('ThisIsBase64Because/ItIsMod4'), isTrue);
+      expect(isBase64('ThisIsAlso/Base64+EvenWithPadding+=='), isTrue);
+      expect(isBase64('YouGetTheIdea/=='), isTrue);
+
+      expect(isBase64(''), isFalse);
+      expect(isBase64('aA'), isFalse);
+      expect(isBase64('aA='), isFalse);
+      expect(isBase64('YW55IGNhcm5hbCBwbGVhc3VyZQ'), isFalse);
+      expect(isBase64('YW55IGNhcm5hbCBwbGVhc3VyZ='), isFalse);
+      expect(isBase64('YW55IGNhcm5hbCBwbGVhc3VyZQ==='), isFalse);
+      expect(isBase64('aA==aA==aA=='), isFalse);
+      expect(isBase64('123!@#'), isFalse);
+      expect(isBase64('  YW55IGNhcm5hbCBwbGVhc3VyZQ=='), isFalse);
+    });
+
+    test('isUuidV3', () {
+      expect(isUuidV3('6fa459ea-ee8a-3ca4-894e-db77e160355e'), isTrue);
+      expect(isUuidV3('f47ac10b-58cc-3372-a567-0e02b2c3d479'), isTrue);
+      expect(isUuidV3('6FA459EA-EE8A-3CA4-894E-DB77E160355E'), isTrue);
+      expect(isUuidV3('F47AC10B-58CC-3372-A567-0E02B2C3D479'), isTrue);
+
+      expect(isUuidV3(''), isFalse);
+      expect(isUuidV3('6fa459ea-ee8a-3ca4-894e-db77e160355'), isFalse);
+      expect(isUuidV3('6fa459ea-ee8a-3ca4-894e-db77e160355e1'), isFalse);
+      expect(isUuidV3('6fa459ea-ee8a-3ca4-894e-db77e160355g'), isFalse);
+      expect(isUuidV3('6fa459ea-ee8a-3ca4-894e-db77e160355e '), isFalse);
+      expect(isUuidV3('6fa459ea-ee8a-3ca4-894e-db77e160355e-extra'), isFalse);
+    });
   });
 }

@@ -37,22 +37,6 @@ bool isHexadecimal(String s) => Patterns.hexadecimal.pattern.hasMatch(s);
 /// Checks if the string is a valid hex color (e.g., `#FFF`, `#FFFFFF`).
 bool isHexColor(String s) => Patterns.hexColor.pattern.hasMatch(s);
 
-/// Checks if the string is a valid RGB color (e.g., `rgb(255, 0, 0)`).
-bool isRgbColor(String s) => Patterns.rgbColor.pattern.hasMatch(s);
-
-/// Checks if the string is a valid RGBA color (e.g., `rgba(255, 0, 0, 0.5)`).
-bool isRgbaColor(String s) => Patterns.rgbaColor.pattern.hasMatch(s);
-
-/// Checks if the string is a valid HSL color (e.g., `hsl(360, 100%, 50%)`).
-bool isHslColor(String s) => Patterns.hslColor.pattern.hasMatch(s);
-
-/// Checks if the string is a valid HSLA color (e.g.,
-/// `hsla(360, 100%, 50%, 0.5)`).
-bool isHslaColor(String s) => Patterns.hslaColor.pattern.hasMatch(s);
-
-/// Checks if the string is a valid HTML color name (e.g., `red`, `blueviolet`).
-bool isHtmlColorName(String s) => Patterns.htmlColorName.pattern.hasMatch(s);
-
 /// Checks if the string is a valid Base64-encoded string.
 bool isBase64(String s) => Patterns.base64.pattern.hasMatch(s);
 
