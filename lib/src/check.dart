@@ -76,6 +76,9 @@ bool isUrl(String s) => Patterns.url.pattern.hasMatch(s);
 /// Checks if the string is a valid email address.
 bool isEmail(String s) => Patterns.email.pattern.hasMatch(s);
 
+/// Checks if the string is a valid email address according to the RFC 5322
+bool isEmailRFC5322(String s) => Patterns.emailRFC5322.pattern.hasMatch(s);
+
 /// Checks if the string is a valid postal code.
 bool isPostalCode(String s) => Patterns.postalCode.pattern.hasMatch(s);
 
@@ -102,7 +105,7 @@ bool isDate(String s) => Patterns.date.pattern.hasMatch(s);
 bool isTime(String s) => Patterns.time.pattern.hasMatch(s);
 
 /// Checks if the string is a valid time in 12-hour format (HH:mm AM/PM).
-bool isTime12hour(String s) => Patterns.time12Hour.pattern.hasMatch(s);
+bool isTime12Hour(String s) => Patterns.time12Hour.pattern.hasMatch(s);
 
 /// Checks if the string is a valid ISO 8601 datetime.
 bool isIso8601DateTime(String s) =>

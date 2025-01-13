@@ -16,7 +16,11 @@ void main() {
       ];
 
       for (final whitespace in valid) {
-        expect(isWhitespace(whitespace), isTrue, reason: whitespace);
+        expect(
+          isWhitespace(whitespace),
+          isTrue,
+          reason: 'Valid whitespace: $whitespace',
+        );
       }
 
       final invalid = [
@@ -26,7 +30,11 @@ void main() {
       ];
 
       for (final whitespace in invalid) {
-        expect(isWhitespace(whitespace), isFalse, reason: whitespace);
+        expect(
+          isWhitespace(whitespace),
+          isFalse,
+          reason: 'Invalid whitespace: $whitespace',
+        );
       }
     });
 
@@ -40,7 +48,11 @@ void main() {
       ];
 
       for (final alphabetic in valid) {
-        expect(isAlphabetic(alphabetic), isTrue, reason: alphabetic);
+        expect(
+          isAlphabetic(alphabetic),
+          isTrue,
+          reason: 'Valid alphabetic: $alphabetic',
+        );
       }
 
       final invalid = [
@@ -52,7 +64,11 @@ void main() {
       ];
 
       for (final alphabetic in invalid) {
-        expect(isAlphabetic(alphabetic), isFalse, reason: alphabetic);
+        expect(
+          isAlphabetic(alphabetic),
+          isFalse,
+          reason: 'Invalid alphabetic: $alphabetic',
+        );
       }
     });
 
@@ -72,7 +88,11 @@ void main() {
       ];
 
       for (final alphaNumeric in valid) {
-        expect(isAlphaNumeric(alphaNumeric), isTrue, reason: alphaNumeric);
+        expect(
+          isAlphaNumeric(alphaNumeric),
+          isTrue,
+          reason: 'Valid alpha-numeric: $alphaNumeric',
+        );
       }
 
       final invalid = [
@@ -84,7 +104,11 @@ void main() {
       ];
 
       for (final alphaNumeric in invalid) {
-        expect(isAlphaNumeric(alphaNumeric), isFalse, reason: alphaNumeric);
+        expect(
+          isAlphaNumeric(alphaNumeric),
+          isFalse,
+          reason: 'Invalid alpha-numeric: $alphaNumeric',
+        );
       }
     });
 
@@ -100,7 +124,7 @@ void main() {
         expect(
           isSurrogatePairs(surrogatePairs),
           isTrue,
-          reason: surrogatePairs,
+          reason: 'Valid surrogate pairs: $surrogatePairs',
         );
       }
 
@@ -119,7 +143,7 @@ void main() {
         expect(
           isSurrogatePairs(surrogatePairs),
           isFalse,
-          reason: surrogatePairs,
+          reason: 'Invalid surrogate pairs: $surrogatePairs',
         );
       }
     });
@@ -136,7 +160,11 @@ void main() {
       ];
 
       for (final nonAscii in valid) {
-        expect(isAnyNonAscii(nonAscii), isTrue, reason: nonAscii);
+        expect(
+          isAnyNonAscii(nonAscii),
+          isTrue,
+          reason: 'Valid non-ASCII: $nonAscii',
+        );
       }
 
       final invalid = [
@@ -149,7 +177,11 @@ void main() {
       ];
 
       for (final nonAscii in invalid) {
-        expect(isAnyNonAscii(nonAscii), isFalse, reason: nonAscii);
+        expect(
+          isAnyNonAscii(nonAscii),
+          isFalse,
+          reason: 'Invalid non-ASCII: $nonAscii',
+        );
       }
     });
 
@@ -164,7 +196,11 @@ void main() {
       ];
 
       for (final ascii in valid) {
-        expect(isOnlyAscii(ascii), isTrue, reason: ascii);
+        expect(
+          isOnlyAscii(ascii),
+          isTrue,
+          reason: 'Valid ASCII: $ascii',
+        );
       }
 
       final invalid = [
@@ -178,7 +214,11 @@ void main() {
       ];
 
       for (final ascii in invalid) {
-        expect(isOnlyAscii(ascii), isFalse, reason: ascii);
+        expect(
+          isOnlyAscii(ascii),
+          isFalse,
+          reason: 'Invalid ASCII: $ascii',
+        );
       }
     });
 
@@ -192,7 +232,11 @@ void main() {
       ];
 
       for (final integer in valid) {
-        expect(isInteger(integer), isTrue, reason: integer);
+        expect(
+          isInteger(integer),
+          isTrue,
+          reason: 'Valid integer: $integer',
+        );
       }
 
       final invalid = [
@@ -204,7 +248,11 @@ void main() {
       ];
 
       for (final integer in invalid) {
-        expect(isInteger(integer), isFalse, reason: integer);
+        expect(
+          isInteger(integer),
+          isFalse,
+          reason: 'Invalid integer: $integer',
+        );
       }
     });
 
@@ -221,7 +269,11 @@ void main() {
       ];
 
       for (final decimal in valid) {
-        expect(isDecimal(decimal), isTrue, reason: decimal);
+        expect(
+          isDecimal(decimal),
+          isTrue,
+          reason: 'Valid decimal: $decimal',
+        );
       }
 
       final invalid = [
@@ -232,7 +284,11 @@ void main() {
       ];
 
       for (final decimal in invalid) {
-        expect(isDecimal(decimal), isFalse, reason: decimal);
+        expect(
+          isDecimal(decimal),
+          isFalse,
+          reason: 'Invalid decimal: $decimal',
+        );
       }
     });
 
@@ -247,7 +303,11 @@ void main() {
       ];
 
       for (final numeric in valid) {
-        expect(isNumeric(numeric), isTrue, reason: numeric);
+        expect(
+          isNumeric(numeric),
+          isTrue,
+          reason: 'Valid numeric: $numeric',
+        );
       }
 
       final invalid = [
@@ -260,7 +320,11 @@ void main() {
       ];
 
       for (final numeric in invalid) {
-        expect(isNumeric(numeric), isFalse, reason: numeric);
+        expect(
+          isNumeric(numeric),
+          isFalse,
+          reason: 'Invalid numeric: $numeric',
+        );
       }
     });
 
@@ -278,7 +342,11 @@ void main() {
       ];
 
       for (final hexadecimal in valid) {
-        expect(isHexadecimal(hexadecimal), isTrue, reason: hexadecimal);
+        expect(
+          isHexadecimal(hexadecimal),
+          isTrue,
+          reason: 'Valid hexadecimal: $hexadecimal',
+        );
       }
 
       final invalid = [
@@ -292,7 +360,11 @@ void main() {
       ];
 
       for (final hexadecimal in invalid) {
-        expect(isHexadecimal(hexadecimal), isFalse, reason: hexadecimal);
+        expect(
+          isHexadecimal(hexadecimal),
+          isFalse,
+          reason: 'Invalid hexadecimal: $hexadecimal',
+        );
       }
     });
 
@@ -305,7 +377,11 @@ void main() {
       ];
 
       for (final hexColor in valid) {
-        expect(isHexColor(hexColor), isTrue, reason: hexColor);
+        expect(
+          isHexColor(hexColor),
+          isTrue,
+          reason: 'Valid hex color: $hexColor',
+        );
       }
 
       final invalid = [
@@ -316,7 +392,11 @@ void main() {
       ];
 
       for (final hexColor in invalid) {
-        expect(isHexColor(hexColor), isFalse, reason: hexColor);
+        expect(
+          isHexColor(hexColor),
+          isFalse,
+          reason: 'Invalid hex color: $hexColor',
+        );
       }
     });
 
@@ -329,7 +409,11 @@ void main() {
       ];
 
       for (final base64 in valid) {
-        expect(isBase64(base64), isTrue, reason: base64);
+        expect(
+          isBase64(base64),
+          isTrue,
+          reason: 'Invalid base64: $base64',
+        );
       }
 
       final invalid = [
@@ -345,7 +429,11 @@ void main() {
       ];
 
       for (final base64 in invalid) {
-        expect(isBase64(base64), isFalse, reason: base64);
+        expect(
+          isBase64(base64),
+          isFalse,
+          reason: 'Invalid base64: $base64',
+        );
       }
     });
 
@@ -358,7 +446,11 @@ void main() {
       ];
 
       for (final uuid in valid) {
-        expect(isUuidV3(uuid), isTrue, reason: uuid);
+        expect(
+          isUuidV3(uuid),
+          isTrue,
+          reason: 'Valid UUID v3: $uuid',
+        );
       }
 
       final invalid = [
@@ -371,7 +463,11 @@ void main() {
       ];
 
       for (final uuid in invalid) {
-        expect(isUuidV3(uuid), isFalse, reason: uuid);
+        expect(
+          isUuidV3(uuid),
+          isFalse,
+          reason: 'Invalid UUID v3: $uuid',
+        );
       }
     });
 
@@ -385,7 +481,11 @@ void main() {
       ];
 
       for (final uuid in valid) {
-        expect(isUuidV4(uuid), isTrue, reason: uuid);
+        expect(
+          isUuidV4(uuid),
+          isTrue,
+          reason: 'Valid UUID v4: $uuid',
+        );
       }
 
       final invalid = [
@@ -400,7 +500,11 @@ void main() {
       ];
 
       for (final uuid in invalid) {
-        expect(isUuidV4(uuid), isFalse, reason: uuid);
+        expect(
+          isUuidV4(uuid),
+          isFalse,
+          reason: 'Invalid UUID v4: $uuid',
+        );
       }
     });
 
@@ -414,7 +518,11 @@ void main() {
       ];
 
       for (final uuid in valid) {
-        expect(isUuidV5(uuid), isTrue, reason: uuid);
+        expect(
+          isUuidV5(uuid),
+          isTrue,
+          reason: 'Valid UUID v5: $uuid',
+        );
       }
 
       final invalid = [
@@ -430,7 +538,11 @@ void main() {
       ];
 
       for (final uuid in invalid) {
-        expect(isUuidV5(uuid), isFalse, reason: uuid);
+        expect(
+          isUuidV5(uuid),
+          isFalse,
+          reason: 'Invalid UUID v5: $uuid',
+        );
       }
     });
 
@@ -444,7 +556,11 @@ void main() {
       ];
 
       for (final uuid in valid) {
-        expect(isUuid(uuid), isTrue, reason: uuid);
+        expect(
+          isUuid(uuid),
+          isTrue,
+          reason: 'Valid UUID: $uuid',
+        );
       }
 
       final invalid = [
@@ -457,7 +573,11 @@ void main() {
       ];
 
       for (final uuid in invalid) {
-        expect(isUuid(uuid), isFalse, reason: uuid);
+        expect(
+          isUuid(uuid),
+          isFalse,
+          reason: 'Invalid UUID: $uuid',
+        );
       }
     });
 
@@ -471,7 +591,11 @@ void main() {
       ];
 
       for (final hexUuid in valid) {
-        expect(isHexUuid(hexUuid), isTrue, reason: hexUuid);
+        expect(
+          isHexUuid(hexUuid),
+          isTrue,
+          reason: 'Valid hex UUID: $hexUuid',
+        );
       }
 
       final invalid = [
@@ -484,7 +608,11 @@ void main() {
       ];
 
       for (final hexUuid in invalid) {
-        expect(isHexUuid(hexUuid), isFalse, reason: hexUuid);
+        expect(
+          isHexUuid(hexUuid),
+          isFalse,
+          reason: 'Invalid hex UUID: $hexUuid',
+        );
       }
     });
 
@@ -498,7 +626,11 @@ void main() {
       ];
 
       for (final ipv4 in valid) {
-        expect(isIpv4(ipv4), isTrue, reason: ipv4);
+        expect(
+          isIpv4(ipv4),
+          isTrue,
+          reason: 'Valid IPv4 address: $ipv4',
+        );
       }
 
       final invalid = [
@@ -515,7 +647,11 @@ void main() {
       ];
 
       for (final ipv4 in invalid) {
-        expect(isIpv4(ipv4), isFalse, reason: ipv4);
+        expect(
+          isIpv4(ipv4),
+          isFalse,
+          reason: 'Invalid IPv4 address: $ipv4',
+        );
       }
     });
 
@@ -529,7 +665,11 @@ void main() {
       ];
 
       for (final ipv4WithMask in valid) {
-        expect(isIpv4WithMask(ipv4WithMask), isTrue, reason: ipv4WithMask);
+        expect(
+          isIpv4WithMask(ipv4WithMask),
+          isTrue,
+          reason: 'Valid IPv4 with mask: $ipv4WithMask',
+        );
       }
 
       final invalid = [
@@ -546,7 +686,11 @@ void main() {
       ];
 
       for (final ipv4WithMask in invalid) {
-        expect(isIpv4WithMask(ipv4WithMask), isFalse, reason: ipv4WithMask);
+        expect(
+          isIpv4WithMask(ipv4WithMask),
+          isFalse,
+          reason: 'Invalid IPv4 with mask: $ipv4WithMask',
+        );
       }
     });
 
@@ -562,7 +706,11 @@ void main() {
       ];
 
       for (final ipv6 in valid) {
-        expect(isIpv6(ipv6), isTrue, reason: ipv6);
+        expect(
+          isIpv6(ipv6),
+          isTrue,
+          reason: 'Valid IPv6 address: $ipv6',
+        );
       }
 
       final invalid = [
@@ -577,7 +725,11 @@ void main() {
       ];
 
       for (final ipv6 in invalid) {
-        expect(isIpv6(ipv6), isFalse, reason: ipv6);
+        expect(
+          isIpv6(ipv6),
+          isFalse,
+          reason: 'Invalid IPv6 address: $ipv6',
+        );
       }
     });
 
@@ -590,7 +742,11 @@ void main() {
       ];
 
       for (final macAddress in valid) {
-        expect(isMacAddress(macAddress), isTrue, reason: macAddress);
+        expect(
+          isMacAddress(macAddress),
+          isTrue,
+          reason: 'Valid MAC address: $macAddress',
+        );
       }
 
       final invalid = [
@@ -604,7 +760,11 @@ void main() {
       ];
 
       for (final macAddress in invalid) {
-        expect(isMacAddress(macAddress), isFalse, reason: macAddress);
+        expect(
+          isMacAddress(macAddress),
+          isFalse,
+          reason: 'Invalid MAC address: $macAddress',
+        );
       }
     });
 
@@ -615,7 +775,11 @@ void main() {
       ];
 
       for (final jwt in valid) {
-        expect(isJwt(jwt), isTrue, reason: jwt);
+        expect(
+          isJwt(jwt),
+          isTrue,
+          reason: 'Valid JWT: $jwt',
+        );
       }
 
       final invalid = [
@@ -628,7 +792,11 @@ void main() {
       ];
 
       for (final jwt in invalid) {
-        expect(isJwt(jwt), isFalse, reason: jwt);
+        expect(
+          isJwt(jwt),
+          isFalse,
+          reason: 'Invalid JWT: $jwt',
+        );
       }
     });
 
@@ -646,7 +814,11 @@ void main() {
       ];
 
       for (final url in valid) {
-        expect(isUrl(url), isTrue, reason: url);
+        expect(
+          isUrl(url),
+          isTrue,
+          reason: 'Valid URL: $url',
+        );
       }
 
       final invalid = [
@@ -663,7 +835,350 @@ void main() {
       ];
 
       for (final url in invalid) {
-        expect(isUrl(url), isFalse, reason: url);
+        expect(
+          isUrl(url),
+          isFalse,
+          reason: 'Invalid URL: $url',
+        );
+      }
+    });
+
+    test('isEmail', () {
+      final valid = [
+        'email@example.com',
+        'firstname.lastname@example.com',
+        'email@subdomain.example.com',
+        'firstname+lastname@example.com',
+        '1234567890@example.com',
+        'email@example-one.com',
+        '_______@example.com',
+        'email@example.name',
+        'email@example.museum',
+        'email@example.co.jp',
+        'firstname-lastname@example.com',
+      ];
+
+      for (final email in valid) {
+        expect(
+          isEmail(email),
+          isTrue,
+          reason: 'Valid email: $email',
+        );
+      }
+
+      final invalid = [
+        'plainAddress',
+        r'#@%^%#$@#$@#.com',
+        '@example.com',
+        'Joe Smith <email@example.com>',
+        'email.example.com',
+        'email@example@example.com',
+        '.email@example.com',
+        'email.@example.com',
+        'email..email@example.com',
+        'email@example.com (Joe Smith)',
+        'email@example',
+        'email@-example.com',
+        'email@111.222.333.44444',
+        'email@example..com',
+        'Abc..123@example.com',
+        'email@123.123.123.123',
+        'email@[123.123.123.123]',
+      ];
+
+      for (final email in invalid) {
+        expect(
+          isEmail(email),
+          isFalse,
+          reason: 'Invalid email: $email',
+        );
+      }
+    });
+
+    test('isEmailRFC5322', () {
+      final valid = [
+        'email@example.com',
+        'firstname.lastname@example.com',
+        'email@subdomain.example.com',
+        'firstname+lastname@example.com',
+        '"email"@example.com',
+        '1234567890@example.com',
+        'email@example-one.com',
+        '_______@example.com',
+        'email@example.name',
+        'email@example.museum',
+        'email@example.co.jp',
+        'firstname-lastname@example.com',
+      ];
+
+      for (final email in valid) {
+        expect(
+          isEmailRFC5322(email),
+          isTrue,
+          reason: 'Valid email: $email',
+        );
+      }
+
+      final invalid = [
+        'plainAddress',
+        r'#@%^%#$@#$@#.com',
+        '@example.com',
+        'Joe Smith <email@example.com>',
+        'email.example.com',
+        'email@example@example.com',
+        '.email@example.com',
+        'email.@example.com',
+        'email..email@example.com',
+        'email@example.com (Joe Smith)',
+        'email@example',
+        'email@-example.com',
+        'email@111.222.333.44444',
+        'email@example..com',
+        'Abc..123@example.com',
+        'email@123.123.123.123',
+        'email@[123.123.123.123]',
+      ];
+
+      for (final email in invalid) {
+        expect(
+          isEmailRFC5322(email),
+          isFalse,
+          reason: 'Invalid email: $email',
+        );
+      }
+    });
+
+    test('isPostalCode', () {
+      final valid = [
+        '12345',
+        '12345-6789',
+      ];
+
+      for (final postalCode in valid) {
+        expect(
+          isPostalCode(postalCode),
+          isTrue,
+          reason: 'Valid postal code: $postalCode',
+        );
+      }
+
+      final invalid = [
+        '',
+        '1234',
+        '123456',
+        '12345-678',
+        '12345-67890',
+        '12345 6789',
+        '-12345',
+        '12345-',
+      ];
+
+      for (final postalCode in invalid) {
+        expect(
+          isPostalCode(postalCode),
+          isFalse,
+          reason: 'Invalid postal code: $postalCode',
+        );
+      }
+    });
+
+    test('isPhoneNumber', () {
+      final valid = [];
+
+      for (final phoneNumber in valid) {
+        expect(
+          isPhoneNumber(phoneNumber),
+          isTrue,
+          reason: 'Valid phone number: $phoneNumber',
+        );
+      }
+
+      final invalid = [];
+
+      for (final phoneNumber in invalid) {
+        expect(
+          isPhoneNumber(phoneNumber),
+          isFalse,
+          reason: 'Invalid phone number: $phoneNumber',
+        );
+      }
+    });
+
+    test('isInternationalPhoneNumber', () {
+      final valid = [];
+
+      for (final internationalPhoneNumber in valid) {
+        expect(
+          isInternationalPhoneNumber(internationalPhoneNumber),
+          isTrue,
+          reason: 'Valid international phone number: $internationalPhoneNumber',
+        );
+      }
+
+      final invalid = [];
+
+      for (final internationalPhoneNumber in invalid) {
+        expect(
+          isInternationalPhoneNumber(internationalPhoneNumber),
+          isFalse,
+          reason:
+              'Invalid international phone number: $internationalPhoneNumber',
+        );
+      }
+    });
+
+    test('isCreditCard', () {
+      final valid = [];
+
+      for (final creditCard in valid) {
+        expect(
+          isCreditCard(creditCard),
+          isTrue,
+          reason: 'Valid credit card: $creditCard',
+        );
+      }
+
+      final invalid = [];
+
+      for (final creditCard in invalid) {
+        expect(
+          isCreditCard(creditCard),
+          isFalse,
+          reason: 'Invalid credit card: $creditCard',
+        );
+      }
+    });
+
+    test('isIban', () {
+      final valid = [];
+
+      for (final iban in valid) {
+        expect(
+          isIban(iban),
+          isTrue,
+          reason: 'Valid IBAN: $iban',
+        );
+      }
+
+      final invalid = [];
+
+      for (final iban in invalid) {
+        expect(
+          isIban(iban),
+          isFalse,
+          reason: 'Invalid IBAN: $iban',
+        );
+      }
+    });
+
+    test('isBic', () {
+      final valid = [];
+
+      for (final bic in valid) {
+        expect(
+          isBic(bic),
+          isTrue,
+          reason: 'Valid BIC: $bic',
+        );
+      }
+
+      final invalid = [];
+
+      for (final bic in invalid) {
+        expect(
+          isBic(bic),
+          isFalse,
+          reason: 'Invalid BIC: $bic',
+        );
+      }
+    });
+
+    test('isDate', () {
+      final valid = [];
+
+      for (final date in valid) {
+        expect(
+          isDate(date),
+          isTrue,
+          reason: 'Valid date: $date',
+        );
+      }
+
+      final invalid = [];
+
+      for (final date in invalid) {
+        expect(
+          isDate(date),
+          isFalse,
+          reason: 'Invalid date: $date',
+        );
+      }
+    });
+
+    test('isTime', () {
+      final valid = [];
+
+      for (final time in valid) {
+        expect(
+          isTime(time),
+          isTrue,
+          reason: 'Valid time: $time',
+        );
+      }
+
+      final invalid = [];
+
+      for (final time in invalid) {
+        expect(
+          isTime(time),
+          isFalse,
+          reason: 'Invalid time: $time',
+        );
+      }
+    });
+
+    test('isTime12Hour', () {
+      final valid = [];
+
+      for (final time12Hour in valid) {
+        expect(
+          isTime12Hour(time12Hour),
+          isTrue,
+          reason: 'Valid 12-hour time: $time12Hour',
+        );
+      }
+
+      final invalid = [];
+
+      for (final time12Hour in invalid) {
+        expect(
+          isTime12Hour(time12Hour),
+          isFalse,
+          reason: 'Invalid 12-hour time: $time12Hour',
+        );
+      }
+    });
+
+
+    test('isDateTime', () {
+      final valid = [];
+
+      for (final dateTime in valid) {
+        expect(
+          isDateTime(dateTime),
+          isTrue,
+          reason: 'Valid date-time: $dateTime',
+        );
+      }
+
+      final invalid = [];
+
+      for (final dateTime in invalid) {
+        expect(
+          isDateTime(dateTime),
+          isFalse,
+          reason: 'Invalid date-time: $dateTime',
+        );
       }
     });
   });

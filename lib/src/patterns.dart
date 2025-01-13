@@ -184,13 +184,17 @@ enum Patterns {
   /// - `"example.com"` (invalid, missing protocol)
   url(r'(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})'),
 
+  email(
+    r'^(?!\.)(?!.*\.\.)[a-zA-Z0-9._%+-]+(?<!\.)@(?:(?!-)[a-zA-Z0-9-]+(?<!-)\.)+[a-zA-Z]{2,}$',
+  ),
+
   /// Matches an email address.
   ///
   /// Examples:
   /// - `"example@example.com"` (valid)
   /// - `"user.name+tag+sorting@example.com"` (valid)
   /// - `"plainaddress"` (invalid)
-  email(
+  emailRFC5322(
     r"^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$",
   ),
 
@@ -274,6 +278,12 @@ enum Patterns {
   /// - `"25:00:00"` (invalid)
   time(r'^([01]\d|2[0-3]):([0-5]\d)(:[0-5]\d)?$'),
 
+  /// Matches a time in 12-hour format (HH:mm AM/PM).
+  ///
+  /// Examples:
+  /// - `"12:00 AM"` (valid)
+  /// - `"11:59 PM"` (valid)
+  /// - `"12:00"` (invalid)
   time12Hour(r'^(0?[1-9]|1[0-2]):[0-5][0-9] (AM|PM)$'),
 
   /// Matches an ISO 8601 DateTime string.
@@ -381,7 +391,8 @@ final _table = <Patterns, RegExp>{
   Patterns.integer: RegExp(Patterns.integer.regex),
   Patterns.decimal: RegExp(Patterns.decimal.regex),
   Patterns.numeric: RegExp(Patterns.numeric.regex),
-  Patterns.hexadecimal: RegExp(Patterns.hexadecimal.regex, caseSensitive: false),
+  Patterns.hexadecimal:
+      RegExp(Patterns.hexadecimal.regex, caseSensitive: false),
   Patterns.hexColor: RegExp(Patterns.hexColor.regex, caseSensitive: false),
   Patterns.base64: RegExp(Patterns.base64.regex),
   Patterns.uuidV3: RegExp(Patterns.uuidV3.regex, caseSensitive: false),
@@ -396,6 +407,7 @@ final _table = <Patterns, RegExp>{
   Patterns.jwt: RegExp(Patterns.jwt.regex),
   Patterns.url: RegExp(Patterns.url.regex),
   Patterns.email: RegExp(Patterns.email.regex, caseSensitive: false),
+  Patterns.emailRFC5322: RegExp(Patterns.emailRFC5322.regex),
   Patterns.postalCode: RegExp(Patterns.postalCode.regex),
   Patterns.phoneNumber: RegExp(Patterns.phoneNumber.regex),
   Patterns.internationalPhoneNumber:
