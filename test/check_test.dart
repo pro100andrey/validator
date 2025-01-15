@@ -983,7 +983,16 @@ void main() {
     });
 
     test('isPhoneNumber', () {
-      final valid = [];
+      final valid = [
+        '+1234567890',
+        '123-456-7890',
+        '(123) 456-7890',
+        '+1 (123) 456-7890',
+        '123.456.7890',
+        '1234567890',
+        '+1-800-555-5555',
+        '8005555555',
+      ];
 
       for (final phoneNumber in valid) {
         expect(
@@ -993,7 +1002,15 @@ void main() {
         );
       }
 
-      final invalid = [];
+      final invalid = [
+        '',
+        '123',
+        'abc-def-ghij',
+        '+1234567890123456',
+        '123456',
+        '123 456 7890 1234',
+        '+-1234567890',
+      ];
 
       for (final phoneNumber in invalid) {
         expect(
@@ -1004,31 +1021,17 @@ void main() {
       }
     });
 
-    test('isInternationalPhoneNumber', () {
-      final valid = [];
-
-      for (final internationalPhoneNumber in valid) {
-        expect(
-          isInternationalPhoneNumber(internationalPhoneNumber),
-          isTrue,
-          reason: 'Valid international phone number: $internationalPhoneNumber',
-        );
-      }
-
-      final invalid = [];
-
-      for (final internationalPhoneNumber in invalid) {
-        expect(
-          isInternationalPhoneNumber(internationalPhoneNumber),
-          isFalse,
-          reason:
-              'Invalid international phone number: $internationalPhoneNumber',
-        );
-      }
-    });
-
     test('isCreditCard', () {
-      final valid = [];
+      final valid = [
+        '4111111111111111',
+        '5500000000000004',
+        '340000000000009',
+        '30000000000004',
+        '6011000000000004',
+        '3528000700000000',
+        '2221000000000009',
+        '5105105105105100',
+      ];
 
       for (final creditCard in valid) {
         expect(
@@ -1038,7 +1041,16 @@ void main() {
         );
       }
 
-      final invalid = [];
+      final invalid = [
+        '',
+        '1234567890123456',
+        '411111111111111',
+        '55000000000000044',
+        '3400 0000 0000 009',
+        '3000-0000-0000-04',
+        '6011*0000*0000*0004',
+        '0000000000000000',
+      ];
 
       for (final creditCard in invalid) {
         expect(
@@ -1049,52 +1061,15 @@ void main() {
       }
     });
 
-    test('isIban', () {
-      final valid = [];
-
-      for (final iban in valid) {
-        expect(
-          isIban(iban),
-          isTrue,
-          reason: 'Valid IBAN: $iban',
-        );
-      }
-
-      final invalid = [];
-
-      for (final iban in invalid) {
-        expect(
-          isIban(iban),
-          isFalse,
-          reason: 'Invalid IBAN: $iban',
-        );
-      }
-    });
-
-    test('isBic', () {
-      final valid = [];
-
-      for (final bic in valid) {
-        expect(
-          isBic(bic),
-          isTrue,
-          reason: 'Valid BIC: $bic',
-        );
-      }
-
-      final invalid = [];
-
-      for (final bic in invalid) {
-        expect(
-          isBic(bic),
-          isFalse,
-          reason: 'Invalid BIC: $bic',
-        );
-      }
-    });
-
     test('isDate', () {
-      final valid = [];
+      final valid = [
+        '2023-01-01',
+        '2000-12-31',
+        '1999-02-28',
+        '2024-02-29',
+        '1900-01-01',
+        '2023-11-30',
+      ];
 
       for (final date in valid) {
         expect(
@@ -1104,7 +1079,19 @@ void main() {
         );
       }
 
-      final invalid = [];
+      final invalid = [
+        '',
+        '2023-00-01',
+        '2023-13-01',
+        '2023-01-00',
+        '2023-01-32',
+        'abcd-12-31',
+        '2023-1-1',
+        '2023-01-1',
+        '2023-1-01',
+        '23-01-01',
+        '23-01-2004',
+      ];
 
       for (final date in invalid) {
         expect(
@@ -1116,7 +1103,14 @@ void main() {
     });
 
     test('isTime', () {
-      final valid = [];
+      final valid = [
+        '00:00',
+        '12:34',
+        '23:59',
+        '01:01:01',
+        '23:59:59',
+        '09:45:30',
+      ];
 
       for (final time in valid) {
         expect(
@@ -1126,7 +1120,18 @@ void main() {
         );
       }
 
-      final invalid = [];
+      final invalid = [
+        '',
+        '24:00',
+        '00:60',
+        '12:34:60',
+        '12:34:345',
+        '25:00',
+        '12:345',
+        '1234',
+        '12:34 AM',
+        '12:34 PM',
+      ];
 
       for (final time in invalid) {
         expect(
@@ -1138,7 +1143,14 @@ void main() {
     });
 
     test('isTime12Hour', () {
-      final valid = [];
+      final valid = [
+        '12:00 AM',
+        '12:00 PM',
+        '01:15 AM',
+        '11:59 PM',
+        '06:30 AM',
+        '10:45 PM',
+      ];
 
       for (final time12Hour in valid) {
         expect(
@@ -1148,7 +1160,21 @@ void main() {
         );
       }
 
-      final invalid = [];
+      final invalid = [
+        '',
+        '0:00 AM',
+        '12:60 AM',
+        '13:00 AM',
+        '12:00',
+        '12:00 am',
+        '12:00 pm',
+        '12:00 AM PM',
+        '12:00 AMPM',
+        '12-00 AM',
+        '12:00AM',
+        '12:00 PM ',
+        ' 12:00 PM',
+      ];
 
       for (final time12Hour in invalid) {
         expect(
@@ -1159,9 +1185,52 @@ void main() {
       }
     });
 
+    test('isIso8601DateTime', () {
+      final valid = [
+        '2023-01-12T15:30:00Z',
+        '2023-01-12T15:30:00.123Z',
+        '2023-01-12T15:30:00+01:00',
+        '2023-01-12T15:30:00-01:00',
+        '2023-01-12T15:30:00.123+01:00',
+        '2023-01-12T15:30:00.123-01:00',
+      ];
+
+      for (final dateTime in valid) {
+        expect(
+          isIso8601DateTime(dateTime),
+          isTrue,
+          reason: 'Valid ISO 8601 date-time: $dateTime',
+        );
+      }
+
+      final invalid = [
+        '',
+        '2023-01-12',
+        '2023-01-12T15:30',
+        '2023-01-12 15:30:00',
+        '2023-01-12T15:30:00.Z',
+        '2023-01-12T15:30:00Z+01:00',
+        '2023-01-12T15:30:00.123',
+        '2023-01-12T15:30:00+25:00',
+        '2023-01-12T15:30:00-25:00',
+        '2023-01-12T15:30:00.123+01',
+      ];
+
+      for (final dateTime in invalid) {
+        expect(
+          isIso8601DateTime(dateTime),
+          isFalse,
+          reason: 'Invalid ISO 8601 date-time: $dateTime',
+        );
+      }
+    });
 
     test('isDateTime', () {
-      final valid = [];
+      final valid = [
+        '2023-01-12 15:30:45',
+        '2022-12-31 23:59:59',
+        '2000-02-29 00:00:00',
+      ];
 
       for (final dateTime in valid) {
         expect(
@@ -1171,13 +1240,129 @@ void main() {
         );
       }
 
-      final invalid = [];
+      final invalid = [
+        '',
+        '2023-01-12',
+        '15:30:45',
+        '2023-01-32 15:30:45',
+        '2023-01-12 24:00:00',
+        '2023-01-12 15:60:00',
+        '2023-01-12 15:30:60',
+        '2023-01-12T15:30:45',
+      ];
 
       for (final dateTime in invalid) {
         expect(
           isDateTime(dateTime),
           isFalse,
           reason: 'Invalid date-time: $dateTime',
+        );
+      }
+    });
+
+    test('isHtmlTag', () {
+      final valid = [
+        '<div>',
+        '</div>',
+        '<img src="image.png" />',
+        '<input type="text" disabled>',
+        '<br/>',
+      ];
+
+      for (final tag in valid) {
+        expect(
+          isHtmlTag(tag),
+          isTrue,
+          reason: 'Valid HTML tag: $tag',
+        );
+      }
+
+      final invalid = [
+        '',
+        '<div',
+        '< div>',
+        '</div',
+        '<>',
+        '</>',
+      ];
+
+      for (final tag in invalid) {
+        expect(
+          isHtmlTag(tag),
+          isFalse,
+          reason: 'Invalid HTML tag: $tag',
+        );
+      }
+    });
+
+    test('isSlug', () {
+      final valid = [
+        'example',
+        'my-slug',
+        'slug-123',
+        '123-slug',
+        'a-very-long-slug-example',
+      ];
+
+      for (final slug in valid) {
+        expect(
+          isSlug(slug),
+          isTrue,
+          reason: 'Valid slug: $slug',
+        );
+      }
+
+      final invalid = [
+        '',
+        'Example',
+        'my_slug',
+        '-slug',
+        'slug-',
+        'slug--example',
+        'slug@123',
+      ];
+
+      for (final slug in invalid) {
+        expect(
+          isSlug(slug),
+          isFalse,
+          reason: 'Invalid slug: $slug',
+        );
+      }
+    });
+
+    test('isHashtag', () {
+      final valid = [
+        '#example',
+        '#123',
+        '#_underscore',
+        '#CamelCase',
+        '#123_456',
+      ];
+
+      for (final hashtag in valid) {
+        expect(
+          isHashtag(hashtag),
+          isTrue,
+          reason: 'Корректный хэштег: $hashtag',
+        );
+      }
+
+      final invalid = [
+        '',
+        'example',
+        '#',
+        '#example!',
+        '# example',
+        '#example#',
+        '#@example',
+      ];
+
+      for (final hashtag in invalid) {
+        expect(
+          isHashtag(hashtag),
+          isFalse,
+          reason: 'Некорректный хэштег: $hashtag',
         );
       }
     });

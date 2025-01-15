@@ -212,15 +212,9 @@ enum Patterns {
   /// - `"+1234567890"` (valid)
   /// - `"123-456-7890"` (valid)
   /// - `"abc-def-ghij"` (invalid)
-  phoneNumber(r'^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$'),
-
-  /// Matches an international phone number.
-  ///
-  /// Examples:
-  /// - `"+1234567890"` (valid)
-  /// - `"+1 (234) 567-8900"` (valid)
-  /// - `"123-456-7890"` (invalid, missing country code)
-  internationalPhoneNumber(r'^\+?[1-9]\d{1,14}$'),
+  phoneNumber(
+    r'^(\+?\d{1,3}[-.\s]?)?(\(?\d{3}\)?[-.\s]?)?\d{3}[-.\s]?\d{4}$',
+  ),
 
   /// Regex pattern to validate credit card numbers.
   ///
@@ -246,21 +240,6 @@ enum Patterns {
       '|6(?:011|5[0-9]{2})[0-9]{12}' // Discover
       '|(?:2131|1800|35[0-9]{3})[0-9]{11}' // JCB
       r')$'),
-
-  /// Matches an International Bank Account Number (IBAN).
-  ///
-  /// Examples:
-  /// - `"GB29NWBK60161331926819"` (valid)
-  /// - `"123456"` (invalid)
-  iban(r'^[A-Z]{2}\d{2}[A-Z0-9]{1,30}$'),
-
-  /// Matches a valid BIC (Bank Identifier Code).
-  ///
-  /// Examples:
-  /// - `"DEUTDEFFXXX"` (valid)
-  /// - `"NEDSZAJJ"` (valid)
-  /// - `"INVALIDBIC"` (invalid)
-  bic(r'^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$'),
 
   /// Matches a date in the format YYYY-MM-DD.
   ///
@@ -292,7 +271,7 @@ enum Patterns {
   /// - `"2023-01-12T15:30:00Z"` (valid)
   /// - `"2023-01-12"` (invalid, missing time part)
   iso8601DateTime(
-    r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z$',
+    r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(Z|([+-](0[0-9]|1[0-4]):[0-5][0-9]))$',
   ),
 
   /// Matches a date and time in the format YYYY-MM-DD HH:mm:ss.
@@ -320,55 +299,12 @@ enum Patterns {
   /// - `"MyPageTitle"` (invalid, uppercase letters not allowed)
   slug(r'^[a-z0-9]+(?:-[a-z0-9]+)*$'),
 
-  // Matches a monetary value (e.g., $1234.56).
-  ///
-  /// Examples:
-  /// - `"$1234.56"` (valid)
-  /// - `"1234.56"` (valid)
-  /// - `"1234.5"` (invalid)
-  currency(
-    r'^(?:(?:[^\d\s.,-] ?)?-?(\d{1,3}([,\.]\d{3})*|(\d+))([,\.]\d{1,2})?)$',
-  ),
-
-  /// Matches a YouTube video ID.
-  ///
-  /// Examples:
-  /// - `"dQw4w9WgXcQ"` (valid)
-  /// - `"12345"` (invalid, too short)
-  youtubeVideoId(r'^[a-zA-Z0-9_-]{11}$'),
-
-  /// Matches a YouTube video URL.
-  ///
-  /// Examples:
-  /// - `"https://www.youtube.com/watch?v=dQw4w9WgXcQ"` (valid)
-  /// - `"https://youtu.be/dQw4w9WgXcQ"` (valid)
-  /// - `"https://example.com/watch?v=dQw4w9WgXcQ"` (invalid)
-  youtubeUrl(
-    r'^(https?:\/\/)?(www\.)?(youtube\.com\/watch\?v=|youtu\.be\/)[a-zA-Z0-9_-]{11}$',
-  ),
-
   /// Matches a hashtag.
   ///
   /// Examples:
   /// - `"#example"` (valid)
   /// - `"example"` (invalid, missing '#')
   hashtag(r'^#[a-zA-Z0-9_]+$'),
-
-  /// Matches a Unix-style file path.
-  ///
-  /// Examples:
-  /// - `"/usr/local/bin"` (valid)
-  /// - `"~/Documents/file.txt"` (valid)
-  /// - `"C:\Windows\System32"` (invalid)
-  unixFilePath(r'^(/[^/\0]+)+/?$'),
-
-  /// Matches a Windows-style file path.
-  ///
-  /// Examples:
-  /// - `"C:\\Users\\John\\Documents"` (valid)
-  /// - `"C:/Windows/System32"` (valid)
-  /// - `"invalidPath/"` (invalid)
-  windowsFilePath(r'^[a-zA-Z]:\\(?:[^\\/:*?"<>|\r\n]+\\)*[^\\/:*?"<>|\r\n]*$'),
   ;
 
   const Patterns(this.regex);
@@ -410,11 +346,7 @@ final _table = <Patterns, RegExp>{
   Patterns.emailRFC5322: RegExp(Patterns.emailRFC5322.regex),
   Patterns.postalCode: RegExp(Patterns.postalCode.regex),
   Patterns.phoneNumber: RegExp(Patterns.phoneNumber.regex),
-  Patterns.internationalPhoneNumber:
-      RegExp(Patterns.internationalPhoneNumber.regex),
   Patterns.creditCard: RegExp(Patterns.creditCard.regex),
-  Patterns.iban: RegExp(Patterns.iban.regex),
-  Patterns.bic: RegExp(Patterns.bic.regex),
   Patterns.date: RegExp(Patterns.date.regex),
   Patterns.time: RegExp(Patterns.time.regex),
   Patterns.time12Hour: RegExp(Patterns.time12Hour.regex),
@@ -422,10 +354,5 @@ final _table = <Patterns, RegExp>{
   Patterns.dateTime: RegExp(Patterns.dateTime.regex),
   Patterns.htmlTag: RegExp(Patterns.htmlTag.regex),
   Patterns.slug: RegExp(Patterns.slug.regex),
-  Patterns.currency: RegExp(Patterns.currency.regex),
-  Patterns.youtubeVideoId: RegExp(Patterns.youtubeVideoId.regex),
-  Patterns.youtubeUrl: RegExp(Patterns.youtubeUrl.regex),
   Patterns.hashtag: RegExp(Patterns.hashtag.regex),
-  Patterns.unixFilePath: RegExp(Patterns.unixFilePath.regex),
-  Patterns.windowsFilePath: RegExp(Patterns.windowsFilePath.regex),
 };

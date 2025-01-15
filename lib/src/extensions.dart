@@ -1,8 +1,6 @@
 import 'check.dart' as check;
 
-
 extension StringCheck on String {
-
   /// Checks if the string consists only of whitespace characters (or is empty).
   bool get isWhitespace => check.isWhitespace(this);
 
@@ -16,7 +14,6 @@ extension StringCheck on String {
   /// Checks if the string contains surrogate pairs used for encoding characters
   /// outside the BMP in Unicode.
   bool get isSurrogatePairs => check.isSurrogatePairs(this);
-
 
   /// Checks if the string contains any non-ASCII Unicode characters.
   bool get isAnyNonAscii => check.isAnyNonAscii(this);
@@ -89,17 +86,8 @@ extension StringCheck on String {
   /// Checks if the string is a valid phone number in local format.
   bool get isPhoneNumber => check.isPhoneNumber(this);
 
-  /// Checks if the string is a valid international phone number.
-  bool get isInternationalPhoneNumber => check.isInternationalPhoneNumber(this);
-
   /// Checks if the string is a valid credit card number.
   bool get isCreditCard => check.isCreditCard(this);
-
-  /// Checks if the string is a valid IBAN (International Bank Account Number).
-  bool get isIban => check.isIban(this);
-
-  /// Checks if the string is a valid BIC (Bank Identifier Code).
-  bool get isBic => check.isBic(this);
 
   /// Checks if the string is a valid date.
   bool get isDate => check.isDate(this);
@@ -122,21 +110,6 @@ extension StringCheck on String {
   /// Checks if the string is a valid URL slug.
   bool get isSlug => check.isSlug(this);
 
-  /// Checks if the string is a valid currency format.
-  bool get isCurrency => check.isCurrency(this);
-
-  /// Checks if the string is a valid YouTube video ID.
-  bool get isYoutubeVideoId => check.isYoutubeVideoId(this);
-
-  /// Checks if the string is a valid YouTube video URL.
-  bool get isYoutubeUrl => check.isYoutubeUrl(this);
-
   /// Checks if the string is a valid hashtag (e.g., `#example`).
   bool get isHashtag => check.isHashtag(this);
-
-  /// Checks if the string is a valid Unix-style file path.
-  bool get isUnixFilePath => check.isUnixFilePath(this);
-
-  /// Checks if the string is a valid Windows-style file path.
-  bool get isWindowsFilePath => check.isWindowsFilePath(this);
 }

@@ -85,18 +85,8 @@ bool isPostalCode(String s) => Patterns.postalCode.pattern.hasMatch(s);
 /// Checks if the string is a valid phone number in local format.
 bool isPhoneNumber(String s) => Patterns.phoneNumber.pattern.hasMatch(s);
 
-/// Checks if the string is a valid international phone number.
-bool isInternationalPhoneNumber(String s) =>
-    Patterns.internationalPhoneNumber.pattern.hasMatch(s);
-
 /// Checks if the string is a valid credit card number.
 bool isCreditCard(String s) => Patterns.creditCard.pattern.hasMatch(s);
-
-/// Checks if the string is a valid IBAN (International Bank Account Number).
-bool isIban(String s) => Patterns.iban.pattern.hasMatch(s);
-
-/// Checks if the string is a valid BIC (Bank Identifier Code).
-bool isBic(String s) => Patterns.bic.pattern.hasMatch(s);
 
 /// Checks if the string is a valid date.
 bool isDate(String s) => Patterns.date.pattern.hasMatch(s);
@@ -120,21 +110,5 @@ bool isHtmlTag(String s) => Patterns.htmlTag.pattern.hasMatch(s);
 /// Checks if the string is a valid URL slug.
 bool isSlug(String s) => Patterns.slug.pattern.hasMatch(s);
 
-/// Checks if the string is a valid currency format.
-bool isCurrency(String s) => Patterns.currency.pattern.hasMatch(s);
-
-/// Checks if the string is a valid YouTube video ID.
-bool isYoutubeVideoId(String s) => Patterns.youtubeVideoId.pattern.hasMatch(s);
-
-/// Checks if the string is a valid YouTube video URL.
-bool isYoutubeUrl(String s) => Patterns.youtubeUrl.pattern.hasMatch(s);
-
 /// Checks if the string is a valid hashtag (e.g., `#example`).
 bool isHashtag(String s) => Patterns.hashtag.pattern.hasMatch(s);
-
-/// Checks if the string is a valid Unix-style file path.
-bool isUnixFilePath(String s) => Patterns.unixFilePath.pattern.hasMatch(s);
-
-/// Checks if the string is a valid Windows-style file path.
-bool isWindowsFilePath(String s) =>
-    Patterns.windowsFilePath.pattern.hasMatch(s);
