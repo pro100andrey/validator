@@ -1,31 +1,22 @@
 import '../pro_validator.dart';
+import 'check.dart';
 
-/// Modes for handling empty values in validators.
-enum EmptyValueMode {
-  /// Ignore empty values entirely.
-  ignore,
 
-  /// Treat empty values as valid.
-  valid,
-
-  /// Treat empty values as invalid.
-  invalid,
-}
 
 abstract class TextValidator extends Validator<String> {
   const TextValidator({
     required super.error,
-    this.emptyValueMode = EmptyValueMode.ignore,
+    this.config = const ValidatorConfig(),
   });
 
-  final EmptyValueMode emptyValueMode;
+  final bool config;
 
   @override
   String? call(String? value) {
     final toTest = value ?? '';
 
     if (toTest.isEmpty) {
-      switch (emptyValueMode) {
+      switch (config.valueMode) {
         case EmptyValueMode.ignore:
           return null; // Skip validation for empty values
 
@@ -41,18 +32,18 @@ abstract class TextValidator extends Validator<String> {
   }
 
   /// Method to check if an input matches a given pattern
-  bool hasMatch(
-    String pattern,
-    String input, {
-    bool caseSensitive = true,
-  }) =>
-      RegExp(pattern, caseSensitive: caseSensitive).hasMatch(input);
+  // bool hasMatch(
+  //   String pattern,
+  //   String input, {
+  //   bool caseSensitive = true,
+  // }) =>
+  //     RegExp(pattern, caseSensitive: caseSensitive).hasMatch(input);
 }
 
 class RequiredValidator extends TextValidator {
   const RequiredValidator({
     required super.error,
-    super.emptyValueMode,
+    super.config,
   });
 
   @override
@@ -63,7 +54,7 @@ class MaxLengthValidator extends TextValidator {
   const MaxLengthValidator({
     required this.max,
     required super.error,
-    super.emptyValueMode,
+    super.config,
   });
 
   final int max;
@@ -76,7 +67,7 @@ class MinLengthValidator extends TextValidator {
   const MinLengthValidator({
     required this.min,
     required super.error,
-    super.emptyValueMode,
+    super.config,
   });
 
   final int min;
@@ -88,7 +79,7 @@ class MinLengthValidator extends TextValidator {
 class HasUppercaseValidator extends TextValidator {
   const HasUppercaseValidator({
     required super.error,
-    super.emptyValueMode,
+    super.config,
   });
 
   /// Regex pattern to validate uppercase characters.
@@ -104,7 +95,7 @@ class HasUppercaseValidator extends TextValidator {
 class HasLowercaseValidator extends TextValidator {
   const HasLowercaseValidator({
     required super.error,
-    super.emptyValueMode,
+    super.config,
   });
 
   /// Regex pattern to validate lowercase characters
@@ -120,7 +111,7 @@ class HasLowercaseValidator extends TextValidator {
 class HasANumberValidator extends TextValidator {
   const HasANumberValidator({
     required super.error,
-    super.emptyValueMode,
+    super.config,
   });
 
   /// Regex pattern to validate lowercase characters.
@@ -138,7 +129,7 @@ class LengthRangeValidator extends TextValidator {
     required this.min,
     required this.max,
     required super.error,
-    super.emptyValueMode,
+    super.config,
   });
 
   final int min;
@@ -153,7 +144,7 @@ class NumRangeValidator extends TextValidator {
     required this.min,
     required this.max,
     required super.error,
-    super.emptyValueMode,
+    super.config,
   });
 
   final num min;

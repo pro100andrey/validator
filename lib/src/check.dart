@@ -112,3 +112,6 @@ bool isSlug(String s) => Patterns.slug.pattern.hasMatch(s);
 
 /// Checks if the string is a valid hashtag (e.g., `#example`).
 bool isHashtag(String s) => Patterns.hashtag.pattern.hasMatch(s);
+
+bool hasMatch(String pattern, String input, {bool caseSensitive = true}) =>
+    RegExp(pattern, caseSensitive: caseSensitive).hasMatch(input);
