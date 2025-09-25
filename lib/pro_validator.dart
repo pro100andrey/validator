@@ -4,4 +4,4 @@ library;
 export 'src/credit_card_validator.dart';
 export 'src/format_validator.dart';
 export 'src/text_validator.dart';
-export 'src/validator.dart';
+export 'src/validator/validator.dart';

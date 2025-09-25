@@ -1,4 +1,4 @@
-import 'check.dart' as check;
+import 'checkers.dart' as check;
 
 extension StringCheck on String {
   /// Checks if the string consists only of whitespace characters (or is empty).
@@ -113,3 +113,5 @@ extension StringCheck on String {
   /// Checks if the string is a valid hashtag (e.g., `#example`).
   bool get isHashtag => check.isHashtag(this);
 }
+
+

@@ -1,4 +1,4 @@
-import 'check.dart';
+import 'string/checkers.dart';
 import 'text_validator.dart';
 
 abstract class PatternTextValidator extends TextValidator {
@@ -6,7 +6,6 @@ abstract class PatternTextValidator extends TextValidator {
     required super.error,
     required this.pattern,
     this.caseSensitive = true,
-    super.config,
   });
 
   final String pattern;
@@ -18,10 +17,7 @@ abstract class PatternTextValidator extends TextValidator {
 }
 
 class EmailValidator extends TextValidator {
-  const EmailValidator({
-    required super.error,
-    super.config,
-  });
+  const EmailValidator({required super.error});
 
   /// Regex pattern to validate email string.
   // static const _emailPattern =
@@ -32,10 +28,7 @@ class EmailValidator extends TextValidator {
 }
 
 class PhoneValidator extends TextValidator {
-  const PhoneValidator({
-    required super.error,
-    super.config,
-  });
+  const PhoneValidator({required super.error});
 
   // /// Regex pattern to validate phone string.
   // static const _regex =
@@ -46,10 +39,7 @@ class PhoneValidator extends TextValidator {
 }
 
 class UrlValidator extends TextValidator {
-  const UrlValidator({
-    required super.error,
-    super.config,
-  });
+  const UrlValidator({required super.error});
 
   /// Regex pattern to validate url string.
   // static const _regex =

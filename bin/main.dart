@@ -5,9 +5,7 @@ import 'package:pro_validator/pro_validator.dart';
 void main() {
   const emailValidator = MultiValidator(
     validators: [
-      RequiredValidator(
-        error: 'Required field',
-      ),
+      RequiredValidator(error: 'Required field'),
       EmailValidator(error: 'Invalid email'),
     ],
   );
@@ -19,9 +17,7 @@ void main() {
 
   const passwordValidator = MultiValidator(
     validators: [
-      RequiredValidator(
-        error: 'Required field',
-      ),
+      RequiredValidator(error: 'Required field'),
       MinLengthValidator(min: 8, error: 'Min length 8'),
       HasUppercaseValidator(error: 'Must contain at least one uppercase'),
       HasLowercaseValidator(error: 'Must contain at least one lowercase'),

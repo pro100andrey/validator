@@ -1,10 +1,9 @@
-import 'check.dart';
+import 'string/checkers.dart';
 import 'text_validator.dart';
 
 class CreditCardValidator extends TextValidator {
   const CreditCardValidator({
     required super.error,
-    super.config,
   });
 
   @override

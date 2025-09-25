@@ -182,7 +182,9 @@ enum Patterns {
   /// - `"https://example.com"` (valid)
   /// - `"http://www.example.com"` (valid)
   /// - `"example.com"` (invalid, missing protocol)
-  url(r'(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})'),
+  url(
+    r'(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})',
+  ),
 
   email(
     r'^(?!\.)(?!.*\.\.)[a-zA-Z0-9._%+-]+(?<!\.)@(?:(?!-)[a-zA-Z0-9-]+(?<!-)\.)+[a-zA-Z]{2,}$',
@@ -212,9 +214,7 @@ enum Patterns {
   /// - `"+1234567890"` (valid)
   /// - `"123-456-7890"` (valid)
   /// - `"abc-def-ghij"` (invalid)
-  phoneNumber(
-    r'^(\+?\d{1,3}[-.\s]?)?(\(?\d{3}\)?[-.\s]?)?\d{3}[-.\s]?\d{4}$',
-  ),
+  phoneNumber(r'^(\+?\d{1,3}[-.\s]?)?(\(?\d{3}\)?[-.\s]?)?\d{3}[-.\s]?\d{4}$'),
 
   /// Regex pattern to validate credit card numbers.
   ///
@@ -231,15 +231,17 @@ enum Patterns {
   /// - `"4111 1111 1111 1111"` (Visa, valid)
   /// - `"5500 0000 0000 0004"` (MasterCard, valid)
   /// - `"1234 5678 9012 3456"` (invalid)
-  creditCard('^('
-      '?:4[0-9]{12}(?:[0-9]{3})?' // Visa
-      '|(?:5[1-5][0-9]{2}' // MasterCard
-      '|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}'
-      '|3[47][0-9]{13}' // American Express
-      '|3(?:0[0-5]|[68][0-9])[0-9]{11}' // Diners Club
-      '|6(?:011|5[0-9]{2})[0-9]{12}' // Discover
-      '|(?:2131|1800|35[0-9]{3})[0-9]{11}' // JCB
-      r')$'),
+  creditCard(
+    '^('
+    '?:4[0-9]{12}(?:[0-9]{3})?' // Visa
+    '|(?:5[1-5][0-9]{2}' // MasterCard
+    '|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}'
+    '|3[47][0-9]{13}' // American Express
+    '|3(?:0[0-5]|[68][0-9])[0-9]{11}' // Diners Club
+    '|6(?:011|5[0-9]{2})[0-9]{12}' // Discover
+    '|(?:2131|1800|35[0-9]{3})[0-9]{11}' // JCB
+    r')$',
+  ),
 
   /// Matches a date in the format YYYY-MM-DD.
   ///
@@ -305,7 +307,46 @@ enum Patterns {
   /// - `"#example"` (valid)
   /// - `"example"` (invalid, missing '#')
   hashtag(r'^#[a-zA-Z0-9_]+$'),
-  ;
+
+  /// Matches a longitude value.
+  ///
+  /// Examples:
+  /// - `"-123.456"` (valid)
+  /// - `"180.0"` (valid)
+  /// - `"200.0"` (invalid)
+  latitude(r'^\-?(90(\.0+)?|[1-8]?\d(\.\d+)?)$'),
+
+  /// Matches a latitude value.
+  ///
+  /// Examples:
+  /// - `"-45.678"` (valid)
+  /// - `"90.0"` (valid)
+  /// - `"100.0"` (invalid)
+  longitude(r'^\-?(180(\.0+)?|(1[0-7]\d|[1-9]?\d)(\.\d+)?)$'),
+
+  /// Matches geographical coordinates in "latitude, longitude" format.
+  ///
+  /// Examples:
+  /// - `"45.678, -123.456"` (valid)
+  /// - `"-90.0, 180.0"` (valid)
+  /// - `"91.0, 180.0"` (invalid)
+  geoCoordinates(
+    r'^\-?(90(\.0+)?|[1-8]?\d(\.\d+)?),\s*\-?(180(\.0+)?|(1[0-7]\d|[1-9]?\d)(\.\d+)?)$',
+  ),
+
+  /// Matches an International Bank Account Number (IBAN).
+  ///
+  /// Examples:
+  /// - `"GB82WEST12345698765432"` (valid)
+  /// - `"DE89370400440532013000"` (valid)
+  /// - `"INVALIDIBAN123"` (invalid)
+  iban(r'^[A-Z]{2}\d{2}[A-Z0-9]{1,30}$'),
+
+  /// Matches a SWIFT/BIC code.
+  swiftOrBic(r'^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$'),
+
+  /// Matches a Value Added Tax (VAT) number.
+  vat(r'^[A-Z]{2}[0-9A-Z]{2,12}$');
 
   const Patterns(this.regex);
 
@@ -327,8 +368,10 @@ final _table = <Patterns, RegExp>{
   Patterns.integer: RegExp(Patterns.integer.regex),
   Patterns.decimal: RegExp(Patterns.decimal.regex),
   Patterns.numeric: RegExp(Patterns.numeric.regex),
-  Patterns.hexadecimal:
-      RegExp(Patterns.hexadecimal.regex, caseSensitive: false),
+  Patterns.hexadecimal: RegExp(
+    Patterns.hexadecimal.regex,
+    caseSensitive: false,
+  ),
   Patterns.hexColor: RegExp(Patterns.hexColor.regex, caseSensitive: false),
   Patterns.base64: RegExp(Patterns.base64.regex),
   Patterns.uuidV3: RegExp(Patterns.uuidV3.regex, caseSensitive: false),
@@ -355,4 +398,10 @@ final _table = <Patterns, RegExp>{
   Patterns.htmlTag: RegExp(Patterns.htmlTag.regex),
   Patterns.slug: RegExp(Patterns.slug.regex),
   Patterns.hashtag: RegExp(Patterns.hashtag.regex),
+  Patterns.latitude: RegExp(Patterns.latitude.regex),
+  Patterns.longitude: RegExp(Patterns.longitude.regex),
+  Patterns.geoCoordinates: RegExp(Patterns.geoCoordinates.regex),
+  Patterns.iban: RegExp(Patterns.iban.regex),
+  Patterns.swiftOrBic: RegExp(Patterns.swiftOrBic.regex),
+  Patterns.vat: RegExp(Patterns.vat.regex),
 };

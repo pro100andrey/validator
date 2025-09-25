@@ -113,5 +113,24 @@ bool isSlug(String s) => Patterns.slug.pattern.hasMatch(s);
 /// Checks if the string is a valid hashtag (e.g., `#example`).
 bool isHashtag(String s) => Patterns.hashtag.pattern.hasMatch(s);
 
+/// Checks if the input string matches the given pattern.
 bool hasMatch(String pattern, String input, {bool caseSensitive = true}) =>
     RegExp(pattern, caseSensitive: caseSensitive).hasMatch(input);
+
+/// Checks if the string is a valid latitude.
+bool isLatitude(String s) => Patterns.latitude.pattern.hasMatch(s);
+
+/// Checks if the string is a valid longitude.
+bool isLongitude(String s) => Patterns.longitude.pattern.hasMatch(s);
+
+/// Checks if the string is a valid geo-coordinates.
+bool isGeoCoordinates(String s) => Patterns.geoCoordinates.pattern.hasMatch(s);
+
+/// Checks if the string is a valid IBAN (International Bank Account Number).
+bool isIban(String s) => Patterns.iban.pattern.hasMatch(s);
+
+/// Checks if the string is a valid SWIFT/BIC code.
+bool isSwiftOrBic(String s) => Patterns.swiftOrBic.pattern.hasMatch(s);
+
+/// Checks if the string is a valid VAT (Value Added Tax) number.
+bool isVat(String s) => Patterns.vat.pattern.hasMatch(s);

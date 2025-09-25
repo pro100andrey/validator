@@ -1,32 +1,12 @@
 import '../pro_validator.dart';
-import 'check.dart';
-
-
+import 'string/checkers.dart';
 
 abstract class TextValidator extends Validator<String> {
-  const TextValidator({
-    required super.error,
-    this.config = const ValidatorConfig(),
-  });
-
-  final bool config;
+  const TextValidator({required super.error});
 
   @override
   String? call(String? value) {
     final toTest = value ?? '';
-
-    if (toTest.isEmpty) {
-      switch (config.valueMode) {
-        case EmptyValueMode.ignore:
-          return null; // Skip validation for empty values
-
-        case EmptyValueMode.valid:
-          return null; // Consider empty values as valid
-
-        case EmptyValueMode.invalid:
-          return error; // Consider empty values as invalid
-      }
-    }
 
     return super(toTest);
   }
@@ -41,21 +21,14 @@ abstract class TextValidator extends Validator<String> {
 }
 
 class RequiredValidator extends TextValidator {
-  const RequiredValidator({
-    required super.error,
-    super.config,
-  });
+  const RequiredValidator({required super.error});
 
   @override
   bool isValid(String value) => value.trim().isNotEmpty;
 }
 
 class MaxLengthValidator extends TextValidator {
-  const MaxLengthValidator({
-    required this.max,
-    required super.error,
-    super.config,
-  });
+  const MaxLengthValidator({required this.max, required super.error});
 
   final int max;
 
@@ -64,11 +37,7 @@ class MaxLengthValidator extends TextValidator {
 }
 
 class MinLengthValidator extends TextValidator {
-  const MinLengthValidator({
-    required this.min,
-    required super.error,
-    super.config,
-  });
+  const MinLengthValidator({required this.min, required super.error});
 
   final int min;
 
@@ -77,51 +46,33 @@ class MinLengthValidator extends TextValidator {
 }
 
 class HasUppercaseValidator extends TextValidator {
-  const HasUppercaseValidator({
-    required super.error,
-    super.config,
-  });
+  const HasUppercaseValidator({required super.error});
 
   /// Regex pattern to validate uppercase characters.
   static const _pattern = '[A-Z]';
 
   @override
-  bool isValid(String value) => hasMatch(
-        _pattern,
-        value,
-      );
+  bool isValid(String value) => hasMatch(_pattern, value);
 }
 
 class HasLowercaseValidator extends TextValidator {
-  const HasLowercaseValidator({
-    required super.error,
-    super.config,
-  });
+  const HasLowercaseValidator({required super.error});
 
   /// Regex pattern to validate lowercase characters
   static const _pattern = '[a-z]';
 
   @override
-  bool isValid(String value) => hasMatch(
-        _pattern,
-        value,
-      );
+  bool isValid(String value) => hasMatch(_pattern, value);
 }
 
 class HasANumberValidator extends TextValidator {
-  const HasANumberValidator({
-    required super.error,
-    super.config,
-  });
+  const HasANumberValidator({required super.error});
 
   /// Regex pattern to validate lowercase characters.
   static const _pattern = '[0-9]';
 
   @override
-  bool isValid(String value) => hasMatch(
-        _pattern,
-        value,
-      );
+  bool isValid(String value) => hasMatch(_pattern, value);
 }
 
 class LengthRangeValidator extends TextValidator {
@@ -129,7 +80,6 @@ class LengthRangeValidator extends TextValidator {
     required this.min,
     required this.max,
     required super.error,
-    super.config,
   });
 
   final int min;
@@ -144,7 +94,6 @@ class NumRangeValidator extends TextValidator {
     required this.min,
     required this.max,
     required super.error,
-    super.config,
   });
 
   final num min;
