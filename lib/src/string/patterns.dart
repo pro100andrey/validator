@@ -1,3 +1,5 @@
+// Regular expression sources are kept on a single line for readability and to
+// avoid accidental whitespace inside the patterns.
 // ignore_for_file: lines_longer_than_80_chars
 
 enum Patterns {
@@ -76,7 +78,7 @@ enum Patterns {
   /// - `"1f4"` (valid)
   /// - `"ABCDEF"` (valid)
   /// - `"GHI"` (invalid)
-  hexadecimal(r'^[0-9a-fA-F]+$'),
+  hexadecimal(r'^[0-9a-fA-F]+$', caseSensitive: false),
 
   /// Matches a hex color string.
   ///
@@ -85,7 +87,7 @@ enum Patterns {
   /// - `"#FFFFFF"` (valid)
   /// - `"FFF"` (valid)
   /// - `"123456"` (invalid)
-  hexColor(r'^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$'),
+  hexColor(r'^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$', caseSensitive: false),
 
   /// Matches a Base64 encoded string.
   ///
@@ -102,6 +104,7 @@ enum Patterns {
   /// - `"123E4567-E89B-3D56-A456-426614174000"` (valid)
   uuidV3(
     r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-3[0-9a-fA-F]{3}-[89ab][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$',
+    caseSensitive: false,
   ),
 
   /// Matches a universally unique identifier (UUID) version 4 string.
@@ -110,6 +113,7 @@ enum Patterns {
   /// - `"550E8400-E29B-41D4-A716-446655440000"` (valid)
   uuidV4(
     r'^[0-9A-F]{8}-[0-9A-F]{4}-4[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$',
+    caseSensitive: false,
   ),
 
   /// Matches a universally unique identifier (UUID) version 5 string.
@@ -118,20 +122,24 @@ enum Patterns {
   /// - `"F47AC10B-58CC-4372-A567-0E02B2C3D479"` (valid)
   uuidV5(
     r'^[0-9A-F]{8}-[0-9A-F]{4}-5[0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$',
+    caseSensitive: false,
   ),
 
   /// Matches a universally unique identifier (UUID) string of any version.
   ///
   /// Examples:
   /// - `"123E4567-E89B-12D3-A456-426614174000"` (valid)
-  uuid(r'^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$'),
+  uuid(
+    r'^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$',
+    caseSensitive: false,
+  ),
 
   /// Matches a hexadecimal UUID.
   ///
   /// Examples:
   /// - `"123E4567E89B12D3A456426614174000"` (valid)
   /// - `"not-a-uuid"` (invalid)
-  hexUuid(r'^[0-9a-fA-F]{32}$'),
+  hexUuid(r'^[0-9a-fA-F]{32}$', caseSensitive: false),
 
   /// Matches an IPv4 address.
   ///
@@ -167,7 +175,7 @@ enum Patterns {
   /// Examples:
   /// - `"00:1A:2B:3C:4D:5E"` (valid)
   /// - `"00-1A-2B-3C-4D-5E"` (valid)
-  macAddress(r'^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$'),
+  macAddress(r'^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$', caseSensitive: false),
 
   /// Matches a JSON Web Token (JWT).
   ///
@@ -186,11 +194,18 @@ enum Patterns {
     r'(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})',
   ),
 
+  /// Matches an email address.
+  ///
+  /// Examples:
+  /// - `"example@example.com"` (valid)
+  /// - `"user.name+tag+sorting@example.com"` (valid)
+  /// - `"plainaddress"` (invalid)
   email(
     r'^(?!\.)(?!.*\.\.)[a-zA-Z0-9._%+-]+(?<!\.)@(?:(?!-)[a-zA-Z0-9-]+(?<!-)\.)+[a-zA-Z]{2,}$',
+    caseSensitive: false,
   ),
 
-  /// Matches an email address.
+  /// Matches an email address according to the RFC 5322 specification.
   ///
   /// Examples:
   /// - `"example@example.com"` (valid)
@@ -308,20 +323,20 @@ enum Patterns {
   /// - `"example"` (invalid, missing '#')
   hashtag(r'^#[a-zA-Z0-9_]+$'),
 
-  /// Matches a longitude value.
-  ///
-  /// Examples:
-  /// - `"-123.456"` (valid)
-  /// - `"180.0"` (valid)
-  /// - `"200.0"` (invalid)
-  latitude(r'^\-?(90(\.0+)?|[1-8]?\d(\.\d+)?)$'),
-
-  /// Matches a latitude value.
+  /// Matches a latitude value (between -90 and 90).
   ///
   /// Examples:
   /// - `"-45.678"` (valid)
   /// - `"90.0"` (valid)
   /// - `"100.0"` (invalid)
+  latitude(r'^\-?(90(\.0+)?|[1-8]?\d(\.\d+)?)$'),
+
+  /// Matches a longitude value (between -180 and 180).
+  ///
+  /// Examples:
+  /// - `"-123.456"` (valid)
+  /// - `"180.0"` (valid)
+  /// - `"200.0"` (invalid)
   longitude(r'^\-?(180(\.0+)?|(1[0-7]\d|[1-9]?\d)(\.\d+)?)$'),
 
   /// Matches geographical coordinates in "latitude, longitude" format.
@@ -348,60 +363,26 @@ enum Patterns {
   /// Matches a Value Added Tax (VAT) number.
   vat(r'^[A-Z]{2}[0-9A-Z]{2,12}$');
 
-  const Patterns(this.regex);
+  const Patterns(this.regex, {this.caseSensitive = true});
 
+  /// The regular expression source for this pattern.
   final String regex;
 
-  /// Returns a regular expression for the given pattern.
-  RegExp get pattern => _table[this]!;
+  /// Whether the compiled [pattern] matches case-sensitively.
+  final bool caseSensitive;
+
+  /// The compiled regular expression for this pattern.
+  RegExp get pattern => _cache[this]!;
+
+  /// Returns `true` if [input] matches this pattern.
+  bool hasMatch(String input) => pattern.hasMatch(input);
+
+  /// Compiled regular expressions for every case, built once each.
+  ///
+  /// Derived from [values], so a new case is compiled automatically with its
+  /// own [caseSensitive] flag — nothing to keep in sync by hand, and [pattern]
+  /// can never miss an entry.
+  static final _cache = <Patterns, RegExp>{
+    for (final p in values) p: RegExp(p.regex, caseSensitive: p.caseSensitive),
+  };
 }
-
-/// Table of common patterns.
-
-final _table = <Patterns, RegExp>{
-  Patterns.whitespace: RegExp(Patterns.whitespace.regex),
-  Patterns.alpha: RegExp(Patterns.alpha.regex),
-  Patterns.alphaNumeric: RegExp(Patterns.alphaNumeric.regex),
-  Patterns.surrogatePairs: RegExp(Patterns.surrogatePairs.regex),
-  Patterns.anyNonAscii: RegExp(Patterns.anyNonAscii.regex),
-  Patterns.onlyAscii: RegExp(Patterns.onlyAscii.regex),
-  Patterns.integer: RegExp(Patterns.integer.regex),
-  Patterns.decimal: RegExp(Patterns.decimal.regex),
-  Patterns.numeric: RegExp(Patterns.numeric.regex),
-  Patterns.hexadecimal: RegExp(
-    Patterns.hexadecimal.regex,
-    caseSensitive: false,
-  ),
-  Patterns.hexColor: RegExp(Patterns.hexColor.regex, caseSensitive: false),
-  Patterns.base64: RegExp(Patterns.base64.regex),
-  Patterns.uuidV3: RegExp(Patterns.uuidV3.regex, caseSensitive: false),
-  Patterns.uuidV4: RegExp(Patterns.uuidV4.regex, caseSensitive: false),
-  Patterns.uuidV5: RegExp(Patterns.uuidV5.regex, caseSensitive: false),
-  Patterns.uuid: RegExp(Patterns.uuid.regex, caseSensitive: false),
-  Patterns.hexUuid: RegExp(Patterns.hexUuid.regex, caseSensitive: false),
-  Patterns.ipv4: RegExp(Patterns.ipv4.regex),
-  Patterns.ipv4WithMask: RegExp(Patterns.ipv4WithMask.regex),
-  Patterns.ipv6: RegExp(Patterns.ipv6.regex),
-  Patterns.macAddress: RegExp(Patterns.macAddress.regex, caseSensitive: false),
-  Patterns.jwt: RegExp(Patterns.jwt.regex),
-  Patterns.url: RegExp(Patterns.url.regex),
-  Patterns.email: RegExp(Patterns.email.regex, caseSensitive: false),
-  Patterns.emailRFC5322: RegExp(Patterns.emailRFC5322.regex),
-  Patterns.postalCode: RegExp(Patterns.postalCode.regex),
-  Patterns.phoneNumber: RegExp(Patterns.phoneNumber.regex),
-  Patterns.creditCard: RegExp(Patterns.creditCard.regex),
-  Patterns.date: RegExp(Patterns.date.regex),
-  Patterns.time: RegExp(Patterns.time.regex),
-  Patterns.time12Hour: RegExp(Patterns.time12Hour.regex),
-  Patterns.iso8601DateTime: RegExp(Patterns.iso8601DateTime.regex),
-  Patterns.dateTime: RegExp(Patterns.dateTime.regex),
-  Patterns.htmlTag: RegExp(Patterns.htmlTag.regex),
-  Patterns.slug: RegExp(Patterns.slug.regex),
-  Patterns.hashtag: RegExp(Patterns.hashtag.regex),
-  Patterns.latitude: RegExp(Patterns.latitude.regex),
-  Patterns.longitude: RegExp(Patterns.longitude.regex),
-  Patterns.geoCoordinates: RegExp(Patterns.geoCoordinates.regex),
-  Patterns.iban: RegExp(Patterns.iban.regex),
-  Patterns.swiftOrBic: RegExp(Patterns.swiftOrBic.regex),
-  Patterns.vat: RegExp(Patterns.vat.regex),
-};
