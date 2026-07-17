@@ -1,4 +1,4 @@
-import 'validator/validator.dart';
+import '../core/validator.dart';
 
 /// Ensures the number is greater than or equal to [min].
 class MinValidator extends Validator<num> {

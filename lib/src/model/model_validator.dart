@@ -5,7 +5,7 @@
 // ignore_for_file: avoid_returning_this, unsafe_variance
 import 'package:meta/meta.dart';
 
-import 'validator/validator.dart';
+import '../core/validator.dart';
 
 /// The outcome of validating a model: which field failed with which messages.
 ///

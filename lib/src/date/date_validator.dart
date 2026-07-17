@@ -1,4 +1,4 @@
-import 'validator/validator.dart';
+import '../core/validator.dart';
 
 /// Ensures the value is strictly after [dateTime].
 class AfterValidator extends Validator<DateTime> {

@@ -1,4 +1,4 @@
-import 'validator/validator.dart';
+import '../core/validator.dart';
 
 /// Base class for validators that operate on optional text (`String?`).
 ///

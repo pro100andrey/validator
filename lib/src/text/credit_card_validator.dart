@@ -1,4 +1,4 @@
-import 'string/checkers.dart';
+import '../string/checkers.dart';
 import 'text_validator.dart';
 
 /// Ensures the value is a plausible credit card number.

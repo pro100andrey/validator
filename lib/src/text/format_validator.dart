@@ -1,4 +1,4 @@
-import 'string/checkers.dart';
+import '../string/checkers.dart';
 import 'text_validator.dart';
 
 /// Base class for validators backed by a regular expression.
