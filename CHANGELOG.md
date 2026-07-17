@@ -53,7 +53,7 @@ whole-model validation layer. The library is split into focused modules
 * `PatternValidator.fromRegExp` to reuse a pre-compiled `RegExp` (any flags);
   string-built patterns are compiled once and cached.
 * Public `Patterns` enum, `isX(String)` checkers and `String` extensions
-  (`'x'.isEmail`, `isLuhnValid(...)`, etc.), now exported from the package.
+  (`'x'.isEmail`, `isLuhn(...)`, etc.), now exported from the package.
 
 ### Fixed
 

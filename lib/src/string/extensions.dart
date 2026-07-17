@@ -132,5 +132,5 @@ extension StringCheck on String {
   bool get isVat => check.isVat(this);
 
   /// Checks if the string of digits satisfies the Luhn checksum.
-  bool get isLuhn => check.isLuhnValid(this);
+  bool get isLuhn => check.isLuhn(this);
 }

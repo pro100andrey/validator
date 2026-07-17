@@ -17,6 +17,6 @@ class CreditCardValidator extends TextValidator {
   bool isValid(String value) {
     final sanitized = value.replaceAll(RegExp('[^0-9]+'), '');
 
-    return isCreditCard(sanitized) && isLuhnValid(sanitized);
+    return isCreditCard(sanitized) && isLuhn(sanitized);
   }
 }

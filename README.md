@@ -173,7 +173,7 @@ isEmail('user@mail.com');                      // top-level checker
 'user@mail.com'.isEmail;                       // String extension
 Patterns.email.hasMatch('user@mail.com');      // the pattern itself
 
-isLuhnValid('79927398713');                    // true
+isLuhn('79927398713');                         // true
 '123E4567-E89B-12D3-A456-426614174000'.isUuid; // true
 '#FF8800'.isHexColor;                          // true
 ```

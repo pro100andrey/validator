@@ -38,5 +38,5 @@ void main() {
   // `CreditCardValidator` strips spaces/dashes and also runs the Luhn check.
   print('card is valid: ${'4111111111111111'.isCreditCard}');
   print('is email: ${'user@mail.com'.isEmail}');
-  print('isLuhn(79927398713): ${isLuhnValid('79927398713')}');
+  print('isLuhn(79927398713): ${isLuhn('79927398713')}');
 }

@@ -25,19 +25,19 @@ void main() {
     test('empty is skipped', () => expect(validator(''), isNull));
   });
 
-  group('isLuhnValid', () {
+  group('isLuhn', () {
     test('valid checksums', () {
-      expect(isLuhnValid('79927398713'), isTrue);
-      expect(isLuhnValid('4111111111111111'), isTrue);
+      expect(isLuhn('79927398713'), isTrue);
+      expect(isLuhn('4111111111111111'), isTrue);
     });
 
     test('invalid checksum', () {
-      expect(isLuhnValid('79927398710'), isFalse);
+      expect(isLuhn('79927398710'), isFalse);
     });
 
     test('empty and non-digits are invalid', () {
-      expect(isLuhnValid(''), isFalse);
-      expect(isLuhnValid('12a4'), isFalse);
+      expect(isLuhn(''), isFalse);
+      expect(isLuhn('12a4'), isFalse);
     });
 
     test('String extension', () {

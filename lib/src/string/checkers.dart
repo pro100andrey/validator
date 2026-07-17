@@ -93,7 +93,7 @@ bool isCreditCard(String s) => Patterns.creditCard.hasMatch(s);
 /// This is the checksum used by credit card numbers, IMEIs and similar
 /// identifiers. The input must contain digits only; any other character makes
 /// it invalid.
-bool isLuhnValid(String s) {
+bool isLuhn(String s) {
   if (s.isEmpty) {
     return false;
   }
