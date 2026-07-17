@@ -5,14 +5,18 @@ boilerplate code from your project.
 
 ## Features
 
-- A rich set of ready-made validators (required, length, email, phone, URL,
-  credit card, custom pattern, …)
-- Compose validators with `MultiValidator` or the `&` operator
-- Collect the first error **or every** failing error at once
-- Conditional and value-constrained validators
+- One tiny core: every validator is a callable `Validator<T>` — call it with
+  a value, get `null` (valid) or the error message back
+- A rich set of ready-made validators for **text** (required, length, email,
+  phone, URL, credit card, custom pattern, …), **numbers** (min/max/range,
+  positive, multiple-of, …) and **dates** (before/after/range, past/future)
+- Compose validators of any type with `ValidatorGroup` or the `&` operator;
+  collect the first error **or every** failing error at once
+- Whole-model validation with cross-field rules, conditions and rule-sets
+  (experimental)
 - A low-level layer of `isX` string checkers and `String` extensions
   (`'user@mail.com'.isEmail`) covering 40+ formats
-- Zero runtime dependencies, works on every platform
+- Pure Dart, works on every platform
 
 ## Install
 
@@ -24,13 +28,17 @@ flutter pub add pro_validator
 
 ## Empty & null handling
 
-By design, **only `RequiredValidator` fails on empty or `null` input**. Every
-other validator treats empty/`null` as valid and skips its check, so an *optional*
+Every validator handles "empty" input the same way, in one place. Empty means
+`null` — and, for text, blank strings too.
+
+By design, **only `RequiredValidator` fails on empty input**. Every other
+validator treats empty input as valid and skips its check, so an *optional*
 field never reports a format error when left blank. Combine a
 `RequiredValidator` with a format validator when a field is mandatory.
 
-If you need a format validator to also reject empty input, pass
-`ignoreEmptyValues: false`.
+If you need any validator to also reject empty input, pass
+`ignoreEmptyValues: false` — empty input then fails with the validator's
+error.
 
 ## Example
 
@@ -48,17 +56,22 @@ void main() {
   print(email('mail@mail.com')); // null
 
   // Or group explicitly and collect every failing rule.
-  const password = MultiValidator(
-    validators: [
-      RequiredValidator(error: 'Required field'),
-      MinLengthValidator(min: 8, error: 'Min length 8'),
-      HasUppercaseValidator(error: 'Need an uppercase letter'),
-      HasANumberValidator(error: 'Need a number'),
-    ],
-  );
+  const password = ValidatorGroup([
+    RequiredValidator(error: 'Required field'),
+    MinLengthValidator(min: 8, error: 'Min length 8'),
+    HasUppercaseValidator(error: 'Need an uppercase letter'),
+    HasANumberValidator(error: 'Need a number'),
+  ]);
 
   print(password('abc'));         // Min length 8  (first error)
   print(password.errors('abc'));  // [Min length 8, Need an uppercase letter, Need a number]
+
+  // Typed values work exactly the same way.
+  final age = const MinValidator(min: 18, error: 'Adults only') &
+      const MaxValidator(max: 120, error: 'Too old');
+  print(age(15));   // Adults only
+  print(age(30));   // null
+  print(age(null)); // null — optional by default
 
   // Confirm two values match (e.g. password confirmation).
   const match = MatchValidator(error: 'Do not match');
@@ -76,6 +89,38 @@ TextFormField(
 );
 ```
 
+### Whole-model validation (experimental)
+
+Validate an entire object — cross-field rules, conditions and rule-sets —
+reusing the same validators:
+
+```dart
+class UserValidator extends ModelValidator<User> {
+  UserValidator() {
+    ruleFor('email')
+        .check((u) => u.email, const RequiredValidator(error: 'Required'))
+        .check((u) => u.email, const EmailValidator(error: 'Invalid email'));
+
+    ruleFor('age')
+        .check((u) => u.age, const MinValidator(min: 18, error: '18+'));
+
+    ruleFor('confirm')
+        .must((u) => u.confirm == u.password, error: 'Passwords differ');
+
+    ruleFor('id')
+        .check((u) => u.id, const RequiredValidator(error: 'Required'))
+        .only('update'); // runs only for validate(user, ruleSet: 'update')
+  }
+}
+
+final result = UserValidator().validate(user);
+result.isValid;             // false
+result.firstFor('email');   // 'Invalid email'
+```
+
+The model layer is marked `@experimental`: it works and is fully tested, but
+its API may still change in a minor release.
+
 ### Low-level checkers and extensions
 
 ```dart
@@ -86,6 +131,8 @@ isLuhnValid('79927398713');          // true
 ```
 
 ## Available Validators
+
+### Text (`Validator<String>`)
 
 | Validator | Description |
 | - | - |
@@ -105,8 +152,35 @@ isLuhnValid('79927398713');          // true
 | OneOfValidator | Ensures the value is one of an allowed set. |
 | FileExtensionValidator | Ensures a file name ends with an allowed extension. |
 | ConditionalValidator | Runs an inner validator only when a condition holds. |
+
+### Numbers (`Validator<num>`)
+
+| Validator | Description |
+| - | - |
+| MinValidator | Ensures the number is `>= min`. |
+| MaxValidator | Ensures the number is `<= max`. |
+| RangeValidator | Ensures the number is within `[min, max]`. |
+| PositiveValidator | Ensures the number is `> 0`. |
+| NegativeValidator | Ensures the number is `< 0`. |
+| MultipleOfValidator | Ensures the number is a multiple of `factor` (with optional float `tolerance`). |
+| EvenValidator / OddValidator | Ensures the number is even / odd. |
+
+### Dates (`Validator<DateTime>`)
+
+| Validator | Description |
+| - | - |
+| AfterValidator | Ensures the date is strictly after a given instant. |
+| BeforeValidator | Ensures the date is strictly before a given instant. |
+| DateRangeValidator | Ensures the date is within `[start, end]`. |
+| PastValidator / FutureValidator | Ensures the date is in the past / future (injectable `clock` for tests). |
+
+### Composition & special
+
+| Validator | Description |
+| - | - |
+| ValidatorGroup\<T\> | Groups validators of one type; returns the first error, or every error via `errors()`. Build with `&`. |
 | MatchValidator | Checks that two values are equal (e.g. password confirmation). |
-| MultiValidator | Groups validators; returns the first error, or every error via `errors()`. |
+| ModelValidator\<T\> | Whole-model validation: `ruleFor`, cross-field `must`, `when`/`unless`, rule-sets. *Experimental.* |
 
 ## String checkers
 
