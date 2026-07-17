@@ -1,16 +1,18 @@
 // This builder is a fluent DSL: its methods intentionally return `this` so
-// checks can be chained, and the generic `value` method uses its type
+// checks can be chained, and the generic `check` method uses its type
 // parameters only to *consume* values (never to expose them), so the two lints
 // below are safe to relax for this file.
 // ignore_for_file: avoid_returning_this, unsafe_variance
-import 'text_validator.dart';
-import 'validator/nullable_validator.dart';
+import 'package:meta/meta.dart';
+
+import 'validator/validator.dart';
 
 /// The outcome of validating a model: which field failed with which messages.
 ///
 /// Keys are the `key` passed to [ModelValidator.ruleFor]; the value is every
 /// failing message for that field, in declaration order. An empty map means the
 /// model is valid.
+@experimental
 class ValidationResult {
   /// Constructs a result from a map of field key to failing messages.
   const ValidationResult(this.errors);
@@ -37,27 +39,30 @@ class ValidationResult {
 /// Validates a whole model [T]: field checks, cross-field rules, conditions and
 /// rule-sets, reusing the package's value validators.
 ///
+/// **Experimental** — the rule-building API may still change in a minor
+/// release while it is being battle-tested.
+///
 /// Subclass it and declare rules in the constructor with [ruleFor]:
 ///
 /// ```dart
 /// class UserValidator extends ModelValidator<User> {
 ///   UserValidator() {
 ///     ruleFor('email')
-///         .text((u) => u.email, const RequiredValidator(error: 'Required'))
-///         .text((u) => u.email, const EmailValidator(error: 'Invalid'));
+///         .check((u) => u.email, const RequiredValidator(error: 'Required'))
+///         .check((u) => u.email, const EmailValidator(error: 'Invalid'));
 ///
 ///     ruleFor('age')
-///         .value((u) => u.age, const MinValidator(min: 18, error: '18+'));
+///         .check((u) => u.age, const MinValidator(min: 18, error: '18+'));
 ///
 ///     ruleFor('confirm')
 ///         .must((u) => u.confirm == u.password, error: 'Passwords differ');
 ///
 ///     ruleFor('code')
-///         .text((u) => u.code, const RequiredValidator(error: 'Required'))
+///         .check((u) => u.code, const RequiredValidator(error: 'Required'))
 ///         .when((u) => u.wantsDiscount);
 ///
 ///     ruleFor('id')
-///         .text((u) => u.id, const RequiredValidator(error: 'Required'))
+///         .check((u) => u.id, const RequiredValidator(error: 'Required'))
 ///         .only('update');
 ///   }
 /// }
@@ -65,6 +70,7 @@ class ValidationResult {
 /// final result = UserValidator().validate(user);          // all rules
 /// final onUpdate = UserValidator().validate(user, ruleSet: 'update');
 /// ```
+@experimental
 abstract class ModelValidator<T> {
   final List<_Rule<T>> _rules = [];
 
@@ -122,23 +128,20 @@ class _Rule<T> {
 }
 
 /// Fluent builder for a single field's rule (see [ModelValidator.ruleFor]).
+@experimental
 class RuleBuilder<T> {
   RuleBuilder._(this._rule);
 
   final _Rule<T> _rule;
 
-  /// Runs a text [validator] against the string returned by [selector].
-  RuleBuilder<T> text(String? Function(T) selector, TextValidator validator) {
-    _rule.checks.add((model) => validator(selector(model)));
-
-    return this;
-  }
-
-  /// Runs a typed [validator] (e.g. `MinValidator`, `AfterValidator`) against
-  /// the value returned by [selector].
-  RuleBuilder<T> value<V extends Object>(
+  /// Runs a [validator] against the value returned by [selector].
+  ///
+  /// Works for any value type: text (`EmailValidator`, `RequiredValidator`),
+  /// numbers (`MinValidator`), dates (`AfterValidator`), … — anything
+  /// extending `Validator<V>`.
+  RuleBuilder<T> check<V extends Object>(
     V? Function(T) selector,
-    NullableValidator<V> validator,
+    Validator<V> validator,
   ) {
     _rule.checks.add((model) => validator(selector(model)));
 

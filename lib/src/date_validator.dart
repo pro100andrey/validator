@@ -1,7 +1,7 @@
-import 'validator/nullable_validator.dart';
+import 'validator/validator.dart';
 
 /// Ensures the value is strictly after [dateTime].
-class AfterValidator extends NullableValidator<DateTime> {
+class AfterValidator extends Validator<DateTime> {
   const AfterValidator({
     required this.dateTime,
     required super.error,
@@ -16,7 +16,7 @@ class AfterValidator extends NullableValidator<DateTime> {
 }
 
 /// Ensures the value is strictly before [dateTime].
-class BeforeValidator extends NullableValidator<DateTime> {
+class BeforeValidator extends Validator<DateTime> {
   const BeforeValidator({
     required this.dateTime,
     required super.error,
@@ -31,8 +31,8 @@ class BeforeValidator extends NullableValidator<DateTime> {
 }
 
 /// Ensures the value falls within the inclusive range [[start], [end]].
-class DateBetweenValidator extends NullableValidator<DateTime> {
-  const DateBetweenValidator({
+class DateRangeValidator extends Validator<DateTime> {
+  const DateRangeValidator({
     required this.start,
     required this.end,
     required super.error,
@@ -51,7 +51,7 @@ class DateBetweenValidator extends NullableValidator<DateTime> {
 ///
 /// [clock] supplies "now" and defaults to [DateTime.now]. Inject a fixed clock
 /// in tests for deterministic results.
-class PastValidator extends NullableValidator<DateTime> {
+class PastValidator extends Validator<DateTime> {
   PastValidator({
     required super.error,
     super.ignoreEmptyValues,
@@ -69,7 +69,7 @@ class PastValidator extends NullableValidator<DateTime> {
 ///
 /// [clock] supplies "now" and defaults to [DateTime.now]. Inject a fixed clock
 /// in tests for deterministic results.
-class FutureValidator extends NullableValidator<DateTime> {
+class FutureValidator extends Validator<DateTime> {
   FutureValidator({
     required super.error,
     super.ignoreEmptyValues,

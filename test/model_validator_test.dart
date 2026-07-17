@@ -24,21 +24,21 @@ class _User {
 class _UserValidator extends ModelValidator<_User> {
   _UserValidator() {
     ruleFor('email')
-        .text((u) => u.email, const RequiredValidator(error: 'required'))
-        .text((u) => u.email, const EmailValidator(error: 'bad email'));
+        .check((u) => u.email, const RequiredValidator(error: 'required'))
+        .check((u) => u.email, const EmailValidator(error: 'bad email'));
 
     ruleFor('age')
-        .value((u) => u.age, const MinValidator(min: 18, error: '18+'));
+        .check((u) => u.age, const MinValidator(min: 18, error: '18+'));
 
     ruleFor('confirm')
         .must((u) => u.confirm == u.password, error: 'mismatch');
 
     ruleFor('code')
-        .text((u) => u.code, const RequiredValidator(error: 'code required'))
+        .check((u) => u.code, const RequiredValidator(error: 'code required'))
         .when((u) => u.wantsDiscount);
 
     ruleFor('id')
-        .text((u) => u.id, const RequiredValidator(error: 'id required'))
+        .check((u) => u.id, const RequiredValidator(error: 'id required'))
         .only('update');
   }
 }
@@ -54,11 +54,11 @@ class _Opt {
 class _OptValidator extends ModelValidator<_Opt> {
   _OptValidator() {
     ruleFor('nickname')
-        .text((o) => o.nickname, const RequiredValidator(error: 'required'))
+        .check((o) => o.nickname, const RequiredValidator(error: 'required'))
         .unless((o) => o.optional); // skip the check when optional
 
     ruleFor('count')
-        .value((o) => o.count, const MinValidator(min: 1, error: 'min 1'));
+        .check((o) => o.count, const MinValidator(min: 1, error: 'min 1'));
 
     ruleFor('tag')
         .must((o) => o.nickname != 'bad', error: 'bad tag')

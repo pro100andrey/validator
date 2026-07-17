@@ -27,11 +27,11 @@ class _MyHomePageState extends State<MyHomePage> {
   final _passwordController = TextEditingController();
 
   // Compose with `&`: only RequiredValidator fails on empty input.
-  MultiValidator get emailValidator =>
+  ValidatorGroup<String> get emailValidator =>
       const RequiredValidator(error: 'Required field') &
       const EmailValidator(error: 'Invalid email');
 
-  MultiValidator get passwordValidator =>
+  ValidatorGroup<String> get passwordValidator =>
       const RequiredValidator(error: 'Required field') &
       const LengthRangeValidator(
         min: 8,

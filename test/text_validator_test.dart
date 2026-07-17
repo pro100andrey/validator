@@ -23,9 +23,11 @@ void main() {
       expect(email('nope'), 'error');
     });
 
-    test('ignoreEmptyValues: false validates empty input', () {
+    test('ignoreEmptyValues: false rejects empty input', () {
       const strict = EmailValidator(error: 'error', ignoreEmptyValues: false);
       expect(strict(''), 'error');
+      expect(strict(null), 'error');
+      expect(strict('   '), 'error');
     });
   });
 

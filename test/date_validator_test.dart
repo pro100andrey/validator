@@ -19,8 +19,8 @@ void main() {
     test('later fails', () => expect(v(DateTime(2021)), 'error'));
   });
 
-  group('DateBetweenValidator', () {
-    final v = DateBetweenValidator(
+  group('DateRangeValidator', () {
+    final v = DateRangeValidator(
       start: DateTime(2020),
       end: DateTime(2020, 12, 31),
       error: 'error',

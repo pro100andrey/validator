@@ -1,7 +1,7 @@
-import 'validator/nullable_validator.dart';
+import 'validator/validator.dart';
 
 /// Ensures the number is greater than or equal to [min].
-class MinValidator extends NullableValidator<num> {
+class MinValidator extends Validator<num> {
   const MinValidator({
     required this.min,
     required super.error,
@@ -16,7 +16,7 @@ class MinValidator extends NullableValidator<num> {
 }
 
 /// Ensures the number is less than or equal to [max].
-class MaxValidator extends NullableValidator<num> {
+class MaxValidator extends Validator<num> {
   const MaxValidator({
     required this.max,
     required super.error,
@@ -31,8 +31,8 @@ class MaxValidator extends NullableValidator<num> {
 }
 
 /// Ensures the number is within the inclusive range [[min], [max]].
-class BetweenValidator extends NullableValidator<num> {
-  const BetweenValidator({
+class RangeValidator extends Validator<num> {
+  const RangeValidator({
     required this.min,
     required this.max,
     required super.error,
@@ -47,7 +47,7 @@ class BetweenValidator extends NullableValidator<num> {
 }
 
 /// Ensures the number is strictly greater than zero.
-class PositiveValidator extends NullableValidator<num> {
+class PositiveValidator extends Validator<num> {
   const PositiveValidator({required super.error, super.ignoreEmptyValues});
 
   @override
@@ -55,7 +55,7 @@ class PositiveValidator extends NullableValidator<num> {
 }
 
 /// Ensures the number is strictly less than zero.
-class NegativeValidator extends NullableValidator<num> {
+class NegativeValidator extends Validator<num> {
   const NegativeValidator({required super.error, super.ignoreEmptyValues});
 
   @override
@@ -69,7 +69,7 @@ class NegativeValidator extends NullableValidator<num> {
 /// The check is exact by default. Because `%` is imprecise for decimals
 /// (`0.3 % 0.1 != 0`), pass a small [tolerance] (e.g. `1e-9`) when [factor] or
 /// the values are non-integers.
-class MultipleOfValidator extends NullableValidator<num> {
+class MultipleOfValidator extends Validator<num> {
   const MultipleOfValidator({
     required this.factor,
     required super.error,
@@ -100,7 +100,7 @@ class MultipleOfValidator extends NullableValidator<num> {
 /// Ensures the number is even (its remainder modulo 2 is zero).
 ///
 /// A non-integer value (e.g. `4.5`) is neither even nor odd and fails.
-class EvenValidator extends NullableValidator<num> {
+class EvenValidator extends Validator<num> {
   const EvenValidator({required super.error, super.ignoreEmptyValues});
 
   @override
@@ -110,7 +110,7 @@ class EvenValidator extends NullableValidator<num> {
 /// Ensures the number is odd (its remainder modulo 2 is one).
 ///
 /// A non-integer value (e.g. `4.5`) is neither even nor odd and fails.
-class OddValidator extends NullableValidator<num> {
+class OddValidator extends Validator<num> {
   const OddValidator({required super.error, super.ignoreEmptyValues});
 
   @override

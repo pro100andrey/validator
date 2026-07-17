@@ -17,14 +17,12 @@ void main() {
   print('good email: ${emailValidator('mail@mail.com')}'); // null
 
   // A group can also report every failing rule at once.
-  const password = MultiValidator(
-    validators: [
-      RequiredValidator(error: 'Required field'),
-      MinLengthValidator(min: 8, error: 'Min length 8'),
-      HasUppercaseValidator(error: 'Need an uppercase letter'),
-      HasANumberValidator(error: 'Need a number'),
-    ],
-  );
+  const password = ValidatorGroup([
+    RequiredValidator(error: 'Required field'),
+    MinLengthValidator(min: 8, error: 'Min length 8'),
+    HasUppercaseValidator(error: 'Need an uppercase letter'),
+    HasANumberValidator(error: 'Need a number'),
+  ]);
 
   print('first error: ${password('abc')}'); // Min length 8
   print('all errors: ${password.errors('abc')}'); // [Min length 8, ...]

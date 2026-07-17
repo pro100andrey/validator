@@ -26,8 +26,8 @@ void main() {
     test('equal passes', () => expect(v(10), isNull));
   });
 
-  group('BetweenValidator', () {
-    const v = BetweenValidator(min: 1, max: 10, error: 'error');
+  group('RangeValidator', () {
+    const v = RangeValidator(min: 1, max: 10, error: 'error');
 
     test('below fails', () => expect(v(0), 'error'));
     test('above fails', () => expect(v(11), 'error'));

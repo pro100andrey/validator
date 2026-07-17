@@ -2,50 +2,41 @@ import 'validator/validator.dart';
 
 /// Base class for validators that operate on optional text (`String?`).
 ///
-/// It centralises how empty and `null` input is treated so that concrete
-/// validators only need to implement [isValid] for a real, non-null value.
+/// It refines the base [Validator]'s notion of "empty": for text, `null`,
+/// empty and whitespace-only strings all count as empty, so an optional field
+/// never reports a format error when "left blank". Concrete validators only
+/// implement [isValid] for a real, non-blank value.
 ///
 /// By convention, checking that a field is filled in is the job of
-/// [RequiredValidator] alone. Every other text validator ignores empty input by
-/// default ([ignoreEmptyValues] is `true`), so an empty field reports at most
-/// one error. Combine them in a `MultiValidator` to require *and* format-check:
+/// [RequiredValidator] alone. Every other text validator ignores empty input
+/// by default ([ignoreEmptyValues] is `true`), so an empty field reports at
+/// most one error. Combine them in a [ValidatorGroup] to require *and*
+/// format-check:
 ///
 /// ```dart
-/// const email = MultiValidator(
-///   validators: [
-///     RequiredValidator(error: 'Required'),
-///     EmailValidator(error: 'Invalid email'),
-///   ],
-/// );
+/// const email = ValidatorGroup([
+///   RequiredValidator(error: 'Required'),
+///   EmailValidator(error: 'Invalid email'),
+/// ]);
 /// email(null); // 'Required' — not 'Invalid email'
 /// ```
 abstract class TextValidator extends Validator<String> {
   /// Constructs a text validator.
   ///
-  /// When [ignoreEmptyValues] is `true` (the default) a `null` or empty value
-  /// is treated as valid and [isValid] is not called. Set it to `false` to
-  /// validate empty input as well (as [RequiredValidator] does).
+  /// When [ignoreEmptyValues] is `true` (the default) a `null`, empty or
+  /// whitespace-only value is treated as valid and [isValid] is not called.
+  /// Set it to `false` to make such input fail with [error] instead (as
+  /// [RequiredValidator] does).
   const TextValidator({
     required super.error,
-    this.ignoreEmptyValues = true,
+    super.ignoreEmptyValues,
   });
 
-  /// Whether `null` and empty values short-circuit to "valid".
-  final bool ignoreEmptyValues;
-
+  /// Treats whitespace-only input as blank so an optional field never reports
+  /// a format error when "left blank". Trimming only gates the skip; the raw
+  /// value is still what [isValid] receives.
   @override
-  String? call(String? value) {
-    final toTest = value ?? '';
-
-    // Treat whitespace-only input as blank so an optional field never reports a
-    // format error when "left blank". Trimming only gates the skip; the raw
-    // value is still what [isValid] receives.
-    if (toTest.trim().isEmpty && ignoreEmptyValues) {
-      return null;
-    }
-
-    return super(toTest);
-  }
+  bool isEmpty(String value) => value.trim().isEmpty;
 }
 
 /// Ensures the value is not empty and not whitespace only.
