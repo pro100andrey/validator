@@ -1,4 +1,5 @@
 import '../string/checkers.dart';
+import '../string/patterns.dart';
 import 'text_validator.dart';
 
 /// Base class for validators backed by a regular expression.
@@ -88,6 +89,31 @@ class PatternValidator extends PatternTextValidator {
     required super.error,
     super.ignoreEmptyValues,
   }) : super.fromRegExp();
+}
+
+/// Builds a ready-made validator from any [Patterns] entry, so all 40+
+/// formats are available as validators — not only the few with a named class.
+///
+/// ```dart
+/// final slug = Patterns.slug.toValidator(error: 'Invalid slug');
+/// slug('my-first-post'); // null
+/// slug('Not a slug!');   // 'Invalid slug'
+///
+/// final iban = Patterns.iban.toValidator(error: 'Invalid IBAN');
+/// ```
+extension PatternsValidation on Patterns {
+  /// Builds a [PatternValidator] for this pattern.
+  ///
+  /// Reuses the pattern's already-compiled [RegExp] (including its
+  /// case-sensitivity), so no recompilation happens per validator.
+  PatternValidator toValidator({
+    required String error,
+    bool ignoreEmptyValues = true,
+  }) => PatternValidator.fromRegExp(
+    pattern,
+    error: error,
+    ignoreEmptyValues: ignoreEmptyValues,
+  );
 }
 
 /// Ensures the value is a validly formatted email address.

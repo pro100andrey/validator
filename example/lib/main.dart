@@ -55,6 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
     ),
     body: Form(
       key: _formKey,
+      autovalidateMode: .onUserInteraction,
       child: ListView(
         padding: const EdgeInsets.all(16),
         children: [

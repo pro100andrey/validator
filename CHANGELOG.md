@@ -44,6 +44,10 @@ whole-model validation layer. The library is split into focused modules
   Returns a `ValidationResult` keyed by field.
 * `ValidatorGroup<T>` + the `&` operator to compose validators of any type
   without building a list manually.
+* `PredicateValidator<T>` — build a validator from any `bool Function(T)`
+  without declaring a class.
+* `Patterns.x.toValidator(error: ...)` — turn any of the 40+ built-in
+  `Patterns` entries into a `PatternValidator`, reusing its compiled regex.
 * `CreditCardValidator` — scheme regex **plus** Luhn checksum.
 * `OneOfValidator`, `FileExtensionValidator`, `ConditionalValidator`.
 * `PatternValidator.fromRegExp` to reuse a pre-compiled `RegExp` (any flags);

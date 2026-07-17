@@ -4,6 +4,7 @@ library;
 
 // Core: the Validator<T> base, ValidatorGroup composition and MatchValidator.
 export 'src/core/match_validator.dart';
+export 'src/core/predicate_validator.dart';
 export 'src/core/validator.dart';
 // Date validators.
 export 'src/date/date_validator.dart';

@@ -12,6 +12,9 @@ boilerplate code from your project.
   positive, multiple-of, …) and **dates** (before/after/range, past/future)
 - Compose validators of any type with `ValidatorGroup` or the `&` operator;
   collect the first error **or every** failing error at once
+- Assemble your own in one line: `PredicateValidator` for any closure,
+  `PatternValidator` for a custom regex, `Patterns.slug.toValidator(...)` for
+  any of the 40+ built-in formats
 - Whole-model validation with cross-field rules, conditions and rule-sets
   (experimental)
 - A low-level layer of `isX` string checkers and `String` extensions
@@ -87,6 +90,30 @@ TextFormField(
           const EmailValidator(error: 'Invalid email'))
       .call,
 );
+```
+
+### Assemble your own validator
+
+No subclassing needed — build one from a closure, a regex, or any built-in
+`Patterns` entry:
+
+```dart
+// Any predicate, any type.
+final finite = PredicateValidator<num>(
+  (v) => v.isFinite,
+  error: 'Must be a finite number',
+);
+
+// A custom regex (compiled once, cached).
+final hex = PatternValidator(pattern: r'^#[0-9a-fA-F]{6}$', error: 'Not a hex color');
+
+// Any of the 40+ built-in formats — reuses the already-compiled regex.
+final slug = Patterns.slug.toValidator(error: 'Invalid slug');
+final iban = Patterns.iban.toValidator(error: 'Invalid IBAN');
+
+// They all compose like any other validator.
+final code = const RequiredValidator(error: 'Required') &
+    Patterns.hexColor.toValidator(error: 'Not a color');
 ```
 
 ### Whole-model validation (experimental)
@@ -179,6 +206,8 @@ isLuhnValid('79927398713');          // true
 | Validator | Description |
 | - | - |
 | ValidatorGroup\<T\> | Groups validators of one type; returns the first error, or every error via `errors()`. Build with `&`. |
+| PredicateValidator\<T\> | Wraps any `bool Function(T)` predicate — a one-off check without declaring a class. |
+| Patterns.x.toValidator | Builds a `PatternValidator` from any of the 40+ built-in `Patterns` entries. |
 | MatchValidator | Checks that two values are equal (e.g. password confirmation). |
 | ModelValidator\<T\> | Whole-model validation: `ruleFor`, cross-field `must`, `when`/`unless`, rule-sets. *Experimental.* |
 
