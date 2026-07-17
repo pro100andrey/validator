@@ -1,5 +1,8 @@
 name: pro_validator
-description: The validator package comes with several common validations and removes the boiler plate code from your project.
+description: >-
+  Composable, callable validators for Dart and Flutter: text, number and date
+  validators, one-line custom checks, whole-model validation and 40+ string
+  format checkers.
 
 version: 3.0.0
 
