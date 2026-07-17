@@ -8,7 +8,6 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) => MaterialApp(
     theme: ThemeData(useMaterial3: true),
@@ -25,27 +24,29 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final _formKey = GlobalKey<FormState>();
+  final _passwordController = TextEditingController();
+
+  // Compose with `&`: only RequiredValidator fails on empty input.
+  MultiValidator get emailValidator =>
+      const RequiredValidator(error: 'Required field') &
+      const EmailValidator(error: 'Invalid email');
+
+  MultiValidator get passwordValidator =>
+      const RequiredValidator(error: 'Required field') &
+      const LengthRangeValidator(
+        min: 8,
+        max: 24,
+        error: 'Required from 8 to 24 symbols',
+      );
 
   CreditCardValidator get creditCardValidator =>
       const CreditCardValidator(error: 'Invalid credit card number');
 
-  MultiValidator get emailValidator => const MultiValidator(
-    validators: [
-      RequiredValidator(error: 'Required field'),
-      EmailValidator(error: 'Invalid email'),
-    ],
-  );
-
-  MultiValidator get passwordValidator => const MultiValidator(
-    validators: [
-      RequiredValidator(error: 'Required field'),
-      LengthRangeValidator(
-        min: 8,
-        max: 24,
-        error: 'Required from 8 to 24 symbols',
-      ),
-    ],
-  );
+  @override
+  void dispose() {
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -62,8 +63,21 @@ class _MyHomePageState extends State<MyHomePage> {
             validator: emailValidator.call,
           ),
           TextFormField(
+            controller: _passwordController,
             decoration: const InputDecoration(labelText: 'Password'),
+            obscureText: true,
             validator: passwordValidator.call,
+          ),
+          TextFormField(
+            decoration: const InputDecoration(labelText: 'Confirm password'),
+            obscureText: true,
+            // MatchValidator compares by value (`==`), so two equal strings
+            // typed into different fields correctly match.
+            validator: (value) =>
+                const MatchValidator(error: 'Passwords do not match')(
+                  value,
+                  _passwordController.text,
+                ),
           ),
           TextFormField(
             decoration: const InputDecoration(labelText: 'Credit card'),

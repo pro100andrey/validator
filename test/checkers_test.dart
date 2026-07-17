@@ -1,0 +1,67 @@
+import 'package:pro_validator/pro_validator.dart';
+import 'package:test/test.dart';
+
+void main() {
+  group('checkers', () {
+    test('isEmail', () {
+      expect(isEmail('user@mail.com'), isTrue);
+      expect(isEmail('nope'), isFalse);
+    });
+
+    test('isUrl', () {
+      expect(isUrl('https://example.com'), isTrue);
+      expect(isUrl('example'), isFalse);
+    });
+
+    test('isUuid', () {
+      expect(isUuid('123E4567-E89B-12D3-A456-426614174000'), isTrue);
+      expect(isUuid('not-a-uuid'), isFalse);
+    });
+
+    test('isIpv4', () {
+      expect(isIpv4('192.168.1.1'), isTrue);
+      expect(isIpv4('256.0.0.1'), isFalse);
+    });
+
+    test('isHexColor', () {
+      expect(isHexColor('#FFF'), isTrue);
+      expect(isHexColor('#FFFFFF'), isTrue);
+      expect(isHexColor('123456'), isTrue);
+      expect(isHexColor('#GGG'), isFalse);
+    });
+
+    test('isSlug', () {
+      expect(isSlug('my-page-title'), isTrue);
+      expect(isSlug('My Page'), isFalse);
+    });
+  });
+
+  group('StringCheck extension', () {
+    test('mirrors the checker functions', () {
+      expect('user@mail.com'.isEmail, isTrue);
+      expect('#example'.isHashtag, isTrue);
+      expect('DE89370400440532013000'.isIban, isTrue);
+      expect('45.0, -120.0'.isGeoCoordinates, isTrue);
+    });
+  });
+
+  group('case-insensitive formats accept lowercase', () {
+    test('UUID', () {
+      expect(isUuid('f47ac10b-58cc-4372-a567-0e02b2c3d479'), isTrue);
+      expect(isUuidV4('550e8400-e29b-41d4-a716-446655440000'), isTrue);
+      expect(isHexUuid('f47ac10b58cc4372a5670e02b2c3d479'), isTrue);
+    });
+
+    test('hex color (both cases)', () {
+      expect(isHexColor('#abcdef'), isTrue);
+      expect(isHexColor('#ABCDEF'), isTrue);
+    });
+
+    test('MAC address (both cases)', () {
+      expect(isMacAddress('00:1a:2b:3c:4d:5e'), isTrue);
+      expect(isMacAddress('00:1A:2B:3C:4D:5E'), isTrue);
+    });
+
+    test('email (uppercase)', () => expect(isEmail('USER@MAIL.COM'), isTrue));
+  });
+}

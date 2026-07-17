@@ -80,13 +80,14 @@ enum Patterns {
   /// - `"GHI"` (invalid)
   hexadecimal(r'^[0-9a-fA-F]+$', caseSensitive: false),
 
-  /// Matches a hex color string.
+  /// Matches a hex color string. The leading `#` is optional.
   ///
   /// Examples:
   /// - `"#FFF"` (valid)
   /// - `"#FFFFFF"` (valid)
-  /// - `"FFF"` (valid)
-  /// - `"123456"` (invalid)
+  /// - `"FFF"` (valid, `#` is optional)
+  /// - `"123456"` (valid, `#` is optional)
+  /// - `"12345"` (invalid, must be 3 or 6 hex digits)
   hexColor(r'^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$', caseSensitive: false),
 
   /// Matches a Base64 encoded string.
@@ -191,7 +192,7 @@ enum Patterns {
   /// - `"http://www.example.com"` (valid)
   /// - `"example.com"` (invalid, missing protocol)
   url(
-    r'(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})',
+    r'^(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})$',
   ),
 
   /// Matches an email address.

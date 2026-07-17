@@ -55,30 +55,26 @@ abstract class Validator<T> {
   String? call(T value) => isValid(value) ? null : error;
 }
 
-/// Group together and validate the basic validators.
-class MultiValidator {
-  const MultiValidator({required this.validators});
-
-  final List<Validator> validators;
-
-  String? call(String? value) {
-    for (final validator in validators) {
-      if (validator(value) != null) {
-        return validator.error;
-      }
-    }
-
-    return null;
-  }
-}
-
-/// A special match validator to check if the v1 equals v2 value.
+/// A special validator that checks whether two values are equal.
+///
+/// Useful for confirmation fields, e.g. "password" and "confirm password".
+///
+/// Equality is compared with `==`, so two distinct [String] instances that
+/// hold the same characters are considered a match.
+///
+/// Example:
+/// ```dart
+/// final match = MatchValidator(error: 'Passwords do not match');
+/// print(match('secret', 'secret')); // null
+/// print(match('secret', 'other'));  // 'Passwords do not match'
+/// ```
 class MatchValidator {
-  MatchValidator({
-    required this.error,
-  });
+  /// Constructs a match validator with the specified [error] message.
+  const MatchValidator({required this.error});
 
+  /// The error message returned when the two values are not equal.
   final String error;
 
-  String? call(Object? v1, Object? v2) => identical(v1, v2) ? null : error;
+  /// Returns `null` when [v1] equals [v2], otherwise returns [error].
+  String? call(Object? v1, Object? v2) => v1 == v2 ? null : error;
 }

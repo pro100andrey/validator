@@ -1,49 +1,123 @@
 import 'string/checkers.dart';
 import 'text_validator.dart';
 
+/// Base class for validators backed by a regular expression.
+///
+/// Extend it to build reusable named validators, or use the ready-made
+/// [PatternValidator] for one-off custom patterns.
 abstract class PatternTextValidator extends TextValidator {
+  /// Matches against a regex [pattern] source, compiled once (cached) with
+  /// [caseSensitive].
   const PatternTextValidator({
     required super.error,
     required this.pattern,
     this.caseSensitive = true,
-  });
+    super.ignoreEmptyValues,
+  }) : _regExp = null;
 
+  /// Matches against a pre-compiled [regExp].
+  ///
+  /// Use this when you need regex flags beyond case-sensitivity (`multiLine`,
+  /// `dotAll`, `unicode`, …) or want to reuse a caller-owned [RegExp] instance
+  /// instead of a source string.
+  PatternTextValidator.fromRegExp(
+    RegExp regExp, {
+    required super.error,
+    super.ignoreEmptyValues,
+  }) : pattern = regExp.pattern,
+       caseSensitive = regExp.isCaseSensitive,
+       _regExp = regExp;
+
+  /// The regular expression source the value is matched against.
+  ///
+  /// When built via [PatternTextValidator.fromRegExp] this mirrors the compiled
+  /// regex's [RegExp.pattern].
   final String pattern;
+
+  /// Whether the match is case-sensitive.
   final bool caseSensitive;
 
+  /// A caller-provided compiled regex when built via
+  /// [PatternTextValidator.fromRegExp]; otherwise `null`.
+  final RegExp? _regExp;
+
+  /// Compiled regexes shared across instances, keyed by `(caseSensitive,
+  /// pattern)`, so each string pattern is compiled once instead of on every
+  /// [isValid] call.
+  static final _cache = <(bool, String), RegExp>{};
+
+  RegExp get _effectiveRegExp =>
+      _regExp ??
+      _cache.putIfAbsent(
+        (caseSensitive, pattern),
+        () => RegExp(pattern, caseSensitive: caseSensitive),
+      );
+
   @override
-  bool isValid(String value) =>
-      hasMatch(pattern, value, caseSensitive: caseSensitive);
+  bool isValid(String value) => _effectiveRegExp.hasMatch(value);
 }
 
-class EmailValidator extends TextValidator {
-  const EmailValidator({required super.error});
+/// Ensures the value matches a custom regular expression.
+///
+/// Example:
+/// ```dart
+/// final hex = PatternValidator(
+///   pattern: r'^#[0-9a-fA-F]{6}$',
+///   error: 'Not a hex color',
+/// );
+/// ```
+class PatternValidator extends PatternTextValidator {
+  const PatternValidator({
+    required super.pattern,
+    required super.error,
+    super.caseSensitive,
+    super.ignoreEmptyValues,
+  });
 
-  /// Regex pattern to validate email string.
-  // static const _emailPattern =
-  //     r"^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))$";
+  /// Builds a validator from a pre-compiled [regExp], preserving all of its
+  /// flags (case-sensitivity, `multiLine`, `dotAll`, `unicode`, …).
+  ///
+  /// ```dart
+  /// final letters = PatternValidator.fromRegExp(
+  ///   RegExp(r'^\p{L}+$', unicode: true),
+  ///   error: 'Letters only',
+  /// );
+  /// ```
+  PatternValidator.fromRegExp(
+    super.regExp, {
+    required super.error,
+    super.ignoreEmptyValues,
+  }) : super.fromRegExp();
+}
+
+/// Ensures the value is a validly formatted email address.
+class EmailValidator extends TextValidator {
+  const EmailValidator({
+    required super.error,
+    super.ignoreEmptyValues,
+  });
 
   @override
   bool isValid(String value) => isEmail(value);
 }
 
+/// Ensures the value is a validly formatted phone number.
 class PhoneValidator extends TextValidator {
-  const PhoneValidator({required super.error});
-
-  // /// Regex pattern to validate phone string.
-  // static const _regex =
-  //     r'^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$';
+  const PhoneValidator({
+    required super.error,
+    super.ignoreEmptyValues,
+  });
 
   @override
   bool isValid(String value) => isPhoneNumber(value);
 }
 
+/// Ensures the value is a validly formatted URL.
 class UrlValidator extends TextValidator {
-  const UrlValidator({required super.error});
-
-  /// Regex pattern to validate url string.
-  // static const _regex =
-  //     r'(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})';
+  const UrlValidator({
+    required super.error,
+    super.ignoreEmptyValues,
+  });
 
   @override
   bool isValid(String value) => isUrl(value);

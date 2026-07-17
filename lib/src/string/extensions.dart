@@ -112,6 +112,25 @@ extension StringCheck on String {
 
   /// Checks if the string is a valid hashtag (e.g., `#example`).
   bool get isHashtag => check.isHashtag(this);
+
+  /// Checks if the string is a valid latitude.
+  bool get isLatitude => check.isLatitude(this);
+
+  /// Checks if the string is a valid longitude.
+  bool get isLongitude => check.isLongitude(this);
+
+  /// Checks if the string is valid geo-coordinates.
+  bool get isGeoCoordinates => check.isGeoCoordinates(this);
+
+  /// Checks if the string is a valid IBAN.
+  bool get isIban => check.isIban(this);
+
+  /// Checks if the string is a valid SWIFT/BIC code.
+  bool get isSwiftOrBic => check.isSwiftOrBic(this);
+
+  /// Checks if the string is a valid VAT number.
+  bool get isVat => check.isVat(this);
+
+  /// Checks if the string of digits satisfies the Luhn checksum.
+  bool get isLuhn => check.isLuhnValid(this);
 }
-
-

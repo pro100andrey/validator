@@ -1,99 +1,160 @@
-import '../pro_validator.dart';
-import 'string/checkers.dart';
+import 'validator/validator.dart';
 
+/// Base class for validators that operate on optional text (`String?`).
+///
+/// It centralises how empty and `null` input is treated so that concrete
+/// validators only need to implement [isValid] for a real, non-null value.
+///
+/// By convention, checking that a field is filled in is the job of
+/// [RequiredValidator] alone. Every other text validator ignores empty input by
+/// default ([ignoreEmptyValues] is `true`), so an empty field reports at most
+/// one error. Combine them in a `MultiValidator` to require *and* format-check:
+///
+/// ```dart
+/// const email = MultiValidator(
+///   validators: [
+///     RequiredValidator(error: 'Required'),
+///     EmailValidator(error: 'Invalid email'),
+///   ],
+/// );
+/// email(null); // 'Required' — not 'Invalid email'
+/// ```
 abstract class TextValidator extends Validator<String> {
-  const TextValidator({required super.error});
+  /// Constructs a text validator.
+  ///
+  /// When [ignoreEmptyValues] is `true` (the default) a `null` or empty value
+  /// is treated as valid and [isValid] is not called. Set it to `false` to
+  /// validate empty input as well (as [RequiredValidator] does).
+  const TextValidator({
+    required super.error,
+    this.ignoreEmptyValues = true,
+  });
+
+  /// Whether `null` and empty values short-circuit to "valid".
+  final bool ignoreEmptyValues;
 
   @override
   String? call(String? value) {
     final toTest = value ?? '';
 
+    // Treat whitespace-only input as blank so an optional field never reports a
+    // format error when "left blank". Trimming only gates the skip; the raw
+    // value is still what [isValid] receives.
+    if (toTest.trim().isEmpty && ignoreEmptyValues) {
+      return null;
+    }
+
     return super(toTest);
   }
-
-  /// Method to check if an input matches a given pattern
-  // bool hasMatch(
-  //   String pattern,
-  //   String input, {
-  //   bool caseSensitive = true,
-  // }) =>
-  //     RegExp(pattern, caseSensitive: caseSensitive).hasMatch(input);
 }
 
+/// Ensures the value is not empty and not whitespace only.
 class RequiredValidator extends TextValidator {
-  const RequiredValidator({required super.error});
+  /// Constructs a required validator. Empty and `null` input always fail.
+  const RequiredValidator({required super.error})
+    : super(ignoreEmptyValues: false);
 
   @override
   bool isValid(String value) => value.trim().isNotEmpty;
 }
 
+/// Ensures the value contains no more than [max] characters.
 class MaxLengthValidator extends TextValidator {
-  const MaxLengthValidator({required this.max, required super.error});
+  const MaxLengthValidator({
+    required this.max,
+    required super.error,
+    super.ignoreEmptyValues,
+  });
 
   final int max;
 
   @override
-  bool isValid(String value) => value.length <= max;
+  bool isValid(String value) => value.runes.length <= max;
 }
 
+/// Ensures the value contains no fewer than [min] characters.
 class MinLengthValidator extends TextValidator {
-  const MinLengthValidator({required this.min, required super.error});
+  const MinLengthValidator({
+    required this.min,
+    required super.error,
+    super.ignoreEmptyValues,
+  });
 
   final int min;
 
   @override
-  bool isValid(String value) => value.length >= min;
+  bool isValid(String value) => value.runes.length >= min;
 }
 
+/// Ensures the value contains at least one uppercase character.
 class HasUppercaseValidator extends TextValidator {
-  const HasUppercaseValidator({required super.error});
+  const HasUppercaseValidator({
+    required super.error,
+    super.ignoreEmptyValues,
+  });
 
-  /// Regex pattern to validate uppercase characters.
-  static const _pattern = '[A-Z]';
+  /// Regex matching any Unicode uppercase letter, compiled once.
+  static final _pattern = RegExp(r'\p{Lu}', unicode: true);
 
   @override
-  bool isValid(String value) => hasMatch(_pattern, value);
+  bool isValid(String value) => _pattern.hasMatch(value);
 }
 
+/// Ensures the value contains at least one lowercase character.
 class HasLowercaseValidator extends TextValidator {
-  const HasLowercaseValidator({required super.error});
+  const HasLowercaseValidator({
+    required super.error,
+    super.ignoreEmptyValues,
+  });
 
-  /// Regex pattern to validate lowercase characters
-  static const _pattern = '[a-z]';
+  /// Regex matching any Unicode lowercase letter, compiled once.
+  static final _pattern = RegExp(r'\p{Ll}', unicode: true);
 
   @override
-  bool isValid(String value) => hasMatch(_pattern, value);
+  bool isValid(String value) => _pattern.hasMatch(value);
 }
 
+/// Ensures the value contains at least one numeric character.
 class HasANumberValidator extends TextValidator {
-  const HasANumberValidator({required super.error});
+  const HasANumberValidator({
+    required super.error,
+    super.ignoreEmptyValues,
+  });
 
-  /// Regex pattern to validate lowercase characters.
-  static const _pattern = '[0-9]';
+  /// Regex matching a numeric character, compiled once.
+  static final _pattern = RegExp('[0-9]');
 
   @override
-  bool isValid(String value) => hasMatch(_pattern, value);
+  bool isValid(String value) => _pattern.hasMatch(value);
 }
 
+/// Ensures the value length is contained in the range [min, max].
 class LengthRangeValidator extends TextValidator {
   const LengthRangeValidator({
     required this.min,
     required this.max,
     required super.error,
+    super.ignoreEmptyValues,
   });
 
   final int min;
   final int max;
 
   @override
-  bool isValid(String value) => value.length >= min && value.length <= max;
+  bool isValid(String value) {
+    final length = value.runes.length;
+
+    return length >= min && length <= max;
+  }
 }
 
+/// Ensures the numeric value of the input is contained in the range [min, max].
 class NumRangeValidator extends TextValidator {
   const NumRangeValidator({
     required this.min,
     required this.max,
     required super.error,
+    super.ignoreEmptyValues,
   });
 
   final num min;
@@ -101,7 +162,7 @@ class NumRangeValidator extends TextValidator {
 
   @override
   bool isValid(String value) {
-    final numericValue = num.tryParse(value);
+    final numericValue = num.tryParse(value.trim());
     if (numericValue == null) {
       return false;
     }
