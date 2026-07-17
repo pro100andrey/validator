@@ -27,11 +27,11 @@ class _UserValidator extends ModelValidator<_User> {
         .check((u) => u.email, const RequiredValidator(error: 'required'))
         .check((u) => u.email, const EmailValidator(error: 'bad email'));
 
-    ruleFor('age')
-        .check((u) => u.age, const MinValidator(min: 18, error: '18+'));
+    ruleFor(
+      'age',
+    ).check((u) => u.age, const MinValidator(min: 18, error: '18+'));
 
-    ruleFor('confirm')
-        .must((u) => u.confirm == u.password, error: 'mismatch');
+    ruleFor('confirm').must((u) => u.confirm == u.password, error: 'mismatch');
 
     ruleFor('code')
         .check((u) => u.code, const RequiredValidator(error: 'code required'))
@@ -57,8 +57,9 @@ class _OptValidator extends ModelValidator<_Opt> {
         .check((o) => o.nickname, const RequiredValidator(error: 'required'))
         .unless((o) => o.optional); // skip the check when optional
 
-    ruleFor('count')
-        .check((o) => o.count, const MinValidator(min: 1, error: 'min 1'));
+    ruleFor(
+      'count',
+    ).check((o) => o.count, const MinValidator(min: 1, error: 'min 1'));
 
     ruleFor('tag')
         .must((o) => o.nickname != 'bad', error: 'bad tag')
@@ -153,8 +154,10 @@ void main() {
 
     test('tagged rule is skipped without a matching rule-set', () {
       expect(validator.validate(noId).errorsFor('id'), isEmpty);
-      expect(validator.validate(noId, ruleSet: 'create').errorsFor('id'),
-          isEmpty);
+      expect(
+        validator.validate(noId, ruleSet: 'create').errorsFor('id'),
+        isEmpty,
+      );
     });
 
     test('tagged rule runs for its rule-set', () {

@@ -176,7 +176,10 @@ enum Patterns {
   /// Examples:
   /// - `"00:1A:2B:3C:4D:5E"` (valid)
   /// - `"00-1A-2B-3C-4D-5E"` (valid)
-  macAddress(r'^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$', caseSensitive: false),
+  macAddress(
+    r'^([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]{2})$',
+    caseSensitive: false,
+  ),
 
   /// Matches a JSON Web Token (JWT).
   ///

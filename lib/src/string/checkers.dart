@@ -131,8 +131,7 @@ bool isTime(String s) => Patterns.time.hasMatch(s);
 bool isTime12Hour(String s) => Patterns.time12Hour.hasMatch(s);
 
 /// Checks if the string is a valid ISO 8601 datetime.
-bool isIso8601DateTime(String s) =>
-    Patterns.iso8601DateTime.hasMatch(s);
+bool isIso8601DateTime(String s) => Patterns.iso8601DateTime.hasMatch(s);
 
 /// Checks if the string is a valid datetime (e.g., YYYY-MM-DD HH:mm:ss).
 bool isDateTime(String s) => Patterns.dateTime.hasMatch(s);

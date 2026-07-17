@@ -51,7 +51,8 @@ void main() {
   });
 
   group('composition with &', () {
-    final v = AfterValidator(dateTime: DateTime(2000), error: 'after') &
+    final v =
+        AfterValidator(dateTime: DateTime(2000), error: 'after') &
         BeforeValidator(dateTime: DateTime(2030), error: 'before');
 
     test('within range passes', () => expect(v(DateTime(2020)), isNull));

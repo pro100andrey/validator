@@ -43,8 +43,7 @@ class DateRangeValidator extends Validator<DateTime> {
   final DateTime end;
 
   @override
-  bool isValid(DateTime value) =>
-      !value.isBefore(start) && !value.isAfter(end);
+  bool isValid(DateTime value) => !value.isBefore(start) && !value.isAfter(end);
 }
 
 /// Ensures the value is in the past relative to [clock].

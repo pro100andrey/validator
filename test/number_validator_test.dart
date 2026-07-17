@@ -92,7 +92,8 @@ void main() {
 
   group('composition with &', () {
     test('reports the first failing validator', () {
-      final adult = const MinValidator(min: 18, error: 'young') &
+      final adult =
+          const MinValidator(min: 18, error: 'young') &
           const MaxValidator(max: 120, error: 'old');
       expect(adult(10), 'young');
       expect(adult(200), 'old');
@@ -100,7 +101,8 @@ void main() {
     });
 
     test('chains three and collects all errors', () {
-      final v = const MinValidator(min: 0, error: 'min') &
+      final v =
+          const MinValidator(min: 0, error: 'min') &
           const MaxValidator(max: 10, error: 'max') &
           const EvenValidator(error: 'even');
       expect(v.validators, hasLength(3));
@@ -110,7 +112,8 @@ void main() {
     });
 
     test('null is skipped through the group', () {
-      final v = const MinValidator(min: 18, error: 'young') &
+      final v =
+          const MinValidator(min: 18, error: 'young') &
           const PositiveValidator(error: 'pos');
       expect(v(null), isNull);
     });
