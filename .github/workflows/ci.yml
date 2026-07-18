@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # 'stable' catches new lints; '3.8.0' is the package's declared SDK
+        # floor (pubspec: sdk ^3.8.0) — proves the package builds on it.
+        sdk: ['3.8.0', stable]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: ${{ matrix.sdk }}
+
+      - name: Install dependencies
+        run: dart pub get
+
+      - name: Verify formatting
+        # Formatter output can differ across SDKs, so check only on stable.
+        if: matrix.sdk == 'stable'
+        run: dart format --output=none --set-exit-if-changed .
+
+      - name: Analyze
+        run: dart analyze --fatal-infos
+
+      - name: Run tests
+        run: dart test
