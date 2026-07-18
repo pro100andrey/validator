@@ -35,6 +35,10 @@ class ConditionalValidator extends TextValidator {
   @override
   String? call(String? value) => condition(value) ? validator(value) : null;
 
+  // This validator is a decorator: it overrides [call] and never routes through
+  // the base's empty-handling/[isValid] path, so [isValid] is only reached by a
+  // direct caller. Derive it from the same primitives as [call] rather than
+  // round-tripping through [call] itself.
   @override
-  bool isValid(String value) => call(value) == null;
+  bool isValid(String value) => !condition(value) || validator(value) == null;
 }

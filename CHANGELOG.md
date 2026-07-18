@@ -57,6 +57,10 @@ whole-model validation layer. The library is split into focused modules
 
 ### Fixed
 
+* `emailRFC5322` no longer backtracks catastrophically (ReDoS). Its domain
+  grammar wrongly allowed a `.` **inside** a label while also using `.` as the
+  label separator, so an input like `a@a.a.a.…` blew up exponentially (~22s at
+  52 chars). Dots now only separate labels; matching is linear.
 * `iso8601DateTime` now accepts a valid offset-less timestamp (a local
   `DateTime.toIso8601String()`) and basic/hour-only offsets (`+0200`, `-05`);
   previously it required a `Z` or extended (`+02:00`) offset and rejected the

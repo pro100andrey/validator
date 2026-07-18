@@ -92,4 +92,36 @@ void main() {
 
     test('email (uppercase)', () => expect(isEmail('USER@MAIL.COM'), isTrue));
   });
+
+  group('isEmailRFC5322', () {
+    test('accepts valid addresses (incl. unicode domain)', () {
+      expect(isEmailRFC5322('example@example.com'), isTrue);
+      expect(isEmailRFC5322('user.name+tag+sorting@example.com'), isTrue);
+      expect(isEmailRFC5322('first.last@sub.domain.example.org'), isTrue);
+      expect(isEmailRFC5322('x@münchen.de'), isTrue);
+    });
+
+    test('rejects invalid addresses', () {
+      expect(isEmailRFC5322('plainaddress'), isFalse);
+      expect(isEmailRFC5322('a@b'), isFalse);
+      expect(isEmailRFC5322('a@.com'), isFalse);
+      expect(isEmailRFC5322('a@b..com'), isFalse);
+    });
+
+    test('is linear on an adversarial input (ReDoS regression)', () {
+      // Before the domain-label fix, "a@" + "a." * n backtracked
+      // exponentially: ~22s at 52 chars. It must now stay well under a second
+      // even for a very long input.
+      final attack = 'a@${'a.' * 2000}';
+      final sw = Stopwatch()..start();
+      final result = isEmailRFC5322(attack);
+      sw.stop();
+      expect(result, isFalse);
+      expect(
+        sw.elapsed,
+        lessThan(const Duration(seconds: 1)),
+        reason: 'emailRFC5322 must not backtrack catastrophically',
+      );
+    });
+  });
 }

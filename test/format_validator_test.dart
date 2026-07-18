@@ -5,16 +5,47 @@ void main() {
   group('EmailValidator', () {
     const validator = EmailValidator(error: 'error');
 
-    test('valid emails', () {
-      expect(validator('user@mail.com'), isNull);
-      expect(validator('user.name+tag@sub.example.co'), isNull);
-    });
+    const validEmails = [
+      'email@example.com',
+      'firstname.lastname@example.com',
+      'email@subdomain.example.com',
+      'firstname+lastname@example.com',
+      '1234567890@example.com',
+      'email@example-one.com',
+      '_______@example.com',
+      'email@example.name',
+      'email@example.museum',
+      'email@example.co.jp',
+      'firstname-lastname@example.com',
+      'user.name+tag@sub.example.co',
+    ];
 
-    test('invalid emails', () {
-      expect(validator('mail@com'), 'error');
-      expect(validator('plainaddress'), 'error');
-      expect(validator('a@b'), 'error');
-    });
+    const invalidEmails = [
+      'plainaddress',
+      'mail@com',
+      'a@b',
+      r'#@%^%#$@#$@#.com',
+      '@example.com',
+      'Joe Smith <email@example.com>',
+      'email.example.com',
+      'email@example@example.com',
+      '.email@example.com',
+      'email.@example.com',
+      'email..email@example.com',
+      'email@example.com (Joe Smith)',
+      'email@example',
+      'email@-example.com',
+      'email@example..com',
+      'Abc..123@example.com',
+      'email@[123.123.123.123]',
+    ];
+
+    for (final email in validEmails) {
+      test('accepts $email', () => expect(validator(email), isNull));
+    }
+    for (final email in invalidEmails) {
+      test('rejects $email', () => expect(validator(email), 'error'));
+    }
   });
 
   group('PhoneValidator', () {
