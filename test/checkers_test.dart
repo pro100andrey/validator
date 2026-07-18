@@ -94,6 +94,23 @@ void main() {
       expect(isEmail('user@mail.com'), isTrue);
       expect(isEmail('USER@MAIL.COM'), isTrue);
     });
+
+    test('IBAN (both cases)', () {
+      expect(isIban('DE89370400440532013000'), isTrue);
+      expect(isIban('de89370400440532013000'), isTrue);
+      // A non-digit where the check digits belong is still invalid.
+      expect(isIban('INVALIDIBAN123'), isFalse);
+    });
+
+    test('SWIFT/BIC (both cases)', () {
+      expect(isSwiftOrBic('DEUTDEFF'), isTrue);
+      expect(isSwiftOrBic('deutdeff'), isTrue);
+    });
+
+    test('VAT (both cases)', () {
+      expect(isVat('DE123456789'), isTrue);
+      expect(isVat('de123456789'), isTrue);
+    });
   });
 
   group('isEmailRFC5322', () {

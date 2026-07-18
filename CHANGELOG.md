@@ -57,6 +57,15 @@ whole-model validation layer. The library is split into focused modules
 
 ### Fixed
 
+* `iban`, `swiftOrBic` and `vat` are now case-insensitive, so lowercase input
+  (as pasted from statements/invoices) is accepted, consistent with the other
+  case-insensitive formats (`email`/`uuid`/`macAddress`/`hexColor`) and with how
+  validator.js / schwifty / form_builder_validators handle these. Previously
+  only uppercase matched.
+* `phoneNumber` accepts grouped international layouts (`+44 20 8759 9036`,
+  `+380 (50) 688-88-88`): the pattern is now E.164-style — an optional leading
+  `+` and 7–15 digits with spaces/dots/dashes/parentheses as separators —
+  instead of the old US-centric 3-3-4 shape.
 * `emailRFC5322` was compiled case-sensitively but its body only matched
   lowercase `[a-z]`, so any address with an uppercase letter
   (`Example@Example.com`) was wrongly rejected. It is now case-insensitive,

@@ -373,17 +373,26 @@ enum Patterns {
 
   /// Matches an International Bank Account Number (IBAN).
   ///
+  /// Case-insensitive: the canonical form is uppercase, but lowercase input
+  /// (as pasted from statements) is accepted too, matching how validator.js,
+  /// schwifty and form_builder_validators normalise before checking.
+  ///
   /// Examples:
   /// - `"GB82WEST12345698765432"` (valid)
   /// - `"DE89370400440532013000"` (valid)
+  /// - `"de89370400440532013000"` (valid, lowercase)
   /// - `"INVALIDIBAN123"` (invalid)
-  iban(r'^[A-Z]{2}\d{2}[A-Z0-9]{1,30}$'),
+  iban(r'^[A-Z]{2}\d{2}[A-Z0-9]{1,30}$', caseSensitive: false),
 
-  /// Matches a SWIFT/BIC code.
-  swiftOrBic(r'^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$'),
+  /// Matches a SWIFT/BIC code. Case-insensitive (canonically uppercase).
+  swiftOrBic(
+    r'^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$',
+    caseSensitive: false,
+  ),
 
-  /// Matches a Value Added Tax (VAT) number.
-  vat(r'^[A-Z]{2}[0-9A-Z]{2,12}$');
+  /// Matches a Value Added Tax (VAT) number. Case-insensitive (canonically
+  /// uppercase).
+  vat(r'^[A-Z]{2}[0-9A-Z]{2,12}$', caseSensitive: false);
 
   const Patterns(this.regex, {this.caseSensitive = true});
 
