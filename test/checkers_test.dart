@@ -70,17 +70,11 @@ void main() {
     });
   });
 
-  group('StringCheck extension', () {
-    test('mirrors the checker functions', () {
-      expect('user@mail.com'.isEmail, isTrue);
-      expect('#example'.isHashtag, isTrue);
-      expect('DE89370400440532013000'.isIban, isTrue);
-      expect('45.0, -120.0'.isGeoCoordinates, isTrue);
-    });
-  });
+  // Full checker↔getter delegation parity (all 43 formats) lives in
+  // extensions_test.dart; no ad-hoc subset is duplicated here.
 
-  group('case-insensitive formats accept lowercase', () {
-    test('UUID', () {
+  group('case-insensitive formats accept either case', () {
+    test('UUID (lowercase)', () {
       expect(isUuid('f47ac10b-58cc-4372-a567-0e02b2c3d479'), isTrue);
       expect(isUuidV4('550e8400-e29b-41d4-a716-446655440000'), isTrue);
       expect(isHexUuid('f47ac10b58cc4372a5670e02b2c3d479'), isTrue);
@@ -96,7 +90,10 @@ void main() {
       expect(isMacAddress('00:1A:2B:3C:4D:5E'), isTrue);
     });
 
-    test('email (uppercase)', () => expect(isEmail('USER@MAIL.COM'), isTrue));
+    test('email (both cases)', () {
+      expect(isEmail('user@mail.com'), isTrue);
+      expect(isEmail('USER@MAIL.COM'), isTrue);
+    });
   });
 
   group('isEmailRFC5322', () {
@@ -119,20 +116,20 @@ void main() {
       expect(isEmailRFC5322('a@b..com'), isFalse);
     });
 
-    test('is linear on an adversarial input (ReDoS regression)', () {
-      // Before the domain-label fix, "a@" + "a." * n backtracked
-      // exponentially: ~22s at 52 chars. It must now stay well under a second
-      // even for a very long input.
-      final attack = 'a@${'a.' * 2000}';
-      final sw = Stopwatch()..start();
-      final result = isEmailRFC5322(attack);
-      sw.stop();
-      expect(result, isFalse);
-      expect(
-        sw.elapsed,
-        lessThan(const Duration(seconds: 1)),
-        reason: 'emailRFC5322 must not backtrack catastrophically',
-      );
-    });
+    test(
+      'is linear on an adversarial input (ReDoS regression)',
+      () {
+        // Before the domain-label fix, "a@" + "a." * n backtracked
+        // exponentially (~22s at 52 chars, growing ~32x per +10 chars). A
+        // regression reintroducing that would blow past the test timeout below;
+        // the linear implementation returns in well under a millisecond.
+        final attack = 'a@${'a.' * 5000}';
+        expect(isEmailRFC5322(attack), isFalse);
+      },
+      // Framework timeout instead of a wall-clock assertion: robust to CI load
+      // (a correct run finishes in ms) while still catching a catastrophic
+      // regression (which would take minutes).
+      timeout: const Timeout(Duration(seconds: 10)),
+    );
   });
 }

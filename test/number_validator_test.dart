@@ -24,6 +24,16 @@ void main() {
 
     test('above fails', () => expect(v(11), 'error'));
     test('equal passes', () => expect(v(10), isNull));
+    test('below passes', () => expect(v(9), isNull));
+    test('null is skipped', () => expect(v(null), isNull));
+    test('null fails when ignoreEmptyValues: false', () {
+      const strict = MaxValidator(
+        max: 10,
+        error: 'error',
+        ignoreEmptyValues: false,
+      );
+      expect(strict(null), 'error');
+    });
   });
 
   group('RangeValidator', () {
@@ -35,21 +45,23 @@ void main() {
       expect(v(1), isNull);
       expect(v(10), isNull);
     });
+    test('null is skipped', () => expect(v(null), isNull));
   });
 
-  group('sign', () {
-    test('PositiveValidator', () {
-      const v = PositiveValidator(error: 'error');
-      expect(v(1), isNull);
-      expect(v(0), 'error');
-      expect(v(-1), 'error');
-    });
+  group('PositiveValidator', () {
+    const v = PositiveValidator(error: 'error');
 
-    test('NegativeValidator', () {
-      const v = NegativeValidator(error: 'error');
-      expect(v(-1), isNull);
-      expect(v(0), 'error');
-    });
+    test('positive passes', () => expect(v(1), isNull));
+    test('zero fails', () => expect(v(0), 'error'));
+    test('negative fails', () => expect(v(-1), 'error'));
+  });
+
+  group('NegativeValidator', () {
+    const v = NegativeValidator(error: 'error');
+
+    test('negative passes', () => expect(v(-1), isNull));
+    test('zero fails', () => expect(v(0), 'error'));
+    test('positive fails', () => expect(v(1), 'error'));
   });
 
   group('MultipleOfValidator', () {

@@ -9,6 +9,7 @@ void main() {
 
     test('later passes', () => expect(v(DateTime(2020, 1, 2)), isNull));
     test('earlier fails', () => expect(v(DateTime(2019, 12, 31)), 'error'));
+    test('equal fails (strictly after)', () => expect(v(ref), 'error'));
     test('null is skipped', () => expect(v(null), isNull));
   });
 
@@ -17,6 +18,8 @@ void main() {
 
     test('earlier passes', () => expect(v(DateTime(2019)), isNull));
     test('later fails', () => expect(v(DateTime(2021)), 'error'));
+    test('equal fails (strictly before)', () => expect(v(ref), 'error'));
+    test('null is skipped', () => expect(v(null), isNull));
   });
 
   group('DateRangeValidator', () {
@@ -27,27 +30,49 @@ void main() {
     );
 
     test('inside passes', () => expect(v(DateTime(2020, 6)), isNull));
-    test('boundaries pass', () {
-      expect(v(DateTime(2020)), isNull);
-      expect(v(DateTime(2020, 12, 31)), isNull);
-    });
-    test('outside fails', () => expect(v(DateTime(2021)), 'error'));
+    test('start boundary passes', () => expect(v(DateTime(2020)), isNull));
+    test(
+      'end boundary passes',
+      () => expect(v(DateTime(2020, 12, 31)), isNull),
+    );
+    test('before start fails', () => expect(v(DateTime(2019)), 'error'));
+    test('after end fails', () => expect(v(DateTime(2021)), 'error'));
+    test('null is skipped', () => expect(v(null), isNull));
   });
 
-  group('Past/Future with an injected clock', () {
+  group('PastValidator', () {
     DateTime now() => DateTime(2020, 6, 15);
+    final v = PastValidator(error: 'error', clock: now);
 
-    test('PastValidator', () {
-      final v = PastValidator(error: 'error', clock: now);
-      expect(v(DateTime(2020, 6, 14)), isNull);
-      expect(v(DateTime(2020, 6, 16)), 'error');
-    });
+    test(
+      'earlier than now passes',
+      () => expect(v(DateTime(2020, 6, 14)), isNull),
+    );
+    test(
+      'later than now fails',
+      () => expect(v(DateTime(2020, 6, 16)), 'error'),
+    );
+    test('exactly now fails (strictly past)', () => expect(v(now()), 'error'));
+    test('null is skipped', () => expect(v(null), isNull));
+  });
 
-    test('FutureValidator', () {
-      final v = FutureValidator(error: 'error', clock: now);
-      expect(v(DateTime(2020, 6, 16)), isNull);
-      expect(v(DateTime(2020, 6, 14)), 'error');
-    });
+  group('FutureValidator', () {
+    DateTime now() => DateTime(2020, 6, 15);
+    final v = FutureValidator(error: 'error', clock: now);
+
+    test(
+      'later than now passes',
+      () => expect(v(DateTime(2020, 6, 16)), isNull),
+    );
+    test(
+      'earlier than now fails',
+      () => expect(v(DateTime(2020, 6, 14)), 'error'),
+    );
+    test(
+      'exactly now fails (strictly future)',
+      () => expect(v(now()), 'error'),
+    );
+    test('null is skipped', () => expect(v(null), isNull));
   });
 
   group('composition with &', () {

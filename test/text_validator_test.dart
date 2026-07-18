@@ -79,6 +79,10 @@ void main() {
     test('above range fails', () => expect(validator('11'), 'error'));
     test('non-numeric fails', () => expect(validator('abc'), 'error'));
     test('in range passes', () => expect(validator('5'), isNull));
+    test('inclusive boundaries pass', () {
+      expect(validator('1'), isNull);
+      expect(validator('10'), isNull);
+    });
     test(
       'trims surrounding whitespace',
       () => expect(validator(' 5 '), isNull),

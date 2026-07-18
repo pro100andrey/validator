@@ -51,29 +51,52 @@ void main() {
   group('PhoneValidator', () {
     const validator = PhoneValidator(error: 'error');
 
-    test('valid phones', () {
-      expect(validator('+1234567890'), isNull);
-      expect(validator('123-456-7890'), isNull);
-    });
+    const validPhones = [
+      '+1234567890',
+      '123-456-7890',
+      '+380506888888',
+      '555 123 4567',
+    ];
 
-    test('invalid phones', () {
-      expect(validator('abc-def-ghij'), 'error');
-    });
+    // Documents the pattern's real boundary: it accepts a single optional
+    // country code + a 3-3-4 grouping, so spaced/parenthesised international
+    // formats are NOT matched. These are pinned so a pattern change is noticed.
+    const invalidPhones = [
+      'abc-def-ghij',
+      '+44 20 8759 9036', // multi-group spacing not supported
+      '1800 801 920',
+      '+380 (50) 688-88-88',
+    ];
+
+    for (final phone in validPhones) {
+      test('accepts $phone', () => expect(validator(phone), isNull));
+    }
+    for (final phone in invalidPhones) {
+      test('rejects $phone', () => expect(validator(phone), 'error'));
+    }
   });
 
   group('UrlValidator', () {
     const validator = UrlValidator(error: 'error');
 
-    test('valid urls', () {
-      expect(validator('https://example.com'), isNull);
-      expect(validator('www.example.com'), isNull);
-    });
+    const validUrls = [
+      'https://example.com',
+      'http://www.example.com',
+      'www.example.com',
+    ];
 
-    test('invalid urls', () {
-      expect(validator('not a url'), 'error');
-      // Must be the whole value, not merely contain a URL.
-      expect(validator('go to www.example.com'), 'error');
-    });
+    const invalidUrls = [
+      'not a url',
+      'example.com', // missing protocol/www prefix
+      'go to www.example.com', // must be the whole value, not merely contain
+    ];
+
+    for (final url in validUrls) {
+      test('accepts $url', () => expect(validator(url), isNull));
+    }
+    for (final url in invalidUrls) {
+      test('rejects $url', () => expect(validator(url), 'error'));
+    }
   });
 
   group('PatternValidator', () {
