@@ -56,6 +56,12 @@ void main() {
       expect(isIso8601DateTime('2023-01-12T15:30:00-05'), isTrue);
       // Missing the time part is still invalid.
       expect(isIso8601DateTime('2023-01-12'), isFalse);
+      // Out-of-range fields are rejected (bounded like date/time/dateTime).
+      expect(isIso8601DateTime('2023-13-12T15:30:00Z'), isFalse); // month 13
+      expect(isIso8601DateTime('2023-01-40T15:30:00Z'), isFalse); // day 40
+      expect(isIso8601DateTime('2023-01-12T25:30:00Z'), isFalse); // hour 25
+      expect(isIso8601DateTime('2023-01-12T15:99:00Z'), isFalse); // minute 99
+      expect(isIso8601DateTime('2023-01-12T15:30:99Z'), isFalse); // second 99
     });
 
     test('isSlug', () {
@@ -99,6 +105,11 @@ void main() {
       expect(isEmailRFC5322('user.name+tag+sorting@example.com'), isTrue);
       expect(isEmailRFC5322('first.last@sub.domain.example.org'), isTrue);
       expect(isEmailRFC5322('x@münchen.de'), isTrue);
+    });
+
+    test('is case-insensitive (uppercase letters accepted)', () {
+      expect(isEmailRFC5322('Example@Example.com'), isTrue);
+      expect(isEmailRFC5322('JOHN.DOE@EXAMPLE.COM'), isTrue);
     });
 
     test('rejects invalid addresses', () {

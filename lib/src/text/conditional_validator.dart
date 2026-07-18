@@ -19,12 +19,11 @@ import 'text_validator.dart';
 class ConditionalValidator extends TextValidator {
   ConditionalValidator({
     required this.condition,
-    required TextValidator validator,
-  }) : validator = validator,
-       // Adopt the inner validator's error so a caller reading [error] sees a
-       // real message rather than an empty sentinel; the reported error still
-       // comes from the inner validator via [call].
-       super(error: validator.error, ignoreEmptyValues: false);
+    required this.validator,
+    // Adopt the inner validator's error so a caller reading [error] sees a
+    // real message rather than an empty sentinel; the reported error still
+    // comes from the inner validator via [call].
+  }) : super(error: validator.error, ignoreEmptyValues: false);
 
   /// Decides whether [validator] should run for the given value.
   final bool Function(String? value) condition;

@@ -15,7 +15,10 @@ class CreditCardValidator extends TextValidator {
 
   @override
   bool isValid(String value) {
-    final sanitized = value.replaceAll(RegExp('[^0-9]+'), '');
+    // Strip only the documented separators (spaces and dashes); any other
+    // non-digit (e.g. a stray letter) is left in so the scheme check rejects
+    // it rather than being silently deleted into a "valid" number.
+    final sanitized = value.replaceAll(RegExp(r'[\s-]+'), '');
 
     return isCreditCard(sanitized) && isLuhn(sanitized);
   }

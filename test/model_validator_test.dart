@@ -177,7 +177,7 @@ void main() {
       );
     });
 
-    test('value() skips a null typed field but still checks a present one', () {
+    test('check() skips a null typed field but still checks a present one', () {
       // count defaults to null → the typed MinValidator is skipped.
       expect(
         opt.validate(_Opt(nickname: 'ok')).errorsFor('count'),

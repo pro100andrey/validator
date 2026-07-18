@@ -22,6 +22,14 @@ void main() {
       expect(validator('1234 5678 9012 3456'), 'error');
     });
 
+    test('rejects embedded non-separator characters', () {
+      // Only spaces/dashes are stripped; letters or other punctuation must not
+      // be silently deleted into a valid number.
+      expect(validator('4111abcd1111efgh1111ijkl1111'), 'error');
+      expect(validator('card:4111111111111111'), 'error');
+      expect(validator('4111.1111.1111.1111'), 'error');
+    });
+
     test('empty is skipped', () => expect(validator(''), isNull));
   });
 

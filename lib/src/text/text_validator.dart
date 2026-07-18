@@ -49,7 +49,12 @@ class RequiredValidator extends TextValidator {
   bool isValid(String value) => value.trim().isNotEmpty;
 }
 
-/// Ensures the value contains no more than [max] characters.
+/// Ensures the value contains no more than [max] Unicode code points (runes).
+///
+/// The value is trimmed before counting, so surrounding whitespace neither
+/// counts toward nor pads the length. Note that a code point is not always a
+/// user-perceived character: a multi-code-point grapheme cluster (e.g. a ZWJ
+/// emoji) counts as more than one.
 class MaxLengthValidator extends TextValidator {
   const MaxLengthValidator({
     required this.max,
@@ -60,10 +65,13 @@ class MaxLengthValidator extends TextValidator {
   final int max;
 
   @override
-  bool isValid(String value) => value.runes.length <= max;
+  bool isValid(String value) => value.trim().runes.length <= max;
 }
 
-/// Ensures the value contains no fewer than [min] characters.
+/// Ensures the value contains no fewer than [min] Unicode code points (runes).
+///
+/// The value is trimmed before counting, so whitespace padding cannot satisfy
+/// the minimum (e.g. `"a       "` is one code point, not eight).
 class MinLengthValidator extends TextValidator {
   const MinLengthValidator({
     required this.min,
@@ -74,7 +82,7 @@ class MinLengthValidator extends TextValidator {
   final int min;
 
   @override
-  bool isValid(String value) => value.runes.length >= min;
+  bool isValid(String value) => value.trim().runes.length >= min;
 }
 
 /// Ensures the value contains at least one uppercase character.
@@ -112,14 +120,18 @@ class HasANumberValidator extends TextValidator {
     super.ignoreEmptyValues,
   });
 
-  /// Regex matching a numeric character, compiled once.
-  static final _pattern = RegExp('[0-9]');
+  /// Regex matching any Unicode decimal digit, compiled once.
+  ///
+  /// Unicode-aware (like [HasUppercaseValidator] / [HasLowercaseValidator]), so
+  /// non-ASCII digits such as Arabic-Indic `٥` or fullwidth `５` also count.
+  static final _pattern = RegExp(r'\p{Nd}', unicode: true);
 
   @override
   bool isValid(String value) => _pattern.hasMatch(value);
 }
 
-/// Ensures the value length is contained in the range [min, max].
+/// Ensures the trimmed value's length (in Unicode code points) is contained in
+/// the range [min, max].
 class LengthRangeValidator extends TextValidator {
   const LengthRangeValidator({
     required this.min,
@@ -133,7 +145,7 @@ class LengthRangeValidator extends TextValidator {
 
   @override
   bool isValid(String value) {
-    final length = value.runes.length;
+    final length = value.trim().runes.length;
 
     return length >= min && length <= max;
   }

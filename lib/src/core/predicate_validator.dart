@@ -28,8 +28,12 @@ class PredicateValidator<T extends Object> extends Validator<T> {
 
   /// Decides whether a non-empty value is valid.
   ///
-  /// The type parameter is only *consumed* here (never exposed), so the
-  /// variance lint is safe to relax.
+  /// `T` appears in a contravariant position here, which is formally unsound
+  /// under covariant generics (upcasting to `PredicateValidator<Object>` and
+  /// calling with the wrong type throws) — but that is the same soundness hole
+  /// the whole `Validator<T>` hierarchy already has via `isValid(T)` /
+  /// `call(T?)`, so the suppression keeps this consistent rather than adding a
+  /// new one.
   // ignore: unsafe_variance
   final bool Function(T value) predicate;
 

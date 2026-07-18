@@ -57,6 +57,24 @@ whole-model validation layer. The library is split into focused modules
 
 ### Fixed
 
+* `emailRFC5322` was compiled case-sensitively but its body only matched
+  lowercase `[a-z]`, so any address with an uppercase letter
+  (`Example@Example.com`) was wrongly rejected. It is now case-insensitive,
+  like the simple `email` pattern.
+* `iso8601DateTime` no longer accepts impossible field values (month 13, day
+  40, hour 25, minute/second 99); the date/time components are now range-bounded
+  like the `date`/`time`/`dateTime` patterns.
+* `MinLengthValidator` / `MaxLengthValidator` / `LengthRangeValidator` now
+  **trim** the value before counting length, so surrounding whitespace can no
+  longer pad a value past the minimum (`MinLengthValidator(min: 8)` no longer
+  accepts `"a       "`) nor push it over the maximum.
+* `HasANumberValidator` now recognises any Unicode decimal digit (`\p{Nd}`,
+  e.g. Arabic-Indic `٥`, fullwidth `５`), consistent with the Unicode-aware
+  uppercase/lowercase checkers.
+* `CreditCardValidator` now strips only spaces and dashes (the documented
+  separators) before checking, instead of every non-digit, so a value with
+  embedded letters (`4111abcd…`) is correctly rejected rather than silently
+  reduced to a valid number.
 * `emailRFC5322` no longer backtracks catastrophically (ReDoS). Its domain
   grammar wrongly allowed a `.` **inside** a label while also using `.` as the
   label separator, so an input like `a@a.a.a.…` blew up exponentially (~22s at

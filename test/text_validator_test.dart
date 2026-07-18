@@ -38,6 +38,11 @@ void main() {
     test('exact passes', () => expect(validator('abc'), isNull));
     test('longer passes', () => expect(validator('abcd'), isNull));
     test('empty is skipped', () => expect(validator(''), isNull));
+    test('whitespace padding cannot satisfy the minimum', () {
+      // Trimmed length is what counts, so 1 real char + padding fails min 3.
+      expect(validator('a    '), 'error');
+      expect(validator('  a  '), 'error');
+    });
   });
 
   group('MaxLengthValidator', () {
@@ -45,7 +50,11 @@ void main() {
 
     test('too long fails', () => expect(validator('abcd'), 'error'));
     test('exact passes', () => expect(validator('abc'), isNull));
-    test('counts characters, not UTF-16 code units', () {
+    test('surrounding whitespace is trimmed before counting', () {
+      expect(validator('abc  '), isNull);
+      expect(validator('  abc'), isNull);
+    });
+    test('counts code points, not UTF-16 code units', () {
       const single = MaxLengthValidator(max: 1, error: 'error');
       expect(single('😀'), isNull);
     });
@@ -57,6 +66,10 @@ void main() {
     test('below range fails', () => expect(validator('a'), 'error'));
     test('above range fails', () => expect(validator('abcde'), 'error'));
     test('in range passes', () => expect(validator('abc'), isNull));
+    test('trims before measuring', () {
+      expect(validator(' abc '), isNull);
+      expect(validator(' a '), 'error');
+    });
   });
 
   group('NumRangeValidator', () {
@@ -95,6 +108,9 @@ void main() {
       const v = HasANumberValidator(error: 'error');
       expect(v('abc'), 'error');
       expect(v('ab1'), isNull);
+      // Unicode-aware, like the uppercase/lowercase checkers.
+      expect(v('ab٥'), isNull); // Arabic-Indic digit five
+      expect(v('ab５'), isNull); // fullwidth digit five
     });
   });
 }
