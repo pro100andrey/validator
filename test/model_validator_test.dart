@@ -43,6 +43,15 @@ class _UserValidator extends ModelValidator<_User> {
   }
 }
 
+class _ChainedValidator extends ModelValidator<_User> {
+  _ChainedValidator() {
+    ruleFor('code')
+        .check((u) => u.code, const RequiredValidator(error: 'code required'))
+        .when((u) => u.wantsDiscount)
+        .when((u) => u.age >= 18); // second guard → AND-combined with the first
+  }
+}
+
 class _Opt {
   _Opt({this.nickname, this.count, this.optional = false});
 
@@ -141,6 +150,39 @@ void main() {
         ),
       );
       expect(r.errorsFor('code'), isEmpty);
+    });
+  });
+
+  group('chained conditions combine with AND', () {
+    final chained = _ChainedValidator();
+
+    _User user({required bool wantsDiscount, required num age}) => _User(
+      email: 'user@mail.com',
+      age: age,
+      password: 'x',
+      confirm: 'x',
+      wantsDiscount: wantsDiscount,
+    );
+
+    test('runs only when both conditions hold', () {
+      expect(
+        chained.validate(user(wantsDiscount: true, age: 20)).errorsFor('code'),
+        ['code required'],
+      );
+    });
+
+    test('skipped when the first condition is false', () {
+      expect(
+        chained.validate(user(wantsDiscount: false, age: 20)).errorsFor('code'),
+        isEmpty,
+      );
+    });
+
+    test('skipped when the second condition is false', () {
+      expect(
+        chained.validate(user(wantsDiscount: true, age: 15)).errorsFor('code'),
+        isEmpty,
+      );
     });
   });
 

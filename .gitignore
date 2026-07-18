@@ -29,3 +29,8 @@
 .dart_tool/
 .packages
 build/
+
+# Test coverage
+coverage/
+*.lcov
+lcov.info
