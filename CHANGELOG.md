@@ -57,7 +57,20 @@ whole-model validation layer. The library is split into focused modules
 
 ### Fixed
 
+* `iso8601DateTime` now accepts a valid offset-less timestamp (a local
+  `DateTime.toIso8601String()`) and basic/hour-only offsets (`+0200`, `-05`);
+  previously it required a `Z` or extended (`+02:00`) offset and rejected the
+  rest.
+* `hexColor` now requires the leading `#`, so ordinary hex-lettered words
+  (`"decade"`, `"facade"`) no longer validate as colors.
+* `decimal` now rejects a trailing dot with no fraction (`"123."`).
 * Corrected swapped latitude/longitude doc comments and email pattern docs.
+
+### Removed
+
+* The free-function `hasMatch(pattern, input)` helper (it recompiled the regex
+  on every call and duplicated `Patterns` / `PatternValidator`). Use
+  `Patterns.x.hasMatch`, `PatternValidator`, or a `RegExp` directly.
 
 ## 2.0.1
 

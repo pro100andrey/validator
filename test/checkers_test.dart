@@ -26,8 +26,36 @@ void main() {
     test('isHexColor', () {
       expect(isHexColor('#FFF'), isTrue);
       expect(isHexColor('#FFFFFF'), isTrue);
-      expect(isHexColor('123456'), isTrue);
       expect(isHexColor('#GGG'), isFalse);
+      // The leading '#' is required, so hex-lettered words are not colors.
+      expect(isHexColor('123456'), isFalse);
+      expect(isHexColor('decade'), isFalse);
+      expect(isHexColor('#12345'), isFalse);
+    });
+
+    test('isDecimal', () {
+      expect(isDecimal('123.45'), isTrue);
+      expect(isDecimal('1.23e10'), isTrue);
+      expect(isDecimal('-42'), isTrue);
+      // A dot must be followed by at least one digit.
+      expect(isDecimal('123.'), isFalse);
+      expect(isDecimal('abc'), isFalse);
+    });
+
+    test('isIso8601DateTime', () {
+      expect(isIso8601DateTime('2023-01-12T15:30:00Z'), isTrue);
+      // Offset is optional: a local timestamp (Dart's own local ISO output).
+      expect(isIso8601DateTime('2023-01-12T15:30:00.000'), isTrue);
+      expect(
+        isIso8601DateTime(DateTime(2023, 1, 12, 15, 30).toIso8601String()),
+        isTrue,
+      );
+      // Extended, basic and hour-only offsets all parse.
+      expect(isIso8601DateTime('2023-01-12T15:30:00+02:00'), isTrue);
+      expect(isIso8601DateTime('2023-01-12T15:30:00+0200'), isTrue);
+      expect(isIso8601DateTime('2023-01-12T15:30:00-05'), isTrue);
+      // Missing the time part is still invalid.
+      expect(isIso8601DateTime('2023-01-12'), isFalse);
     });
 
     test('isSlug', () {

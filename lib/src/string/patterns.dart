@@ -61,8 +61,9 @@ enum Patterns {
   /// Examples:
   /// - `"123.45"` (valid)
   /// - `"1.23e10"` (valid)
+  /// - `"123."` (invalid, a digit is required after the dot)
   /// - `"abc"` (invalid)
-  decimal(r'^-?(?:[0-9]+)(?:\.[0-9]*)?(?:[eE][\+\-]?[0-9]+)?$'),
+  decimal(r'^-?(?:[0-9]+)(?:\.[0-9]+)?(?:[eE][\+\-]?[0-9]+)?$'),
 
   /// Matches numeric characters only (positive or negative integers).
   ///
@@ -80,15 +81,15 @@ enum Patterns {
   /// - `"GHI"` (invalid)
   hexadecimal(r'^[0-9a-fA-F]+$', caseSensitive: false),
 
-  /// Matches a hex color string. The leading `#` is optional.
+  /// Matches a hex color string. The leading `#` is required, so ordinary
+  /// words made of hex letters (e.g. `"decade"`) are not mistaken for colors.
   ///
   /// Examples:
   /// - `"#FFF"` (valid)
   /// - `"#FFFFFF"` (valid)
-  /// - `"FFF"` (valid, `#` is optional)
-  /// - `"123456"` (valid, `#` is optional)
-  /// - `"12345"` (invalid, must be 3 or 6 hex digits)
-  hexColor(r'^#?([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$', caseSensitive: false),
+  /// - `"FFF"` (invalid, missing `#`)
+  /// - `"#12345"` (invalid, must be 3 or 6 hex digits)
+  hexColor(r'^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$', caseSensitive: false),
 
   /// Matches a Base64 encoded string.
   ///
@@ -288,11 +289,18 @@ enum Patterns {
 
   /// Matches an ISO 8601 DateTime string.
   ///
+  /// The timezone designator is optional (an offset-less string is a local
+  /// timestamp, as produced by [DateTime.toIso8601String] for a local time),
+  /// and the offset may be extended (`+02:00`), basic (`+0200`) or hour-only
+  /// (`+02`).
+  ///
   /// Examples:
   /// - `"2023-01-12T15:30:00Z"` (valid)
+  /// - `"2023-01-12T15:30:00.000"` (valid, local — no offset)
+  /// - `"2023-01-12T15:30:00+02:00"` (valid)
   /// - `"2023-01-12"` (invalid, missing time part)
   iso8601DateTime(
-    r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(Z|([+-](0[0-9]|1[0-4]):[0-5][0-9]))$',
+    r'^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-](?:0[0-9]|1[0-4])(?::?[0-5][0-9])?)?$',
   ),
 
   /// Matches a date and time in the format YYYY-MM-DD HH:mm:ss.
