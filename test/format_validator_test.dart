@@ -56,16 +56,23 @@ void main() {
       '123-456-7890',
       '+380506888888',
       '555 123 4567',
-    ];
-
-    // Documents the pattern's real boundary: it accepts a single optional
-    // country code + a 3-3-4 grouping, so spaced/parenthesised international
-    // formats are NOT matched. These are pinned so a pattern change is noticed.
-    const invalidPhones = [
-      'abc-def-ghij',
-      '+44 20 8759 9036', // multi-group spacing not supported
+      // Grouped / parenthesised international layouts are supported.
+      '+44 20 8759 9036',
       '1800 801 920',
       '+380 (50) 688-88-88',
+      '(050) 688-88-88',
+      '+1 800 444 4444',
+    ];
+
+    // Rejected: non-digits, a misplaced '+', and out-of-range digit counts
+    // (fewer than 7 or more than 15, per E.164). Pinned so a pattern change is
+    // noticed.
+    const invalidPhones = [
+      'abc-def-ghij',
+      '+380gd506888888', // embedded letters
+      '12345', // fewer than 7 digits
+      '12+34567890', // '+' must be leading
+      '123456789012345678', // more than 15 digits
     ];
 
     for (final phone in validPhones) {

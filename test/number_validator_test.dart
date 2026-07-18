@@ -69,6 +69,16 @@ void main() {
 
     test('multiple passes', () => expect(v(9), isNull));
     test('non-multiple fails', () => expect(v(10), 'error'));
+    test('negative multiple passes', () {
+      expect(v(-9), isNull);
+      expect(v(-10), 'error');
+    });
+    test('negative factor is treated by magnitude', () {
+      const neg = MultipleOfValidator(factor: -3, error: 'error');
+      expect(neg(9), isNull);
+      expect(neg(-9), isNull);
+      expect(neg(10), 'error');
+    });
     test('factor 0 is invalid, not a crash', () {
       const z = MultipleOfValidator(factor: 0, error: 'error');
       expect(z(5), 'error');
@@ -89,6 +99,7 @@ void main() {
       const v = EvenValidator(error: 'error');
       expect(v(4), isNull);
       expect(v(-4), isNull);
+      expect(v(0), isNull); // zero is even
       expect(v(3), 'error');
       expect(v(4.5), 'error');
     });
@@ -97,6 +108,7 @@ void main() {
       const v = OddValidator(error: 'error');
       expect(v(3), isNull);
       expect(v(-3), isNull);
+      expect(v(0), 'error'); // zero is not odd
       expect(v(4), 'error');
       expect(v(4.5), 'error');
     });

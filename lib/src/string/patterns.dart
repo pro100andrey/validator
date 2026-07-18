@@ -231,11 +231,20 @@ enum Patterns {
 
   /// Matches a phone number in international or local format.
   ///
+  /// Accepts an optional leading `+` (E.164 country prefix) followed by 7 to 15
+  /// digits, with spaces, dots, dashes and parentheses allowed as separators
+  /// anywhere between the digits. The `+`, if present, must be first. The digit
+  /// count (not the grouping) is what's validated, so national and grouped
+  /// international layouts both pass.
+  ///
   /// Examples:
   /// - `"+1234567890"` (valid)
   /// - `"123-456-7890"` (valid)
-  /// - `"abc-def-ghij"` (invalid)
-  phoneNumber(r'^(\+?\d{1,3}[-.\s]?)?(\(?\d{3}\)?[-.\s]?)?\d{3}[-.\s]?\d{4}$'),
+  /// - `"+44 20 8759 9036"` (valid)
+  /// - `"+380 (50) 688-88-88"` (valid)
+  /// - `"abc-def-ghij"` (invalid, no digits)
+  /// - `"12345"` (invalid, fewer than 7 digits)
+  phoneNumber(r'^\+?(?:[\s.\-()]*\d){7,15}[\s.\-()]*$'),
 
   /// Regex pattern to validate credit card numbers.
   ///
