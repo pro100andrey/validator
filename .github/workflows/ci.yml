@@ -11,9 +11,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # 'stable' catches new lints; '3.8.0' is the package's declared SDK
-        # floor (pubspec: sdk ^3.8.0) — proves the package builds on it.
-        sdk: ['3.8.0', stable]
+        # 'stable' catches new lints; '3.12.0' is the package's declared SDK
+        # floor (pubspec: sdk ^3.12.0) — proves the package builds on it.
+        sdk: ['3.12.0', stable]
 
     steps:
       - uses: actions/checkout@v4

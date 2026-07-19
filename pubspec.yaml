@@ -20,10 +20,10 @@ platforms:
   windows:
 
 environment:
-  sdk: ^3.8.0
+  sdk: ^3.12.0
 
 dependencies:
-  meta: ^1.16.0
+  meta: ^1.18.0
 
 dev_dependencies:
   pro_lints: ^6.1.0
