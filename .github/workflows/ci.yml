@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # 'stable' catches new lints; '3.12.0' is the package's declared SDK
+        # floor (pubspec: sdk ^3.12.0) — proves the package builds on it.
+        sdk: ['3.12.0', stable]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dart-lang/setup-dart@v1
+        with:
+          sdk: ${{ matrix.sdk }}
+
+      - name: Install dependencies
+        # --no-example: the example is a Flutter package and this is a Dart-only
+        # runner (setup-dart), so resolving its flutter dependency would fail.
+        run: dart pub get --no-example
+
+      - name: Verify formatting
+        # Formatter output can differ across SDKs, so check only on stable.
+        if: matrix.sdk == 'stable'
+        run: dart format --output=none --set-exit-if-changed .
+
+      - name: Analyze
+        run: dart analyze --fatal-infos
+
+      - name: Run tests
+        run: dart test
