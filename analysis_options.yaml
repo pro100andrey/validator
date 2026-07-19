@@ -1,1 +1,7 @@
 include: package:pro_lints/recommended.yaml
+
+analyzer:
+  # The example is a separate Flutter package; it is analyzed on its own
+  # (flutter analyze), not as part of this pure-Dart package's analysis.
+  exclude:
+    - example/**

@@ -23,7 +23,9 @@ jobs:
           sdk: ${{ matrix.sdk }}
 
       - name: Install dependencies
-        run: dart pub get
+        # --no-example: the example is a Flutter package and this is a Dart-only
+        # runner (setup-dart), so resolving its flutter dependency would fail.
+        run: dart pub get --no-example
 
       - name: Verify formatting
         # Formatter output can differ across SDKs, so check only on stable.
